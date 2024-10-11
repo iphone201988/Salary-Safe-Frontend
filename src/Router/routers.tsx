@@ -8,8 +8,17 @@ import EmployeeSignUp from "../pages/Auth/Employee/SignUp/SignUp";
 import AuthLayout from "../pages/Auth/layout";
 import CompanyLogin from "../pages/Auth/Company/Login/Login";
 import EmployeeLogin from "../pages/Auth/Employee/Login/Login";
+import ProtectedAuthRoute from "./ProtectedAuthRoute";
+import JobPage from "../pages/Job/JobPage";
+import JobForm from "../pages/Job/JobForm";
+import ProtectedCompanyRoute from "./ProtectedCompanyRoute";
+import NotFoundPage from "../pages/NotFound/NotFoundPage";
 
 const router = createBrowserRouter([
+  {
+    path: "*",
+    element: <NotFoundPage />,
+  },
   {
     path: "/",
     element: <HomePage />,
@@ -27,24 +36,36 @@ const router = createBrowserRouter([
     element: <ContactPage />,
   },
   {
+    path: "jobs",
+    element: (
+      <ProtectedCompanyRoute element={<JobPage />} allowedRoles={["company"]} />
+    ),
+  },
+  {
+    path: "create-job",
+    element: (
+      <ProtectedCompanyRoute element={<JobForm />} allowedRoles={["company"]} />
+    ),
+  },
+  {
     path: "/",
     element: <AuthLayout />,
     children: [
       {
         path: "signup-company",
-        element: <CompanySignUp />,
+        element: <ProtectedAuthRoute element={<CompanySignUp />} />,
       },
       {
         path: "login-company",
-        element: <CompanyLogin />,
+        element: <ProtectedAuthRoute element={<CompanyLogin />} />,
       },
       {
         path: "signup-employee",
-        element: <EmployeeSignUp />,
+        element: <ProtectedAuthRoute element={<EmployeeSignUp />} />,
       },
       {
         path: "login-employee",
-        element: <EmployeeLogin />,
+        element: <ProtectedAuthRoute element={<EmployeeLogin />} />,
       },
     ],
   },

@@ -6,8 +6,9 @@ import {
 } from "../../../../Schema/Schemas";
 import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { candidateRegister } from "../../../../API/apis";
 type FormData = {
   email: string;
   password: string;
@@ -32,11 +33,19 @@ const EmployeeSignUp: React.FC = () => {
 
   const [errors, setErrors] = useState<Errors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Convert salary_expectation back to a number when handling change
+    if (name === "salary_expectation") {
+      setFormData({ ...formData, [name]: Number(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -49,16 +58,30 @@ const EmployeeSignUp: React.FC = () => {
     setErrors({});
     setIsSubmitting(true);
     try {
-      setTimeout(() => {
+      const response = await axios.post(candidateRegister, {username:formData.email,
+        password: formData.password,
+        qualifications: formData.qualifications,
+        salary_expectation: formData.salary_expectation});
+      console.log("response",response)
+      if (response.status === 200) {
         toast.success("Registration completed!");
         setFormData({
-          password: "",
           email: "",
+          password: "",
           qualifications: "",
           salary_expectation: 0,
         });
-      }, 1000);
-    } catch (error) {
+        navigate("/login-employee"); // Redirect to login page
+      } else {
+        toast.error("Registration failed. Please try again.");
+      }
+    } catch (error:any) {
+      console.log("error",error);
+      setFormData({
+        ...formData,
+        password: "",
+      });
+      toast.error(error?.response?.data?.detail);
     } finally {
       setIsSubmitting(false);
     }
@@ -96,7 +119,7 @@ const EmployeeSignUp: React.FC = () => {
           <InputField
             label="Salary Expectations"
             name="salary_expectation"
-            value={formData.salary_expectation}
+            value={formData.salary_expectation.toString()}
             onChange={handleChange}
             error={errors.salary_expectation}
             type="number"

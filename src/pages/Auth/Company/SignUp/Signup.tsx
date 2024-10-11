@@ -8,7 +8,7 @@ import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { companyRegister } from "../../../../API/apis";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CompanySignUp = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +20,7 @@ const CompanySignUp = () => {
 
   const [errors, setErrors] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,22 +38,33 @@ const CompanySignUp = () => {
     setErrors({});
     setIsSubmitting(true);
     try {
-      // const response = await axios.post(companyRegister, {
-      //   company_name: formData.company_email,
-      //   password: formData.password,
-      // });
-      // console.log("response::::", response);
+      const response = await axios.post(companyRegister, {
+        company_name: formData.company_name,
+        company_email: formData.company_email,
+        password: formData.password,
+      });
 
-      setTimeout(() => {
+      console.log("response",response)
+      // Handle successful response
+      if (response.status === 200) {
         toast.success("Registration completed!");
+        navigate("/login-company"); // Redirect to login page
         setFormData({
           company_name: "",
           company_email: "",
-          // contact_person: "",
           password: "",
         });
-      }, 1000);
-    } catch (error) {
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    } catch (error:any) {
+      console.log("error",error);
+      setFormData({
+        company_email:"",
+        company_name:"",
+        password: "",
+      });
+      toast.error(error?.response?.data?.detail);
     } finally {
       setIsSubmitting(false);
     }

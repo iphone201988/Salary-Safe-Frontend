@@ -11,6 +11,7 @@ export const companyRegistrationSchema = yup.object({
 });
 
 export const companyLoginSchema = yup.object({
+  company_name: yup.string().required("Company name is required"),
   company_email: yup
     .string()
     .required("Email is required")

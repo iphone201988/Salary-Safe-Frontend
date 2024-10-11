@@ -7,8 +7,8 @@ import {
 import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { companyRegister } from "../../../../API/apis";
-import { Link } from "react-router-dom";
+import { candidateLogin } from "../../../../API/apis";
+import { Link, useNavigate } from "react-router-dom";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +18,7 @@ const EmployeeLogin = () => {
 
   const [errors, setErrors] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,14 +36,36 @@ const EmployeeLogin = () => {
     setErrors({});
     setIsSubmitting(true);
     try {
-      setTimeout(() => {
-        toast.success("LoggedIn successfully!");
+      const response = await axios.post(candidateLogin, {
+        username: formData.email,
+        password: formData.password,
+      });
+      
+      if (response.status === 200) {
+        localStorage.setItem("access_token",response?.data?.access_token)
+        localStorage.setItem("token_type",response?.data?.token_type)
+        localStorage.setItem("role","candidate");
+        localStorage.setItem("id", response?.data?.id);
+
+        toast.success("Logged in successfully!");
         setFormData({
           email: "",
           password: "",
         });
-      }, 1000);
-    } catch (error) {
+        navigate("/"); // Redirect to dashboard or another page after login
+      } else {
+        toast.error("Login failed. Please check your credentials.");
+      }
+    } catch (error:any) {
+      console.log("error",error);
+      const errorMessage = error?.response?.data?.detail || "An error occurred during login.";
+      toast.error(errorMessage);
+      setFormData({
+        email:"",
+        password: "",
+      });
+     
+
     } finally {
       setIsSubmitting(false);
     }
