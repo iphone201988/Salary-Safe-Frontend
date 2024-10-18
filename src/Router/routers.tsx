@@ -13,6 +13,12 @@ import JobPage from "../pages/Job/JobPage";
 import JobForm from "../pages/Job/JobForm";
 import ProtectedCompanyRoute from "./ProtectedCompanyRoute";
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
+import FeaturesPage from "../pages/Features/FeaturesPage";
+import RequestDemoPage from "../pages/RequestDemo/RequestDemoPage";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import DashboardSummary from "../components/Dashboard/DashboardSummary";
+import DashboardCharts from "../components/Dashboard/DashboardCharts";
+import DashboardSettings from "../components/Dashboard/DashboardSettings";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +32,14 @@ const router = createBrowserRouter([
   {
     path: "about",
     element: <AboutPage />,
+  },
+  {
+    path: "features",
+    element: <FeaturesPage />,
+  },
+  {
+    path: "request-demo",
+    element: <RequestDemoPage />,
   },
   {
     path: "product",
@@ -66,6 +80,28 @@ const router = createBrowserRouter([
       {
         path: "login-employee",
         element: <ProtectedAuthRoute element={<EmployeeLogin />} />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "",
+        element: <DashboardSummary />,
+      },
+      {
+        path: "reports",
+        element: <DashboardCharts /> ,
+      },
+      {
+        path: "analytics",
+        element: <DashboardCharts /> ,
+      },
+      {
+        path: "settings",
+        element: <DashboardSettings />,
       },
     ],
   },

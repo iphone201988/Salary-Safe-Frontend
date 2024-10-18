@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import JobList from './JobList';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { getJobs } from "../../API/apis";
+import { companyProfile, getJobs } from "../../API/apis";
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/Navbar/Navbar';
 
@@ -22,6 +22,7 @@ const JobPage: React.FC = () => {
 
     useEffect(() => {
         fetchJobs();
+        getEmployerDetails();
     }, []);
 
     const fetchJobs = async () => {
@@ -42,8 +43,22 @@ const JobPage: React.FC = () => {
             setLoading(false);
         }
     };
-
-
+    //get employer details
+    const getEmployerDetails = async () => {
+        try {
+            const token = localStorage.getItem('access_token');
+            const id = localStorage.getItem('id');
+            const response = await axios.get(`${companyProfile}/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log("Employer Details", response);
+        } catch (error) {
+            toast.error('Error fetching employer details');
+        }
+    };
+   
     const navigateToCreateJob = () => {
         navigate('/create-job');
     };
