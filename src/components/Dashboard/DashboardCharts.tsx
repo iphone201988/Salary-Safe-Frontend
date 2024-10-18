@@ -10,8 +10,8 @@ const data = [
 const DashboardCharts: React.FC = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-bold mb-4">Salary Analysis</h3>
-      <ResponsiveContainer width="100%" height={300}>
+      <h3 className="text-4xl font-bold my-4 ">Salary Analysis</h3>
+      <ResponsiveContainer width="100%" height={700}>
         <BarChart data={data}>
           <XAxis dataKey="name" />
           <YAxis />

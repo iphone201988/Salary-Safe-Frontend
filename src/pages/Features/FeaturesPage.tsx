@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../../components/Home/Header';
 import Footer from '../../components/Home/Footer';
+import { Link } from 'react-router-dom';
 
 const features = [
   {
@@ -51,12 +52,12 @@ const FeaturesPage: React.FC = () => {
 
         {/* CTA Button */}
         <div className="mt-16 text-center">
-          <a
-            href="#request-demo"
+          <Link
+            to="/request-demo"
             className="bg-[#019529] text-white px-6 py-3 rounded-md hover:bg-[#017a22] transition duration-300"
           >
             Request a Demo
-          </a>
+          </Link>
         </div>
       </main>
       <Footer/>

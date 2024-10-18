@@ -23,7 +23,7 @@ const DashboardSettings: React.FC = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h3 className="text-xl font-bold mb-4">User Profile</h3>
+      <h3 className="text-4xl font-bold my-4">User Profile</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-gray-600">Full Name</label>

@@ -19,6 +19,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import DashboardSummary from "../components/Dashboard/DashboardSummary";
 import DashboardCharts from "../components/Dashboard/DashboardCharts";
 import DashboardSettings from "../components/Dashboard/DashboardSettings";
+import ForgotPassword from "../pages/Auth/Company/ForgotPassword/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
         path: "login-employee",
         element: <ProtectedAuthRoute element={<EmployeeLogin />} />,
       },
+      {
+        path: "forgot-password",
+        element: <ProtectedAuthRoute element={<ForgotPassword />} />,
+      },
     ],
   },
   {
@@ -93,11 +98,11 @@ const router = createBrowserRouter([
       },
       {
         path: "reports",
-        element: <DashboardCharts /> ,
+        element: <DashboardCharts />,
       },
       {
         path: "analytics",
-        element: <DashboardCharts /> ,
+        element: <DashboardCharts />,
       },
       {
         path: "settings",

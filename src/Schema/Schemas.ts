@@ -38,6 +38,13 @@ export const companyLoginSchema = yup.object({
   password: yup.string().required("Password is required"),
 });
 
+export const forgotPasswordSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Must be a valid email")
+});
+
 export const employeeRegistrationSchema = yup.object({
   email: yup
     .string()
