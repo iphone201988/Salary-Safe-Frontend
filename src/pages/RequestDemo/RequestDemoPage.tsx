@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import Header from '../../components/Home/Header';
 import Footer from '../../components/Home/Footer';
+import axios from 'axios';
+import { requestADemo } from '../../API/apis';
+import { toast } from 'react-toastify';
 
 const RequestDemoPage: React.FC = () => {
+
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -35,12 +39,32 @@ const RequestDemoPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!errors.email && !errors.phone && formData.fullName && formData.companyName) {
-      setSubmitted(true);
-    }
-  };
+  //api integarte 
+    try {
+  const data: any = {
+    full_name: formData.fullName,
+    email: formData.email,
+    company_name: formData.companyName,
+    message: formData.message,
+    phone_number: formData.phone,
+  }
+  const response = await axios.post(requestADemo, data);
+  if (response.status === 200) {
+    setSubmitted(true);
+    toast.success("Our team connect with you soon");
+  } else {
+    toast.error("Something went wrong. Please try again.");
+  }
+} catch (error: any) {
+  if(error?.response?.status === 400){
+    setSubmitted(false);
+    setErrors({...errors, email: error?.response?.data?.errors?.email[0] || error?.response?.data?.errors?.phone_number[0] || 'Request already submitted with this email' });
+  }
+  toast.error(error?.response?.data?.detail || "Error occurred during registration.");
+} 
+};
 
   return (
     <>

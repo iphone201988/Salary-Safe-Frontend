@@ -20,6 +20,11 @@ import DashboardSummary from "../components/Dashboard/DashboardSummary";
 import DashboardCharts from "../components/Dashboard/DashboardCharts";
 import DashboardSettings from "../components/Dashboard/DashboardSettings";
 import ForgotPassword from "../pages/Auth/Company/ForgotPassword/ForgotPassword";
+import OTPVerify from "../pages/Auth/Company/VerifyOtp/VerifyOtp";
+import ResetPassword from "../pages/Auth/Company/ResetPassword/ResetPassword";
+import ProtesctedResetRoute from "./ProtesctedResetRoute";
+import ProtesctedOtpRoute from "./ProtesctedOtpRoute";
+import AuthCallback from "../pages/Auth/Company/Login/AuthCallback";
 
 const router = createBrowserRouter([
   {
@@ -50,18 +55,18 @@ const router = createBrowserRouter([
     path: "contact",
     element: <ContactPage />,
   },
-  {
-    path: "jobs",
-    element: (
-      <ProtectedCompanyRoute element={<JobPage />} allowedRoles={["company"]} />
-    ),
-  },
-  {
-    path: "create-job",
-    element: (
-      <ProtectedCompanyRoute element={<JobForm />} allowedRoles={["company"]} />
-    ),
-  },
+  // {
+  //   path: "jobs",
+  //   element: (
+  //     <ProtectedCompanyRoute element={<JobPage />} allowedRoles={["company"]} />
+  //   ),
+  // },
+  // {
+  //   path: "create-job",
+  //   element: (
+  //     <ProtectedCompanyRoute element={<JobForm />} allowedRoles={["company"]} />
+  //   ),
+  // },
   {
     path: "/",
     element: <AuthLayout />,
@@ -75,16 +80,28 @@ const router = createBrowserRouter([
         element: <ProtectedAuthRoute element={<CompanyLogin />} />,
       },
       {
-        path: "signup-employee",
-        element: <ProtectedAuthRoute element={<EmployeeSignUp />} />,
+        path: "auth/linkedin/callback",
+        element: <ProtectedAuthRoute element={<AuthCallback />} />,
       },
-      {
-        path: "login-employee",
-        element: <ProtectedAuthRoute element={<EmployeeLogin />} />,
-      },
+      // {
+      //   path: "signup-employee",
+      //   element: <ProtectedAuthRoute element={<EmployeeSignUp />} />,
+      // },
+      // {
+      //   path: "login-employee",
+      //   element: <ProtectedAuthRoute element={<EmployeeLogin />} />,
+      // },
       {
         path: "forgot-password",
         element: <ProtectedAuthRoute element={<ForgotPassword />} />,
+      },
+      {
+        path: "otp-verify",
+        element: <ProtesctedOtpRoute element={<OTPVerify />} />,
+      },
+      {
+        path: "reset-password",
+        element: <ProtesctedResetRoute element={<ResetPassword />} />,
       },
     ],
   },

@@ -3,8 +3,9 @@ import { isAuthenticated } from "../utils/auth";
 
 const ProtectedAuthRoute = ({ element }: { element: JSX.Element }) => {
   if (isAuthenticated()) {
+    console.log("jksdahgjkh")
     // If user is logged in, redirect them to the homepage (or dashboard)
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   // Otherwise, render the element (login/register page)

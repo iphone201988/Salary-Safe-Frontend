@@ -1,17 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import InputField from "../../../../components/InputField/InputField";
-import { forgotPasswordSchema, validateForm } from "../../../../Schema/Schemas";
 import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
-import { forgetPassword } from "../../../../API/apis";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { resetPasswordSchema, validateForm } from "../../../../Schema/Schemas";
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    password: "",
+    confirmPassword: "",
   });
-
   const [errors, setErrors] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -24,35 +23,26 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const errors = await validateForm(forgotPasswordSchema, formData);
+    const errors = await validateForm(resetPasswordSchema, formData);
 
-    console.log("errors", errors);
     if (errors) {
       setErrors(errors);
       return;
     }
-    setErrors({});
+
     setIsSubmitting(true);
+    setErrors({});
+
     try {
-      const email:string = formData.email;
-      await axios.post(`${forgetPassword}/${email}`);
-      toast.success("Password reset email sent successfully.");
-      localStorage.setItem("type","1")
-      navigate("/otp-verify");
-
-      // Reset form state after successful password reset
-      setFormData({
-        email: "",
-      });
-
-      // Redirect to login page after successful password reset
+      const { password } = formData;
+      // await axios.post("/api/reset-password", { password });
+      toast.success("Password reset successfully.");
+      localStorage.removeItem("type");
+      navigate("/login-company");
     } catch (error: any) {
       const errorMessage =
-        error?.response?.data?.detail || "An error occurred during login.";
+        error?.response?.data?.detail || "Failed to reset password.";
       toast.error(errorMessage);
-      setFormData({
-        email: "",
-      });
     } finally {
       setIsSubmitting(false);
     }
@@ -61,34 +51,36 @@ const ForgotPassword = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg">
-        <h1 className="text-3xl font-bold text-center">Forgot Password</h1>
+        <h1 className="text-3xl font-bold text-center">Reset Password</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <InputField
-            label="Email"
-            name="email"
-            value={formData.email}
+            label="New Password"
+            name="password"
+            type="password"
+            value={formData.password}
             onChange={handleChange}
-            error={errors.email}
+            error={errors.password}
+          />
+          <InputField
+            label="Confirm Password"
+            name="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            error={errors.confirmPassword}
           />
 
           <div className="flex justify-center">
             <Button
               type="submit"
-              content={isSubmitting ? "Submitting..." : "Submit"}
+              content={isSubmitting ? "Resetting..." : "Reset Password"}
               className={`bg-[#019529] text-white px-6 py-2 rounded-md w-full`}
             />
           </div>
         </form>
-
-        <div className="text-center mt-4">
-          Don't have an account?{" "}
-          <Link to="/signup-company" className="text-[#019529] underline">
-            Register
-          </Link>
-        </div>
       </div>
     </div>
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

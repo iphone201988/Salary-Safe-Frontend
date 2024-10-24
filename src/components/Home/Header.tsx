@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    // Check if the user is logged in by checking for an access token in localStorage
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -73,22 +83,49 @@ const Header: React.FC = () => {
               Contact
             </Link>
           </li>
-          <li>
-          <Link
-              to="/login-company"
-              className="block sm:inline-block p-4 sm:p-0 hover:text-[#019529]"
-            >
-             Login
-            </Link>
-          </li>
-          <li>
-          <Link
-              to="/signup-company"
-              className="block sm:inline-block p-4 sm:p-0 hover:text-[#019529]"
-            >
-              Sign Up
-            </Link>
-          </li>
+          {/* Corrected Ternary Conditional */}
+          {isLoggedIn === false ? (
+            <>
+              <li>
+                <Link
+                  to="/login-company"
+                  className="block sm:inline-block p-4 sm:p-0 hover:text-[#019529]"
+                >
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/signup-company"
+                  className="block sm:inline-block p-4 sm:p-0 hover:text-[#019529]"
+                >
+                  Sign Up
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link
+                  to="/dashboard"
+                  className="block sm:inline-block p-4 sm:p-0 hover:text-[#019529]"
+                >
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <button
+                  className="block sm:inline-block p-4 sm:p-0 text-[#F5EDEF] hover:text-[#019529]"
+                  onClick={() => {
+                    localStorage.removeItem("access_token");
+                    setIsLoggedIn(false);
+                  }}
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>

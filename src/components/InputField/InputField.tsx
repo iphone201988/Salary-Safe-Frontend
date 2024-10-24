@@ -3,7 +3,7 @@ interface InputFieldProps {
   name: string;
   value: string;
   onChange: any;
-  error: string | undefined;
+  error?: string | undefined;
   type?: string;
 }
 const InputField = ({

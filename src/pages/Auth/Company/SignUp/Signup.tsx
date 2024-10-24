@@ -130,8 +130,11 @@ import {  companyRegistrationStep1Schema, companyRegistrationStep2Schema, compan
 import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { companyRegister } from "../../../../API/apis";
+import { companyRegister, userRegister } from "../../../../API/apis";
 import { useNavigate } from "react-router-dom";
+import { auth, googleauthProvider } from "../../../../../firebase";
+import { signInWithPopup } from "firebase/auth";
+
 
 const CompanySignUp: React.FC = () => {
   const [step, setStep] = useState(1);
@@ -152,7 +155,14 @@ const [isSubmitting, setIsSubmitting] = useState(false);
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const GoggleHandler = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleauthProvider);
+      console.log("google user", result);
+      }catch(error:any){
+        console.log(error.message);
+      }
+    }
   const handleNext = async () => {
     let validation:any;
     if (step === 1) {
@@ -186,7 +196,15 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await axios.post(companyRegister, formData);
+      const data: any = {
+        full_name: formData.full_name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        report_prefrence: formData.preferences,
+        notification_prefrence: formData.notifications,
+      }
+      const response = await axios.post(userRegister, data);
       if (response.status === 200) {
         toast.success("Registration completed!");
         navigate("/login-company");

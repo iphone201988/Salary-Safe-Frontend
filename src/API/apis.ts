@@ -1,7 +1,13 @@
 const url =
-  import.meta.env.VITE_BACKEND_URL ||"https://ac8e-103-149-154-9.ngrok-free.app";
+  import.meta.env.VITE_BACKEND_URL ||"https://86fd-103-149-154-9.ngrok-free.app/api/v1";
 
 // Company Onboarding
+
+export const userRegister = url + "/users/signup";
+export const userLogin = url + "/login";
+export const userSocialLogin = url + "/login/social";
+export const forgetPassword = url + "/password-recovery";
+export const requestADemo = url + "/users/request_demo";
 export const companyRegister = url + "/employers/register";
 export const companyLogin = url + "/employers/login";
 export const companyProfile = url + "/employers/employer";

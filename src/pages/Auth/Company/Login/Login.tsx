@@ -133,8 +133,11 @@ import {
 import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { companyLogin } from "../../../../API/apis";
+import { companyLogin, userLogin, userSocialLogin } from "../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
+import { auth, googleauthProvider } from "../../../../../firebase";
+import { signInWithPopup } from "firebase/auth";
+
 
 const CompanyLogin = () => {
   const [formData, setFormData] = useState({
@@ -150,9 +153,52 @@ const CompanyLogin = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const LinkdinHandler = async () => {
+    try {
+      const clientId = "77j01h5xe1ouuu";
+    const redirectUri = "https://localhost:5173/auth/linkedin/callback";
+    const scope = "email profile openid"; // Adjust scopes as necessary
+    // const state = "random_string"; // Use a random string for security
+    const url = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}&scope=${encodeURIComponent(scope)}`;
 
+    window.location.href = url;
+      }catch(error:any){
+        console.log(error);
+      }
+    }
+  const GoggleHandler = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleauthProvider);
+      console.log("google user", result);
+      const data ={
+        email: result.user?.email,
+        full_name: result.user?.displayName,
+        photo: result.user?.photoURL,
+        provider: result.user?.providerData[0].providerId,
+        provider_id: result.user?.uid,
+      }
+      try {
+        const response  = await axios.post(userSocialLogin,data)
+        console.log("social user response", response);
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("token_type", response.data.token_type);
+        toast.success("Logged in successfully!");
+        navigate("/dashboard");
+      } catch (error:any) {
+        console.log(error);
+        const errorMessage = error?.response?.data?.detail || "An error occurred during login.";
+        toast.error(errorMessage);
+      }
+
+      }catch(error:any){
+        console.log(error);
+      }
+    }
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     const errors = await validateForm(companyLoginSchema, formData);
     if (errors) {
       setErrors(errors);
@@ -161,21 +207,24 @@ const CompanyLogin = () => {
     setErrors({});
     setIsSubmitting(true);
     try {
-      const response = await axios.post(companyLogin, formData);
+      const data:any ={
+        username: formData.company_email,
+        password: formData.password,
+        company_name: formData.company_name
+  
+      }
+      const response = await axios.post(userLogin, data);
 
       if (response.status === 200) {
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("token_type", response.data.token_type);
-        localStorage.setItem("role", "company");
-        localStorage.setItem("id", response.data.id);
-
         toast.success("Logged in successfully!");
         setFormData({
           company_email: "",
           company_name: "",
           password: "",
         });
-        navigate("/");
+        navigate("/dashboard");
       } else {
         toast.error("Login failed. Please check your credentials.");
       }
@@ -235,6 +284,7 @@ const CompanyLogin = () => {
           {/* Submit Button */}
           <div className="flex justify-center">
             <Button
+              type="submit"
               content={isSubmitting ? "Submitting..." : "Login"}
               className={`bg-[#019529] text-white px-6 py-2 rounded-md w-full`}
             />
@@ -251,8 +301,8 @@ const CompanyLogin = () => {
 
         {/* Social Login (Optional) */}
         <div className="flex justify-center mt-6 space-x-4">
-          <button className="bg-[#4285F4] text-white px-4 py-2 rounded-md">Login with Google</button>
-          <button className="bg-[#0077B5] text-white px-4 py-2 rounded-md">Login with LinkedIn</button>
+          <button onClick={GoggleHandler} className="bg-[#4285F4] text-white px-4 py-2 rounded-md">Login with Google</button>
+          <button onClick={LinkdinHandler} className="bg-[#0077B5] text-white px-4 py-2 rounded-md">Login with LinkedIn</button>
         </div>
       </div>
     </div>
