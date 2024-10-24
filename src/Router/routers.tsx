@@ -4,14 +4,14 @@ import AboutPage from "../pages/About/About";
 import ProductPage from "../pages/Product/Product";
 import ContactPage from "../pages/Contact/Contact";
 import CompanySignUp from "../pages/Auth/Company/SignUp/Signup";
-import EmployeeSignUp from "../pages/Auth/Employee/SignUp/SignUp";
+// import EmployeeSignUp from "../pages/Auth/Employee/SignUp/SignUp";
 import AuthLayout from "../pages/Auth/layout";
 import CompanyLogin from "../pages/Auth/Company/Login/Login";
-import EmployeeLogin from "../pages/Auth/Employee/Login/Login";
+// import EmployeeLogin from "../pages/Auth/Employee/Login/Login";
 import ProtectedAuthRoute from "./ProtectedAuthRoute";
-import JobPage from "../pages/Job/JobPage";
-import JobForm from "../pages/Job/JobForm";
-import ProtectedCompanyRoute from "./ProtectedCompanyRoute";
+// import JobPage from "../pages/Job/JobPage";
+// import JobForm from "../pages/Job/JobForm";
+// import ProtectedCompanyRoute from "./ProtectedCompanyRoute";
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
 import FeaturesPage from "../pages/Features/FeaturesPage";
 import RequestDemoPage from "../pages/RequestDemo/RequestDemoPage";
@@ -99,9 +99,13 @@ const router = createBrowserRouter([
         path: "otp-verify",
         element: <ProtesctedOtpRoute element={<OTPVerify />} />,
       },
+      // {
+      //   path: "reset-password",
+      //   element: <ProtesctedResetRoute element={<ResetPassword />} />,
+      // },
       {
         path: "reset-password",
-        element: <ProtesctedResetRoute element={<ResetPassword />} />,
+        element: <ResetPassword/>,
       },
     ],
   },
