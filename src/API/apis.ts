@@ -1,5 +1,5 @@
 const url =
-  import.meta.env.VITE_BACKEND_URL ||"https://86fd-103-149-154-9.ngrok-free.app/api/v1";
+  import.meta.env.VITE_BACKEND_URL ||"https://salarysafe.onrender.com/api/v1";
 
 // Company Onboarding
 
@@ -15,3 +15,4 @@ export const candidateRegister = url + "/candidates/signup";
 export const candidateLogin = url + "/candidates/login";
 export const getJobs = url + "/jobs";
 export const createJobs = url + "/jobs";
+export const companyDetails = url + "/users/me"

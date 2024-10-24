@@ -31,18 +31,12 @@ const AuthCallback = () => {
         );
 
         console.log("Access Token Response:", response.data);
-        if(response.data){
-            if(response.data.access_token){
-                setToken(response.data.id_token);
-            }
-            console.log("access_token",":::::mlkasdjklfjlkas::::::::::",response.data.access_token)
-        // const data = await axios.get("https://cors-anywhere.herokuapp.com/https://api.linkedin.com/v2/userinfo",{
-        //     headers:{
-        //         Authorization: `Bearer ${response.data.access_token}` 
-        //     }
-        // })
-        // console.log("User Info Response:", data.data);
-    }
+        if (response.data) {
+          if (response.data.access_token) {
+            setToken(response.data.access_token);
+          }
+          // console.log("access_token",":::::mlkasdjklfjlkas::::::::::",response.data.access_token)
+        }
 
         if (response.data.access_token) {
           setRedirect(true);
@@ -56,6 +50,31 @@ const AuthCallback = () => {
       fetchAccessToken();
     }
   }, []);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const storedToken = localStorage.getItem("access_token");
+      const tokenToUse = token || storedToken;
+
+      if (tokenToUse) {
+        try {
+          const response = await axios.get(
+            "https://cors-anywhere.herokuapp.com/https://api.linkedin.com/v2/userinfo", // Correct endpoint for user info
+            {
+              headers: {
+                Authorization: `Bearer ${tokenToUse}`,
+              },
+            }
+          );
+          console.log(response.data);
+        } catch (error) {
+          console.error("Error fetching user info:", error);
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, [token]);
 
   if (redirect) {
     return <Navigate to="/dashboard" />;
