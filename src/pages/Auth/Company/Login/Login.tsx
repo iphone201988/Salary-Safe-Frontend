@@ -133,7 +133,7 @@ import {
 import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { companyLogin, userLogin, userSocialLogin } from "../../../../API/apis";
+import { userLogin, userSocialLogin } from "../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, googleauthProvider } from "../../../../../firebase";
 import { signInWithPopup } from "firebase/auth";
@@ -155,21 +155,21 @@ const CompanyLogin = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const LinkdinHandler = async () => {
-    try {
-      const clientId = "77j01h5xe1ouuu";
-    const redirectUri = "https://localhost:5173/auth/linkedin/callback";
-    const scope = "email profile openid"; // Adjust scopes as necessary
-    // const state = "random_string"; // Use a random string for security
-    const url = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&scope=${encodeURIComponent(scope)}`;
+  // const LinkdinHandler = async () => {
+  //   try {
+  //     const clientId = "77j01h5xe1ouuu";
+  //   const redirectUri = "https://localhost:5173/auth/linkedin/callback";
+  //   const scope = "email profile openid"; // Adjust scopes as necessary
+  //   // const state = "random_string"; // Use a random string for security
+  //   const url = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+  //     redirectUri
+  //   )}&scope=${encodeURIComponent(scope)}`;
 
-    window.location.href = url;
-      }catch(error:any){
-        console.log(error);
-      }
-    }
+  //   window.location.href = url;
+  //     }catch(error:any){
+  //       console.log(error);
+  //     }
+  //   }
   const GoggleHandler = async () => {
     try {
       const result = await signInWithPopup(auth, googleauthProvider);
@@ -308,7 +308,7 @@ const CompanyLogin = () => {
         {/* Social Login (Optional) */}
         <div className="flex justify-center mt-6 space-x-4">
           <button onClick={GoggleHandler} className="bg-[#4285F4] text-white px-4 py-2 rounded-md">Login with Google</button>
-          <button onClick={LinkdinHandler} className="bg-[#0077B5] text-white px-4 py-2 rounded-md">Login with LinkedIn</button>
+          <button /* onClick={LinkdinHandler} */ className="bg-[#0077B5] text-white px-4 py-2 rounded-md">Login with LinkedIn</button>
         </div>
       </div>
     </div>

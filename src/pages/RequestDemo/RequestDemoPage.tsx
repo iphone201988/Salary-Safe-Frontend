@@ -4,9 +4,10 @@ import Footer from '../../components/Home/Footer';
 import axios from 'axios';
 import { requestADemo } from '../../API/apis';
 import { toast } from 'react-toastify';
+import Loader from '../../components/Loader/Loader';
 
 const RequestDemoPage: React.FC = () => {
-
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -43,6 +44,7 @@ const RequestDemoPage: React.FC = () => {
     e.preventDefault();
   //api integarte 
     try {
+  setLoading(true);
   const data: any = {
     full_name: formData.fullName,
     email: formData.email,
@@ -53,11 +55,14 @@ const RequestDemoPage: React.FC = () => {
   const response = await axios.post(requestADemo, data);
   if (response.status === 200) {
     setSubmitted(true);
+    setLoading(false);
     toast.success("Our team connect with you soon");
   } else {
+    setLoading(false);
     toast.error("Something went wrong. Please try again.");
   }
 } catch (error: any) {
+  setLoading(false)
   if(error?.response?.status === 400){
     setSubmitted(false);
     setErrors({...errors, email: error?.response?.data?.errors?.email[0] || error?.response?.data?.errors?.phone_number[0] || 'Request already submitted with this email' });
@@ -71,7 +76,8 @@ const RequestDemoPage: React.FC = () => {
 {/* header */}
 <Header />
 <main className='mt-10'>
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
+{loading && <Loader />}
+<div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
       <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-6">Request a Demo</h2>
         

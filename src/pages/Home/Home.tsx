@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Link ,useNavigate, } from "react-router-dom";
-import NavBar from "../../components/Navbar/Navbar";
+// import { useEffect, useState } from "react";
+// import {useNavigate, } from "react-router-dom";
+// import NavBar from "../../components/Navbar/Navbar";
 import Header from "../../components/Home/Header";
 import HeroSection from "../../components/Home/HeroSection";
 import ProblemStatement from "../../components/Home/ProblemStatement";
@@ -10,29 +10,29 @@ import CallToAction from "../../components/Home/CallToAction";
 import Footer from "../../components/Home/Footer";
 
 const HomePage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check if the user is logged in by checking for an access token in localStorage
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Check if the user is logged in by checking for an access token in localStorage
+  //   const token = localStorage.getItem("access_token");
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //   } else {
+  //     setIsLoggedIn(false);
+  //   }
+  // }, []);
 
-  const handleLogout = () => {
-    let role = localStorage.getItem("role");
-    navigate(role === "company" ? "/login-company" : "/login-employee");
-    // Clear the token from localStorage and reset login state
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("token_type");
-    localStorage.removeItem("role");
-    localStorage.removeItem("id");
-    setIsLoggedIn(false);
-  };
+  // const handleLogout = () => {
+  //   let role = localStorage.getItem("role");
+  //   navigate(role === "company" ? "/login-company" : "/login-employee");
+  //   // Clear the token from localStorage and reset login state
+  //   localStorage.removeItem("access_token");
+  //   localStorage.removeItem("token_type");
+  //   localStorage.removeItem("role");
+  //   localStorage.removeItem("id");
+  //   setIsLoggedIn(false);
+  // };
 
   return (
     // <div className="w-full min-h-screen flex flex-col">

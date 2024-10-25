@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/Home/Header';
 import Footer from '../../components/Home/Footer';
 import { Link } from 'react-router-dom';
@@ -27,10 +27,21 @@ const features = [
 ];
 
 const FeaturesPage: React.FC = () => {
+  // Track loading states for each feature icon
+  const [loaded, setLoaded] = useState(new Array(features.length).fill(false));
+
+  const handleImageLoad = (index: number) => {
+    setLoaded(prevState => {
+      const newState = [...prevState];
+      newState[index] = true;
+      return newState;
+    });
+  };
+
   return (
     <>
       {/* Header Section */}
-      <Header/>
+      <Header />
 
       {/* Main Content */}
       <main className="mt-10 py-16 px-6 bg-white text-gray-800">
@@ -42,7 +53,19 @@ const FeaturesPage: React.FC = () => {
                 key={index}
                 className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
               >
-                <img src={feature.icon} alt={`${feature.title} icon`} className="w-16 h-16 mb-4" />
+                <div className="relative w-16 h-16 mb-4">
+                  {!loaded[index] && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="loader"></div>
+                    </div>
+                  )}
+                  <img
+                    src={feature.icon}
+                    alt={`${feature.title} icon`}
+                    className={`w-full h-full rounded transition-opacity duration-300 ${loaded[index] ? 'opacity-100' : 'opacity-0'}`}
+                    onLoad={() => handleImageLoad(index)}
+                  />
+                </div>
                 <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
                 <p className="text-lg text-gray-600 text-center">{feature.description}</p>
               </div>
@@ -60,7 +83,7 @@ const FeaturesPage: React.FC = () => {
           </Link>
         </div>
       </main>
-      <Footer/>
+      <Footer />
     </>
   );
 };

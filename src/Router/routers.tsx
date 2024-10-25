@@ -22,7 +22,7 @@ import DashboardSettings from "../components/Dashboard/DashboardSettings";
 import ForgotPassword from "../pages/Auth/Company/ForgotPassword/ForgotPassword";
 import OTPVerify from "../pages/Auth/Company/VerifyOtp/VerifyOtp";
 import ResetPassword from "../pages/Auth/Company/ResetPassword/ResetPassword";
-import ProtesctedResetRoute from "./ProtesctedResetRoute";
+// import ProtesctedResetRoute from "./ProtesctedResetRoute";
 import ProtesctedOtpRoute from "./ProtesctedOtpRoute";
 import AuthCallback from "../pages/Auth/Company/Login/AuthCallback";
 

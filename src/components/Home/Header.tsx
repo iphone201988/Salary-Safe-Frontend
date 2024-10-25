@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Check if the user is logged in by checking for an access token in localStorage
     const token = localStorage.getItem("access_token");
@@ -17,10 +17,13 @@ const Header: React.FC = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const homePage = () => {
+    navigate("/");
+  };
 
   return (
     <header className="bg-[#1B1035] text-[#F5EDEF] p-5 flex justify-between items-center fixed top-0 w-full z-10">
-      <div className="text-2xl font-bold">Salary-Safe</div>
+      <div onClick={homePage} className="text-2xl font-bold cursor-pointer">Salary-Safe</div>
 
       {/* Hamburger Icon for Mobile */}
       <button

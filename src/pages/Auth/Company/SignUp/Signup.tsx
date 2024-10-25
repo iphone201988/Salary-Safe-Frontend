@@ -137,8 +137,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { userRegister } from "../../../../API/apis";
 import { useNavigate } from "react-router-dom";
-import { auth, googleauthProvider } from "../../../../../firebase";
-import { signInWithPopup } from "firebase/auth";
+// import { auth, googleauthProvider } from "../../../../../firebase";
+// import { signInWithPopup } from "firebase/auth";
 import Loader from "../../../../components/Loader/Loader";
 
 const CompanySignUp: React.FC = () => {

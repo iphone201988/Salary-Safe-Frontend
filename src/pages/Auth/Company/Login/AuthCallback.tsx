@@ -67,8 +67,9 @@ const AuthCallback = () => {
             }
           );
           console.log(response.data);
-        } catch (error) {
+        } catch (error:any) {
           console.error("Error fetching user info:", error);
+          setError(error)
         }
       }
     };
