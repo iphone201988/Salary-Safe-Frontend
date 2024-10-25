@@ -137,6 +137,7 @@ import { companyLogin, userLogin, userSocialLogin } from "../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, googleauthProvider } from "../../../../../firebase";
 import { signInWithPopup } from "firebase/auth";
+import Loader from "../../../../components/Loader/Loader";
 
 
 const CompanyLogin = () => {
@@ -147,6 +148,7 @@ const CompanyLogin = () => {
   });
 
   const [errors, setErrors] = useState<any>({});
+  const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -207,6 +209,7 @@ const CompanyLogin = () => {
     setErrors({});
     setIsSubmitting(true);
     try {
+      setLoading(true);
       const data:any ={
         username: formData.company_email,
         password: formData.password,
@@ -224,11 +227,13 @@ const CompanyLogin = () => {
           company_name: "",
           password: "",
         });
+        setLoading(false);
         navigate("/dashboard");
       } else {
         toast.error("Login failed. Please check your credentials.");
       }
     } catch (error: any) {
+      setLoading(false);
       const errorMessage = error?.response?.data?.detail || "An error occurred during login.";
       toast.error(errorMessage);
       setFormData({
@@ -243,6 +248,7 @@ const CompanyLogin = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      {loading && <Loader />}
       <div className="w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg">
         <h1 className="text-3xl font-bold text-center">Login as Employer</h1>
         <form onSubmit={handleSubmit} className="space-y-4">

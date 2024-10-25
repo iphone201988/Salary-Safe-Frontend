@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
-import qs from "qs"; // For URL-encoded data
+import qs from "qs";
 
 const AuthCallback = () => {
   const [redirect, setRedirect] = useState(false);

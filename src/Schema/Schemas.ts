@@ -21,12 +21,11 @@ export const companyRegistrationStep1Schema = yup.object({
     .min(8, "Password must be at least 8 characters long"),
 });
 export const companyRegistrationStep2Schema = yup.object({
-
   company_name: yup.string().required("Company name is required"),
   role: yup.string().required("Role is required"),
 });
 export const companyRegistrationStep3Schema = yup.object({
-  preferences:  yup.boolean().required(),
+  preferences: yup.boolean().required(),
   notifications: yup.boolean().required(),
 });
 export const companyLoginSchema = yup.object({
@@ -42,13 +41,11 @@ export const forgotPasswordSchema = yup.object({
   email: yup
     .string()
     .required("Email is required")
-    .email("Must be a valid email")
+    .email("Must be a valid email"),
 });
 export const resetPasswordSchema = yup.object({
-  email: yup
-    .string()
-    .required("Email is required")
-    .email("Must be a valid email")
+  new_password: yup.string().required("Password is required"),
+  confirmPassword: yup.string().required("confirmPassword is required"),
 });
 
 export const employeeRegistrationSchema = yup.object({

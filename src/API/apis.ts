@@ -7,6 +7,7 @@ export const userRegister = url + "/users/signup";
 export const userLogin = url + "/login";
 export const userSocialLogin = url + "/login/social";
 export const forgetPassword = url + "/password-recovery";
+export const resetPassword = url + "/reset-password";
 export const requestADemo = url + "/users/request_demo";
 export const companyRegister = url + "/employers/register";
 export const companyLogin = url + "/employers/login";

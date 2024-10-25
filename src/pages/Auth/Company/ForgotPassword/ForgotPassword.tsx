@@ -6,8 +6,10 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { forgetPassword } from "../../../../API/apis";
 import axios from "axios";
+import Loader from "../../../../components/Loader/Loader";
 
 const ForgotPassword = () => {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -34,19 +36,26 @@ const ForgotPassword = () => {
     setErrors({});
     setIsSubmitting(true);
     try {
-      const email:string = formData.email;
-      await axios.post(`${forgetPassword}/${email}`);
+      setLoading(true);
+      const email: string = formData.email;
+      const response = await axios.post(`${forgetPassword}/${email}`);
       toast.success("Password reset email sent successfully.");
-      localStorage.setItem("type","1")
-      navigate("/otp-verify");
 
-      // Reset form state after successful password reset
+      const url = new URL(response.data.link);
+
+
+      const mail = url.searchParams.get("email");
+
+      const token = url.searchParams.get("token");
+
+      setLoading(false);
+      navigate(`/reset-password?email=${mail}&token=${token}`);
+
       setFormData({
         email: "",
       });
-
-      // Redirect to login page after successful password reset
     } catch (error: any) {
+      setLoading(false);
       const errorMessage =
         error?.response?.data?.detail || "An error occurred during login.";
       toast.error(errorMessage);
@@ -60,6 +69,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      {loading && <Loader />}
       <div className="w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg">
         <h1 className="text-3xl font-bold text-center">Forgot Password</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
