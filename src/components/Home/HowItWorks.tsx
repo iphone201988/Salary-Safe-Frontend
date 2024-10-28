@@ -8,7 +8,7 @@ const features = [
 
 const HowItWorks: React.FC = () => {
   return (
-    <section className="py-20 bg-gray-100 text-center">
+    <section className="py-20 bg-gray-100 text-center text-[#1B1035]">
       <h2 className="text-3xl font-bold mb-6">How Salary-Safe Works</h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 px-6">
         {features.map((feature, index) => (

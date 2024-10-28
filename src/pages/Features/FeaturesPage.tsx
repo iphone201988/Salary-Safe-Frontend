@@ -5,23 +5,23 @@ import { Link } from 'react-router-dom';
 
 const features = [
   {
-    title: 'Salary Gap Reports',
-    description: 'Automated, confidential, real-time reporting.',
+    title: 'Salary Matching',
+    description: 'Candidates confidentially submit their salary expectations, while employers provide their salary ranges. The platform matches these inputs based on mutual alignment, promoting a fair and transparent salary negotiation process.',
     icon: 'https://picsum.photos/50', // Replace with a relevant icon
   },
   {
-    title: 'Pay Analysis Tools',
-    description: 'Comprehensive salary data benchmarking.',
+    title: 'Data-Driven Salary Analysis',
+    description: 'Analyzes the company&#39;s internal salary data including calculating median and average salaries and comparing them against market benchmarks. We then generate a fair salary recommendation for both parties based on data and analytics.',
     icon: 'https://picsum.photos/51', // Replace with a relevant icon
   },
   {
-    title: 'Real-time Monitoring',
-    description: 'Track salary changes and ensure equity.',
+    title: 'Advanced Technology',
+    description: 'Using cloud technologies, our platform securely stores and processes large-scale data to ensure that salary information is handled securely. We integrate blockchain technology to provide transparent and immutable records of salary benchmarks and recommendations, ensuring that any data is secure, auditable, and tamper-proof.',
     icon: 'https://picsum.photos/52', // Replace with a relevant icon
   },
   {
-    title: 'Legal Compliance Tools',
-    description: 'Ensuring pay practices meet legal standards.',
+    title: 'Compliance and Reporting',
+    description: 'Automated compliance checks and detailed reporting tracking salary trends, diversity pay gaps, and other key metrics, aligning with industry regulations such as equal pay, anti-discrimination laws, and transparency standards.',
     icon: 'https://picsum.photos/53', // Replace with a relevant icon
   },
 ];

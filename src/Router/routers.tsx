@@ -4,7 +4,7 @@ import AboutPage from "../pages/About/About";
 import ProductPage from "../pages/Product/Product";
 import ContactPage from "../pages/Contact/Contact";
 import CompanySignUp from "../pages/Auth/Company/SignUp/Signup";
-// import EmployeeSignUp from "../pages/Auth/Employee/SignUp/SignUp";
+import EmployeeSignUp from "../pages/Auth/Employee/SignUp/SignUp";
 import AuthLayout from "../pages/Auth/layout";
 import CompanyLogin from "../pages/Auth/Company/Login/Login";
 // import EmployeeLogin from "../pages/Auth/Employee/Login/Login";
@@ -83,10 +83,10 @@ const router = createBrowserRouter([
         path: "auth/linkedin/callback",
         element: <ProtectedAuthRoute element={<AuthCallback />} />,
       },
-      // {
-      //   path: "signup-employee",
-      //   element: <ProtectedAuthRoute element={<EmployeeSignUp />} />,
-      // },
+      {
+        path: "signup-employee",
+        element: <ProtectedAuthRoute element={<EmployeeSignUp />} />,
+      },
       // {
       //   path: "login-employee",
       //   element: <ProtectedAuthRoute element={<EmployeeLogin />} />,

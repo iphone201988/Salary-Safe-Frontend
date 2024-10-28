@@ -8,8 +8,8 @@ const HeroSection: React.FC = () => {
         Ensure Fair Pay. Promote Equity.
       </h1>
       <p className="text-xl mb-8">
-        Track and close salary gaps effortlessly with real-time insights and
-        reporting tools.
+      Salary-Safe is an innovative platform designed to bring transparency and fairness to salary negotiations by aligning
+      the expectations of candidates, employers and the market.
       </p>
       <div className="flex space-x-4">
         <Link
