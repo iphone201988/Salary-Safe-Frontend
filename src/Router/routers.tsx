@@ -7,7 +7,7 @@ import CompanySignUp from "../pages/Auth/Company/SignUp/Signup";
 import EmployeeSignUp from "../pages/Auth/Employee/SignUp/SignUp";
 import AuthLayout from "../pages/Auth/layout";
 import CompanyLogin from "../pages/Auth/Company/Login/Login";
-// import EmployeeLogin from "../pages/Auth/Employee/Login/Login";
+import EmployeeLogin from "../pages/Auth/Employee/Login/Login";
 import ProtectedAuthRoute from "./ProtectedAuthRoute";
 // import JobPage from "../pages/Job/JobPage";
 // import JobForm from "../pages/Job/JobForm";
@@ -87,10 +87,10 @@ const router = createBrowserRouter([
         path: "signup-employee",
         element: <ProtectedAuthRoute element={<EmployeeSignUp />} />,
       },
-      // {
-      //   path: "login-employee",
-      //   element: <ProtectedAuthRoute element={<EmployeeLogin />} />,
-      // },
+      {
+        path: "login-employee",
+        element: <ProtectedAuthRoute element={<EmployeeLogin />} />,
+      },
       {
         path: "forgot-password",
         element: <ProtectedAuthRoute element={<ForgotPassword />} />,

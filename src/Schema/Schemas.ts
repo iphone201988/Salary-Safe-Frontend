@@ -48,26 +48,38 @@ export const resetPasswordSchema = yup.object({
   confirmPassword: yup.string().required("confirmPassword is required"),
 });
 
-export const employeeRegistrationSchema = yup.object({
-  email: yup
-    .string()
-    .required("Email is required")
-    .email("Must be a valid email"),
-  password: yup.string().required("Password is required"),
-  qualifications: yup.string().required("Qualifications are required"),
-  salary_expectation: yup
-    .number()
-    .min(1, "Salary Expectations cannot be empty")
-    .required("Salary Expectation are required"),
-});
+export const employeeRegistrationSchema = yup
+  .object({
+    companyName: yup
+      .string()
+      .required("Company name is required")
+      .email("Must be a valid email"),
+    companyLocation: yup.string().required("Company Location is required"),
+    companySize: yup.string().required("Company Location is required"),
+    email: yup.string().email("Must be a valid email"),
+    phone: yup
+      .string()
+      .nullable(),
+    password: yup.string().required("Password is required"),
+  })
+  .test("at-least-one", "Either phone or email is required", function (value) {
+    return !!value.phone || !!value.email;
+  });
 
-export const employeeLoginSchema = yup.object({
-  email: yup
-    .string()
-    .required("Email is required")
-    .email("Must be a valid email"),
-  password: yup.string().required("Password is required"),
-});
+export const employeeLoginSchema = yup
+  .object({
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Must be a valid email"),
+    phone: yup
+      .string()
+      .nullable(),
+    password: yup.string().required("Password is required"),
+  })
+  .test("at-least-one", "Either phone or email is required", function (value) {
+    return !!value.phone || !!value.email;
+  });
 
 export const validateForm = async (
   schema: yup.ObjectSchema<any>,
@@ -80,10 +92,15 @@ export const validateForm = async (
   } catch (error: any) {
     const formattedErrors: Record<string, string> = {};
     error.inner.forEach((err: any) => {
+      if (err.type == "at-least-one") {
+        formattedErrors.phone = err.message;
+        formattedErrors.email = err.message;
+      }
       if (err.path) {
         formattedErrors[err.path] = err.message;
       }
     });
+
     return formattedErrors;
   }
 };

@@ -43,7 +43,6 @@ const ForgotPassword = () => {
 
       const url = new URL(response.data.link);
 
-
       const mail = url.searchParams.get("email");
 
       const token = url.searchParams.get("token");
