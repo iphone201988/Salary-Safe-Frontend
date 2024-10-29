@@ -48,7 +48,13 @@ const EmployeeLogin = () => {
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("token_type", response.data.token_type);
         toast.success("Logged in successfully!");
-        navigate("/dashboard");
+        if(localStorage.getItem("access_token")){
+          if(localStorage.getItem("role")==="employeer"){
+            navigate("/employer/dashboard");
+          }else{
+            navigate("/candidate/dashboard");
+          }
+        }
       } catch (error: any) {
         console.log(error);
         const errorMessage =

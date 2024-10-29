@@ -1,12 +1,12 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import InputField from "../../../../components/InputField/InputField";
-import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { resetPasswordSchema, validateForm } from "../../../../Schema/Schemas";
 import { resetPassword } from "../../../../API/apis";
 import Loader from "../../../../components/Loader/Loader";
+import InputField from "../../../../components/InputField/InputField";
+import Button from "../../../../components/Button/Button";
 
 const ResetPassword = () => {
   const [formData, setFormData] = useState({

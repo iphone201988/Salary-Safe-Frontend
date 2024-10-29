@@ -1,31 +1,32 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomePage from "../pages/Home/Home";
-import AboutPage from "../pages/About/About";
-import ProductPage from "../pages/Product/Product";
-import ContactPage from "../pages/Contact/Contact";
-import CompanySignUp from "../pages/Auth/Company/SignUp/Signup";
-import EmployeeSignUp from "../pages/Employee/Auth/Employee/SignUp/SignUp";
-import AuthLayout from "../pages/Auth/layout";
-import CompanyLogin from "../pages/Auth/Company/Login/Login";
-import EmployeeLogin from "../pages/Employee/Auth/Employee/Login/Login";
+import HomePage from "../pages/Public-Page/Home/Home";
+import AboutPage from "../pages/Public-Page/About/About";
+import ContactPage from "../pages/Public-Page/Contact/Contact";
+import CompanySignUp from "../pages/Employer/Auth/SignUp/Signup";
+import EmployeeSignUp from "../pages/Candidate/Auth/Employee/SignUp/SignUp";
+import AuthLayout from "../pages/Employer/Auth/layout";
+import CompanyLogin from "../pages/Employer/Auth/Login/Login";
+import EmployeeLogin from "../pages/Candidate/Auth/Employee/Login/Login";
 import ProtectedAuthRoute from "./ProtectedAuthRoute";
 // import JobPage from "../pages/Job/JobPage";
 // import JobForm from "../pages/Job/JobForm";
 // import ProtectedCompanyRoute from "./ProtectedCompanyRoute";
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
-import FeaturesPage from "../pages/Features/FeaturesPage";
-import RequestDemoPage from "../pages/RequestDemo/RequestDemoPage";
-import Dashboard from "../pages/Dashboard/Dashboard";
+import FeaturesPage from "../pages/Public-Page/Features/FeaturesPage";
+import RequestDemoPage from "../pages/Public-Page/RequestDemo/RequestDemoPage";
+import Dashboard from "../pages/Employer/Dashboard/Dashboard";
 import DashboardSummary from "../components/Dashboard/DashboardSummary";
 import DashboardCharts from "../components/Dashboard/DashboardCharts";
 import DashboardSettings from "../components/Dashboard/DashboardSettings";
-import ForgotPassword from "../pages/Auth/Company/ForgotPassword/ForgotPassword";
-import OTPVerify from "../pages/Auth/Company/VerifyOtp/VerifyOtp";
-import ResetPassword from "../pages/Auth/Company/ResetPassword/ResetPassword";
+import ForgotPassword from "../pages/Employer/Auth/ForgotPassword/ForgotPassword";
+import OTPVerify from "../pages/Employer/Auth/VerifyOtp/VerifyOtp";
+import ResetPassword from "../pages/Employer/Auth/ResetPassword/ResetPassword";
 // import ProtesctedResetRoute from "./ProtesctedResetRoute";
 import ProtesctedOtpRoute from "./ProtesctedOtpRoute";
-import AuthCallback from "../pages/Auth/Company/Login/AuthCallback";
+import AuthCallback from "../pages/Employer/Auth/Login/AuthCallback";
 import JobForm from "../pages/Job/JobForm";
+import ProtectedCompanyRoute from "./ProtectedCompanyRoute";
+import ProtectedCandidateRoute from "./ProtectedCandidateRoute";
 
 const router = createBrowserRouter([
   {
@@ -49,10 +50,6 @@ const router = createBrowserRouter([
     element: <RequestDemoPage />,
   },
   {
-    path: "product",
-    element: <ProductPage />,
-  },
-  {
     path: "contact",
     element: <ContactPage />,
   },
@@ -64,7 +61,7 @@ const router = createBrowserRouter([
   // },
   {
     path: "create-job",
-    element: <JobForm />
+    element: <JobForm />,
   },
   {
     path: "/",
@@ -98,35 +95,53 @@ const router = createBrowserRouter([
         path: "otp-verify",
         element: <ProtesctedOtpRoute element={<OTPVerify />} />,
       },
-      // {
-      //   path: "reset-password",
-      //   element: <ProtesctedResetRoute element={<ResetPassword />} />,
-      // },
       {
         path: "reset-password",
-        element: <ResetPassword/>,
+        element: <ResetPassword />,
       },
     ],
   },
   {
-    path: "/dashboard",
+    path: "/employeer/dashboard/",
     element: <Dashboard />,
     children: [
       {
         path: "",
-        element: <DashboardSummary />,
+        element: <ProtectedCompanyRoute element={<DashboardSummary />} />,
       },
       {
         path: "reports",
-        element: <DashboardCharts />,
+        element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
       },
       {
         path: "analytics",
-        element: <DashboardCharts />,
+        element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
       },
       {
         path: "settings",
-        element: <DashboardSettings />,
+        element: <ProtectedCompanyRoute element={<DashboardSettings />} />,
+      },
+    ],
+  },
+  {
+    path: "/candidate/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "",
+        element: <ProtectedCandidateRoute element={<DashboardSummary />} />,
+      },
+      {
+        path: "reports",
+        element: <ProtectedCandidateRoute element={<DashboardCharts />} />,
+      },
+      {
+        path: "analytics",
+        element: <ProtectedCandidateRoute element={<DashboardCharts />} />,
+      },
+      {
+        path: "settings",
+        element: <ProtectedCandidateRoute element={<DashboardSettings />} />,
       },
     ],
   },

@@ -21,10 +21,13 @@ const DashboardSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Data | null>(null);
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login-company");
+    if(role){
+      navigate(role === "employeer"? "/login-company" : "/login-employee");
+    }
   };
 
   const toggleSidebar = () => {
@@ -57,7 +60,7 @@ const DashboardSidebar: React.FC = () => {
       <button
         className="fixed top-4 left-4 z-50 p-2 border border-gray-300 rounded text-white md:hidden"
         onClick={toggleSidebar}
-        >
+      >
         <FaBars className="text-black right-2" />
       </button>
 
@@ -73,7 +76,7 @@ const DashboardSidebar: React.FC = () => {
             <h1 className="text-3xl font-bold text-[#F5EDEF]">Salary Safe</h1>
           </div>
           <Link
-            to="/dashboard"
+            to={`/${role}/dashboard`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaChartPie />
@@ -81,7 +84,7 @@ const DashboardSidebar: React.FC = () => {
           </Link>
 
           <Link
-            to="/dashboard/reports"
+            to={`/${role}/dashboard/reports`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaFileAlt />
@@ -89,7 +92,7 @@ const DashboardSidebar: React.FC = () => {
           </Link>
 
           <Link
-            to="/dashboard/analytics"
+            to={`/${role}/dashboard/analytics`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaChartLine />
@@ -97,7 +100,7 @@ const DashboardSidebar: React.FC = () => {
           </Link>
 
           <Link
-            to="/dashboard/settings"
+            to={`/${role}/dashboard/settings`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaCog />

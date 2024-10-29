@@ -1,13 +1,13 @@
 // import { useEffect, useState } from "react";
 // import {useNavigate, } from "react-router-dom";
 // import NavBar from "../../components/Navbar/Navbar";
-import Header from "../../components/Home/Header";
-import HeroSection from "../../components/Home/HeroSection";
-import ProblemStatement from "../../components/Home/ProblemStatement";
-import HowItWorks from "../../components/Home/HowItWorks";
-import Testimonials from "../../components/Home/Testimonials";
-import CallToAction from "../../components/Home/CallToAction";
-import Footer from "../../components/Home/Footer";
+import Header from "../../../components/Home/Header";
+import HeroSection from "../../../components/Home/HeroSection";
+import ProblemStatement from "../../../components/Home/ProblemStatement";
+import HowItWorks from "../../../components/Home/HowItWorks";
+import Testimonials from "../../../components/Home/Testimonials";
+import CallToAction from "../../../components/Home/CallToAction";
+import Footer from "../../../components/Home/Footer";
 
 const HomePage = () => {
   // const [isLoggedIn, setIsLoggedIn] = useState(false);

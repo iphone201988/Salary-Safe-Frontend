@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Footer from "../../components/Home/Footer";
-import Header from "../../components/Home/Header";
+import Footer from "../../../components/Home/Footer";
+import Header from "../../../components/Home/Header";
 import { useState } from "react";
 // import NavBar from "../../components/Navbar/Navbar";
 

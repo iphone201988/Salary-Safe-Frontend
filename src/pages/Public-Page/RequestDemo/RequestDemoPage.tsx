@@ -1,10 +1,10 @@
 import React, { FormEvent, useState } from 'react';
-import Header from '../../components/Home/Header';
-import Footer from '../../components/Home/Footer';
+import Header from '../../../components/Home/Header';
+import Footer from '../../../components/Home/Footer';
 import axios from 'axios';
-import { requestADemo } from '../../API/apis';
+import { requestADemo } from '../../../API/apis';
 import { toast } from 'react-toastify';
-import Loader from '../../components/Loader/Loader';
+import Loader from '../../../components/Loader/Loader';
 
 const RequestDemoPage: React.FC = () => {
   const [loading, setLoading] = useState(false);

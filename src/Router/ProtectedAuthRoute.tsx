@@ -3,12 +3,15 @@ import { isAuthenticated } from "../utils/auth";
 
 const ProtectedAuthRoute = ({ element }: { element: JSX.Element }) => {
   if (isAuthenticated()) {
-    console.log("jksdahgjkh")
-    // If user is logged in, redirect them to the homepage (or dashboard)
-    return <Navigate to="/dashboard" replace />;
+    console.log("jksdahgjkh");
+    const role = localStorage.getItem("role");
+    if (role === "candidate") {
+      return <Navigate to="/candidate/dashboard" replace />;
+    } else {
+      return <Navigate to="/employeer/dashboard" replace />;
+    }
   }
 
-  // Otherwise, render the element (login/register page)
   return element;
 };
 

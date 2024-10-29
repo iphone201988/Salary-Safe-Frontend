@@ -2,19 +2,17 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedCompanyRouteProps {
-  element: JSX.Element; // The component to render if the user is authorized
-  allowedRoles: string[]; // An array of allowed roles
+  element: JSX.Element; 
 }
 
-const ProtectedCompanyRoute: React.FC<ProtectedCompanyRouteProps> = ({ element, allowedRoles }) => {
-  const role = localStorage.getItem('role'); // Get the user role from localStorage
-
-  // Check if the user's role is one of the allowed roles
-  if (!allowedRoles.includes(role || '')) {
-    return <Navigate to="/" replace />; // Redirect to home if unauthorized
+const ProtectedCompanyRoute: React.FC<ProtectedCompanyRouteProps> = ({ element }) => {
+  const role = localStorage.getItem('role');
+  const access_token = localStorage.getItem('access_token');
+  if (!access_token || role !== "employeer") {
+    return <Navigate to="/login-company" replace />;
   }
 
-  return element; // Render the protected component
+  return element;
 };
 
 export default ProtectedCompanyRoute;
