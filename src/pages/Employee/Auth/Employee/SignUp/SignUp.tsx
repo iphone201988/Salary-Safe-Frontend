@@ -3,11 +3,11 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import InputField from "../../../../components/InputField/InputField";
+import InputField from "../../../../../components/InputField/InputField";
 import {
   employeeRegistrationSchema,
   validateForm,
-} from "../../../../Schema/Schemas";
+} from "../../../../../Schema/Schemas";
 
 interface SignUpFormData {
   companyName: string;

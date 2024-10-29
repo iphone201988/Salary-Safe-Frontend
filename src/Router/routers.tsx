@@ -4,10 +4,10 @@ import AboutPage from "../pages/About/About";
 import ProductPage from "../pages/Product/Product";
 import ContactPage from "../pages/Contact/Contact";
 import CompanySignUp from "../pages/Auth/Company/SignUp/Signup";
-import EmployeeSignUp from "../pages/Auth/Employee/SignUp/SignUp";
+import EmployeeSignUp from "../pages/Employee/Auth/Employee/SignUp/SignUp";
 import AuthLayout from "../pages/Auth/layout";
 import CompanyLogin from "../pages/Auth/Company/Login/Login";
-import EmployeeLogin from "../pages/Auth/Employee/Login/Login";
+import EmployeeLogin from "../pages/Employee/Auth/Employee/Login/Login";
 import ProtectedAuthRoute from "./ProtectedAuthRoute";
 // import JobPage from "../pages/Job/JobPage";
 // import JobForm from "../pages/Job/JobForm";
@@ -25,6 +25,7 @@ import ResetPassword from "../pages/Auth/Company/ResetPassword/ResetPassword";
 // import ProtesctedResetRoute from "./ProtesctedResetRoute";
 import ProtesctedOtpRoute from "./ProtesctedOtpRoute";
 import AuthCallback from "../pages/Auth/Company/Login/AuthCallback";
+import JobForm from "../pages/Job/JobForm";
 
 const router = createBrowserRouter([
   {
@@ -61,12 +62,10 @@ const router = createBrowserRouter([
   //     <ProtectedCompanyRoute element={<JobPage />} allowedRoles={["company"]} />
   //   ),
   // },
-  // {
-  //   path: "create-job",
-  //   element: (
-  //     <ProtectedCompanyRoute element={<JobForm />} allowedRoles={["company"]} />
-  //   ),
-  // },
+  {
+    path: "create-job",
+    element: <JobForm />
+  },
   {
     path: "/",
     element: <AuthLayout />,

@@ -1,18 +1,18 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import InputField from "../../../../components/InputField/InputField";
+import InputField from "../../../../../components/InputField/InputField";
 import {
   companyLoginSchema,
   employeeLoginSchema,
   validateForm,
-} from "../../../../Schema/Schemas";
-import Button from "../../../../components/Button/Button";
+} from "../../../../../Schema/Schemas";
+import Button from "../../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { userLogin, userSocialLogin } from "../../../../API/apis";
+import { userLogin, userSocialLogin } from "../../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, googleauthProvider } from "../../../../../firebase";
+import { auth, googleauthProvider } from "../../../../../../firebase";
 import { signInWithPopup } from "firebase/auth";
-import Loader from "../../../../components/Loader/Loader";
+import Loader from "../../../../../components/Loader/Loader";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
