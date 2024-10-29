@@ -4,10 +4,12 @@ import { Link,useNavigate } from "react-router-dom";
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isRole, setRole] = useState<string|null>("");
   const navigate = useNavigate();
   useEffect(() => {
     // Check if the user is logged in by checking for an access token in localStorage
     const token = localStorage.getItem("access_token");
+    setRole(localStorage.getItem("role"));
     if (token) {
       setIsLoggedIn(true);
     } else {
@@ -110,7 +112,7 @@ const Header: React.FC = () => {
             <>
               <li>
                 <Link
-                  to="/dashboard"
+                  to={`/${isRole}/dashboard`}
                   className="block sm:inline-block p-4 sm:p-0 hover:text-[#019529]"
                 >
                   Dashboard

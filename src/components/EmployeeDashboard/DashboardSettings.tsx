@@ -4,9 +4,13 @@ import { companyDetails } from "../../API/apis";
 
 interface Data {
   email: string;
-  company_name: string;
+  phone: string;
   full_name: string;
-  notification_prefrence: boolean;
+  notification_preference: boolean;
+  qualifications?: string;
+  experience?: string;
+  location?: string;
+  salaryExpectation?: string; // New confidential field
 }
 
 const DashboardSettings: React.FC = () => {
@@ -15,7 +19,11 @@ const DashboardSettings: React.FC = () => {
     fullName: "",
     email: "",
     notifications: false,
-    company_name: "",
+    phone: "",
+    qualifications: "",
+    experience: "",
+    location: "",
+    salaryExpectation: "", // New confidential field
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,8 +60,12 @@ const DashboardSettings: React.FC = () => {
       setFormData({
         fullName: data.full_name,
         email: data.email,
-        notifications: data.notification_prefrence,
-        company_name: data.company_name,
+        notifications: data.notification_preference,
+        phone: data.phone,
+        qualifications: data.qualifications || "",
+        experience: data.experience || "",
+        location: data.location || "",
+        salaryExpectation: data.salaryExpectation || "", // Initialize confidential field
       });
     }
   }, [data]);
@@ -61,6 +73,7 @@ const DashboardSettings: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Ensure salaryExpectation is kept confidential in the backend
       const response = await axios.patch<Data>(companyDetails, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -79,23 +92,13 @@ const DashboardSettings: React.FC = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
-      <h3 className="text-4xl font-bold my-4 text-center">Company Profile</h3>
+      <h3 className="text-4xl font-bold my-4 text-center">Candidate Profile</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-600">Company Name</label>
-          <input
-            type="text"
-            name="company_name"
-            value={formData.company_name}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-          />
-        </div>
         <div>
           <label className="block text-gray-600">Full Name</label>
           <input
             type="text"
-            name="full_name"
+            name="fullName"
             value={formData.fullName}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-md"
@@ -109,6 +112,58 @@ const DashboardSettings: React.FC = () => {
             value={formData.email}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-md"
+            disabled
+          />
+        </div>
+        <div>
+          <label className="block text-gray-600">Phone</label>
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-600">Qualifications</label>
+          <input
+            type="text"
+            name="qualifications"
+            value={formData.qualifications}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-600">Experience</label>
+          <input
+            type="text"
+            name="experience"
+            value={formData.experience}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-600">Location</label>
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-600">Salary Expectation (Confidential)</label>
+          <input
+            type="text"
+            name="salaryExpectation"
+            value={formData.salaryExpectation}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-md"
+            placeholder="Enter expected salary"
           />
         </div>
         <div className="flex items-center space-x-2">

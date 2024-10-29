@@ -21,6 +21,7 @@ const DashboardSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Data | null>(null);
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
 
   const handleLogout = () => {
     localStorage.clear();
@@ -73,14 +74,14 @@ const DashboardSidebar: React.FC = () => {
             <h1 className="text-3xl font-bold text-[#F5EDEF]">Salary Safe</h1>
           </div>
           <Link
-            to="/dashboard"
+            to={`/${role}/dashboard`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaChartPie />
             <span>Overview</span>
           </Link>
           <Link
-            to="/dashboard/settings"
+            to={`/${role}/dashboard/settings`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaCog />

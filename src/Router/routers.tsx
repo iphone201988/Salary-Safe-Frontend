@@ -15,9 +15,12 @@ import NotFoundPage from "../pages/NotFound/NotFoundPage";
 import FeaturesPage from "../pages/Public-Page/Features/FeaturesPage";
 import RequestDemoPage from "../pages/Public-Page/RequestDemo/RequestDemoPage";
 import Dashboard from "../pages/Employer/Dashboard/Dashboard";
+import CandidateDashboard from "../pages/Candidate/Dashboard/Dashboard";
 import DashboardSummary from "../components/Dashboard/DashboardSummary";
 import DashboardCharts from "../components/Dashboard/DashboardCharts";
 import DashboardSettings from "../components/Dashboard/DashboardSettings";
+import EmployeeDashboardSummary from "../components/EmployeeDashboard/DashboardSummary";
+import EmployeeDashboardSettings from "../components/EmployeeDashboard/DashboardSettings";
 import ForgotPassword from "../pages/Employer/Auth/ForgotPassword/ForgotPassword";
 import OTPVerify from "../pages/Employer/Auth/VerifyOtp/VerifyOtp";
 import ResetPassword from "../pages/Employer/Auth/ResetPassword/ResetPassword";
@@ -27,6 +30,8 @@ import AuthCallback from "../pages/Employer/Auth/Login/AuthCallback";
 import JobForm from "../pages/Job/JobForm";
 import ProtectedCompanyRoute from "./ProtectedCompanyRoute";
 import ProtectedCandidateRoute from "./ProtectedCandidateRoute";
+import JobSalaryAdjustments from "../pages/Candidate/Jobs/JobSalaryAdjustments";
+import SupportFeedback from "../pages/Public-Page/Feedback/SupportFeedback";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +67,14 @@ const router = createBrowserRouter([
   {
     path: "create-job",
     element: <JobForm />,
+  },
+  {
+    path: "job-list",
+    element: <JobSalaryAdjustments />,
+  },
+  {
+    path: "feedback",
+    element: <SupportFeedback />,
   },
   {
     path: "/",
@@ -125,23 +138,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/candidate/dashboard",
-    element: <Dashboard />,
+    element: <CandidateDashboard />,
     children: [
       {
         path: "",
-        element: <ProtectedCandidateRoute element={<DashboardSummary />} />,
-      },
-      {
-        path: "reports",
-        element: <ProtectedCandidateRoute element={<DashboardCharts />} />,
-      },
-      {
-        path: "analytics",
-        element: <ProtectedCandidateRoute element={<DashboardCharts />} />,
+        element: <ProtectedCandidateRoute element={<EmployeeDashboardSummary />} />,
       },
       {
         path: "settings",
-        element: <ProtectedCandidateRoute element={<DashboardSettings />} />,
+        element: <ProtectedCandidateRoute element={<EmployeeDashboardSettings />} />,
       },
     ],
   },
