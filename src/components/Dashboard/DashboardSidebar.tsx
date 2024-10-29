@@ -8,6 +8,11 @@ import {
   FaLock,
   FaUserCircle,
   FaBars,
+  FaBriefcase,
+  FaUpload,
+  FaUsers,
+  FaChartBar,
+  FaInfoCircle
 } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import axios from "axios";
@@ -25,8 +30,8 @@ const DashboardSidebar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    if(role){
-      navigate(role === "employeer"? "/login-company" : "/login-employee");
+    if (role) {
+      navigate(role === "employeer" ? "/login-company" : "/login-employee");
     }
   };
 
@@ -82,6 +87,52 @@ const DashboardSidebar: React.FC = () => {
             <FaChartPie />
             <span>Overview</span>
           </Link>
+
+          {role === "employeer" && (
+            <Link
+              to={`/${role}/dashboard/job-listing`}
+              className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
+            >
+              <FaBriefcase />
+              <span>Job Listing</span>
+            </Link>
+          )}
+          {role === "employeer" && (
+            <Link
+              to={`/${role}/dashboard/internal-uploads`}
+              className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
+            >
+              <FaUpload />
+              <span>Salary Upload</span>
+            </Link>
+          )}
+          {role === "employeer" && (
+            <Link
+              to={`/${role}/dashboard/candidate-pool`}
+              className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
+            >
+              <FaUsers />
+              <span>Candidate Pool</span>
+            </Link>
+          )}
+          {role === "employeer" && (
+            <Link
+              to={`/${role}/dashboard/salary-analysis`}
+              className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
+            >
+              <FaChartBar />
+              <span>Salary Analysis</span>
+            </Link>
+          )}
+          {role === "employeer" && (
+            <Link
+              to={`/${role}/dashboard/reporting-insights-hub`}
+              className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
+            >
+              <FaInfoCircle />
+              <span>Reporting InsightsHub</span>
+            </Link>
+          )}
 
           <Link
             to={`/${role}/dashboard/reports`}

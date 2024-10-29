@@ -32,6 +32,11 @@ import ProtectedCompanyRoute from "./ProtectedCompanyRoute";
 import ProtectedCandidateRoute from "./ProtectedCandidateRoute";
 import JobSalaryAdjustments from "../pages/Candidate/Jobs/JobSalaryAdjustments";
 import SupportFeedback from "../pages/Public-Page/Feedback/SupportFeedback";
+import JobListings from "../pages/Employer/JobListing/Joblisting";
+import InternalSalaryUpload from "../pages/Employer/Internal-upload/InternalUpload";
+import CandidatePoolDashboard from "../pages/Employer/CandidatePool/CandidatePool";
+import SalaryAnalysis from "../pages/Employer/Salary-Analysis/SalaryAnalysis";
+import ReportingInsightsHub from "../pages/Employer/Reporting-InsightsHub/ReportingInsightsHub";
 
 const router = createBrowserRouter([
   {
@@ -127,6 +132,26 @@ const router = createBrowserRouter([
         element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
       },
       {
+        path: "job-listing",
+        element: <ProtectedCompanyRoute element={<JobListings />} />,
+      },
+      {
+        path: "internal-uploads",
+        element: <ProtectedCompanyRoute element={<InternalSalaryUpload />} />,
+      },
+      {
+        path: "candidate-pool",
+        element: <ProtectedCompanyRoute element={<CandidatePoolDashboard />} />,
+      },
+      {
+        path: "salary-analysis",
+        element: <ProtectedCompanyRoute element={<SalaryAnalysis />} />,
+      },
+      {
+        path: "reporting-insights-hub",
+        element: <ProtectedCompanyRoute element={<ReportingInsightsHub />} />,
+      },
+      {
         path: "analytics",
         element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
       },
@@ -142,11 +167,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <ProtectedCandidateRoute element={<EmployeeDashboardSummary />} />,
+        element: (
+          <ProtectedCandidateRoute element={<EmployeeDashboardSummary />} />
+        ),
       },
       {
         path: "settings",
-        element: <ProtectedCandidateRoute element={<EmployeeDashboardSettings />} />,
+        element: (
+          <ProtectedCandidateRoute element={<EmployeeDashboardSettings />} />
+        ),
       },
     ],
   },
