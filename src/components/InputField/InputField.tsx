@@ -1,7 +1,7 @@
 interface InputFieldProps {
   label: string;
   name: string;
-  value: string;
+  value?: string;
   onChange: any;
   error?: string | undefined;
   type?: string;

@@ -9,18 +9,30 @@ import {
 } from "../../../../../Schema/Schemas";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleauthProvider } from "../../../../../../firebase";
-import { getcandidatesProfile, userRegister, userSocialLogin } from "../../../../../API/apis";
+import {
+  getcandidatesProfile,
+  userRegister,
+  userSocialLogin,
+} from "../../../../../API/apis";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../../../../Redux/reducer/userData";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import Loader from "../../../../../components/Loader/Loader";
-import Select from 'react-select';
+import Select from "react-select";
 
 interface SignUpFormData {
   fullName: string;
   email: string;
   phone: string;
   password: string;
+  location: string;
+  jobTitle: string;
+  linkedIn: string;
+  positionsOfInterest: string;
+  experience: string;
+  educationLevel: string;
+  inviteEmployer: boolean;
+  
 }
 
 interface SignUpFormErrors {
@@ -28,6 +40,7 @@ interface SignUpFormErrors {
   email?: string;
   phone?: string;
   password?: string;
+  // inviteEmployer?: string;
 }
 
 const CandidateSignUp: React.FC = () => {
@@ -36,13 +49,43 @@ const CandidateSignUp: React.FC = () => {
     email: "",
     phone: "",
     password: "",
+    location: "",
+    jobTitle: "",
+    linkedIn: "",
+    positionsOfInterest: "",
+    experience: "",
+    educationLevel: "",
+    // keySkills: [] as string[],
+    // salaryRange: "",
+    // salaryType: "",
+    // performanceComp: false,
+    // willingToNegotiate: false,
+    // minSalary: "",
+    // benefits: [] as string[],
+    // viewSalaryPermission: "",
+    // hideProfileFromEmployer: false,
+    // industriesOfInterest: [] as string[],
+    // jobTypePreferences: [] as string[],
+    // activelyLooking: false,
+    // careerGoals: "",
+    // devAreas: [] as string[],
+    // salaryAdjustments: "",
+    // salaryInsightsInterest: false,
+    // resume: null as File | null,
+    // coverLetter: null as File | null,
+    inviteEmployer: false,
+    // employerDetails: { name: "", contactPerson: "", contactEmail: "", message: "" },
+    // notificationPreferences: [] as string[],
+    // jobAlertsFrequency: "",
+    // referralSource: "",
+    // referralCode: "",
+    // agreedToTerms: false,
   });
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState<SignUpFormErrors>({});
   const navigate = useNavigate();
-
 
   const GoggleHandler = async () => {
     try {
@@ -55,7 +98,7 @@ const CandidateSignUp: React.FC = () => {
         photo: result.user?.photoURL,
         provider: result.user?.providerData[0].providerId,
         provider_id: result.user?.uid,
-        role: "candidate"
+        role: "candidate",
       };
       try {
         const response = await axios.post(userSocialLogin, data);
@@ -65,16 +108,20 @@ const CandidateSignUp: React.FC = () => {
           },
         });
         console.log("social user response", response);
-        dispatch(setUserData({
-          name: res.data?.full_name,
-          email: res.data?.email,
-          profile: res.data?.profile,
-          role: res.data?.role,
-          industry: res.data?.industry,
-          location: res.data?.location,
-          size: res.data?.size,
-        }));
-        dispatch(login({token: response?.data?.access_token ,role:"employeer"}));
+        dispatch(
+          setUserData({
+            name: res.data?.full_name,
+            email: res.data?.email,
+            profile: res.data?.profile,
+            role: res.data?.role,
+            industry: res.data?.industry,
+            location: res.data?.location,
+            size: res.data?.size,
+          })
+        );
+        dispatch(
+          login({ token: response?.data?.access_token, role: "employeer" })
+        );
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("token_type", response.data.token_type);
         toast.success("Logged in successfully!");
@@ -89,7 +136,7 @@ const CandidateSignUp: React.FC = () => {
       }
     } catch (error: any) {
       console.log(error);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -100,10 +147,10 @@ const CandidateSignUp: React.FC = () => {
   };
 
   const handleSubmit = async (e: FormEvent) => {
-    console.log("hello")
-    setLoading(true)
+    console.log("hello");
+    setLoading(true);
     e.preventDefault();
-    
+
     const currentErrors: any = await validateForm(
       employeeRegistrationSchema,
       formData
@@ -133,18 +180,22 @@ const CandidateSignUp: React.FC = () => {
     }
   };
   const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
   ];
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       {loading && <Loader />}
       <div className="w-full max-w-lg p-8 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Candidate Sign Up</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">
+          Candidate Sign Up
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-        <h2 className="text-[#000000] text-lg font-bold">Personal Information</h2>
+          <h2 className="text-[#000000] text-lg font-bold">
+            Personal Information
+          </h2>
           <InputField
             label="Full Name"
             name="fullName"
@@ -210,8 +261,10 @@ const CandidateSignUp: React.FC = () => {
             onChange={handleChange}
             error={errors.phone}
           />
-         
-            <h2 className="text-[#000000] text-lg font-bold">Profile Creation and Setup</h2>
+
+          <h2 className="text-[#000000] text-lg font-bold">
+            Profile Creation and Setup
+          </h2>
           <InputField
             label="Job Titles/Positions of Interest"
             name="postionInterest"
@@ -220,117 +273,291 @@ const CandidateSignUp: React.FC = () => {
             onChange={handleChange}
             error={errors.phone}
           />
-           <div className="w-full flex flex-col space-y-1">
-         <label  className="text-left">Total Years of Experience:</label>
-              <select name="experience" 
-              // onChange={handleChange} 
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Total Years of Experience:</label>
+            <select
+              name="experience"
+              // onChange={handleChange}
               // value={formData.experience}
-               className="border p-2 w-full rounded">
-                <option value="">Select Experience</option>
-                <option value="1-3">1-3 Years</option>
-                <option value="4-6">4-6 Years</option>
-                <option value="7+">7+ Years</option>
-              </select>
-              </div>
-           <div className="w-full flex flex-col space-y-1">
-           <label className="text-left">Education Level:</label>
-              <select name="educationLevel"
-              //  onChange={handleChange} 
+              className="border p-2 w-full rounded"
+            >
+              <option value="">Select Experience</option>
+              <option value="1-3">1-3 Years</option>
+              <option value="4-6">4-6 Years</option>
+              <option value="7+">7+ Years</option>
+            </select>
+          </div>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Education Level:</label>
+            <select
+              name="educationLevel"
+              //  onChange={handleChange}
               //  value={formData.educationLevel}
-                className="border p-2 w-full rounded">
-                <option value="">Select Education Level</option>
-                <option value="High School">High School</option>
-                <option value="Bachelor's">Bachelor's</option>
-                <option value="Master's">Master's</option>
-                <option value="PhD">PhD</option>
-              </select>
-              </div>
-              <h2 className="text-[#000000] text-lg font-bold">Salary Expectations</h2>
-              <InputField 
-              label="General Salary Range" 
-              name="salaryRange" 
-              value={formData.phone}
+              className="border p-2 w-full rounded"
+            >
+              <option value="">Select Education Level</option>
+              <option value="High School">High School</option>
+              <option value="Bachelor's">Bachelor's</option>
+              <option value="Master's">Master's</option>
+              <option value="PhD">PhD</option>
+            </select>
+          </div>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Skill:</label>
+            <Select options={options} isMulti />
+          </div>
+          <h2 className="text-[#000000] text-lg font-bold">
+            Salary Expectations
+          </h2>
+          <InputField
+            label="General Salary Range"
+            name="salaryRange"
+            value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
-              />
-               <div className="w-full flex flex-col space-y-1">
-           <label className="text-left">Preferred Salary Type:</label>
-           <select name="salaryType" 
-          //  onChange={handleChange} 
-          //  value={formData.salaryType}
-            className="border p-2 w-full rounded">
-                <option value="">Select Type</option>
-                <option value="Hourly">Hourly</option>
-                <option value="Monthly">Monthly</option>
-              </select>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" name="performanceComp" 
-                // checked={formData.performanceComp}
-                //  onChange={handleChange}
-                  />
-                <label>Open to performance-based compensation?</label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input
-                 type="checkbox"
-                  name="willingToNegotiate" 
-                  // checked={formData.willingToNegotiate} 
-                  // onChange={handleChange} 
-                  />
-                <label>Willing to Negotiate?</label>
-              </div>
-              <InputField 
-              label="Minimum Acceptable Salary (Optional)" 
-              type="number" 
-              name="minSalary" 
-              value={formData.phone} 
+          />
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Preferred Salary Type:</label>
+            <select
+              name="salaryType"
+              //  onChange={handleChange}
+              //  value={formData.salaryType}
+              className="border p-2 w-full rounded"
+            >
+              <option value="">Select Type</option>
+              <option value="Hourly">Hourly</option>
+              <option value="Monthly">Monthly</option>
+            </select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="performanceComp"
+              // checked={formData.performanceComp}
+              //  onChange={handleChange}
+            />
+            <label>Open to performance-based compensation?</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="willingToNegotiate"
+              // checked={formData.willingToNegotiate}
+              // onChange={handleChange}
+            />
+            <label>Willing to Negotiate?</label>
+          </div>
+          <InputField
+            label="Minimum Acceptable Salary (Optional)"
+            type="number"
+            name="minSalary"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Preferred Benefits:</label>
+            <Select isMulti options={options} />
+          </div>
+          <h2 className="text-[#000000] text-lg font-bold">Privacy Controls</h2>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Preferred Salary Type:</label>
+            <select
+              name="viewSalaryPermission"
+              //  onChange={handleChange}
+              //  value={formData.viewSalaryPermission}
+              className="border p-2 w-full rounded"
+            >
+              <option value="">Select Permission</option>
+              <option value="Everyone">Everyone</option>
+              <option value="Employers Only">Employers Only</option>
+              <option value="Private">Private</option>
+            </select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="hideProfileFromEmployer"
+              //  checked={formData.hideProfileFromEmployer}
               onChange={handleChange}
-               />
-        <div className="w-full flex flex-col space-y-1">
-           <label className="text-left">Preferred Benefits:</label>
-              <Select
-              isMulti
-              options={options}
+            />
+            <label>Hide my profile from current employer(s)</label>
+          </div>
+          <h2 className="text-[#000000] text-lg font-bold">
+            Job Search Preferences
+          </h2>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Industries of Interest:</label>
+            <Select options={options} isMulti />
+          </div>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Industries of Interest:</label>
+            <Select options={options} isMulti />
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="activelyLooking"
+              // checked={formData.activelyLooking}
+              onChange={handleChange}
+            />
+            <label>Are you actively looking for a new job?</label>
+          </div>
+          <InputField
+            label="Career Goals"
+            name="careerGoals"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Professional Development Areas:</label>
+            <Select options={options} isMulti />
+          </div>
+          <h2 className="text-[#000000] text-lg font-bold">
+            Salary Insights & Customization
+          </h2>
+          <InputField
+            label="Role-Specific Salary Adjustments"
+            name="salaryAdjustments"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="salaryInsightsInterest"
+              // checked={formData.salaryInsightsInterest}
+              onChange={handleChange}
+            />
+            <label>Interested in salary benchmarks and market insights?</label>
+          </div>
+          <h2 className="text-[#000000] text-lg font-bold">
+            Additional Details (Optional)
+          </h2>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Upload Resume:</label>
+            <input
+              type="file"
+              name="resume"
+              // onChange={handleFileChange}
+              className="border p-2 w-full rounded"
+            />
+          </div>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Upload Cover Letter (Optional):</label>
+            <input
+              type="file"
+              name="coverLetter"
+              // onChange={handleFileChange}
+              className="border p-2 w-full rounded"
+            />
+            <h2 className="text-[#000000] text-lg font-bold">
+              Employer Invitation (Optional)
+            </h2>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="inviteEmployer"
+                checked={formData.inviteEmployer}
+                onChange={handleChange}
               />
-              </div>
-              <h2 className="text-[#000000] text-lg font-bold">Privacy Controls</h2>
-              <div className="w-full flex flex-col space-y-1">
-           <label className="text-left">Preferred Salary Type:</label>
-           <select name="viewSalaryPermission" 
-          //  onChange={handleChange} 
-          //  value={formData.viewSalaryPermission}
-            className="border p-2 w-full rounded">
-                <option value="">Select Permission</option>
-                <option value="Everyone">Everyone</option>
-                <option value="Employers Only">Employers Only</option>
-                <option value="Private">Private</option>
-              </select>
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" name="hideProfileFromEmployer"
-                //  checked={formData.hideProfileFromEmployer}
-                 onChange={handleChange} 
-                 />
-                <label>Hide my profile from current employer(s)</label>
-              </div>
-              <h2 className="text-[#000000] text-lg font-bold">Job Search Preferences</h2>
-              <div className="w-full flex flex-col space-y-1">
-           <label className="text-left">Industries of Interest:</label>
-              <Select
-              options={options}
-              isMulti
+              <label>Invite an employer to participate in Salary-Safe?</label>
+            </div>
+          </div>
+          {formData.inviteEmployer && (
+            <>
+              <InputField
+                label="Employer Name"
+                name="employerDetails.name"
+                // value={formData.employerDetails.name}
+                onChange={handleChange}
               />
-              </div>
-              <div className="w-full flex flex-col space-y-1">
-           <label className="text-left">Industries of Interest:</label>
-              <Select
-              options={options}
-              isMulti
-
+              <InputField
+                label="Contact Person’s Name"
+                name="employerDetails.contactPerson"
+                // value={formData.employerDetails.contactPerson}
+                onChange={handleChange}
               />
-            
-              </div>
+              <InputField
+                label="Contact Email"
+                type="email"
+                name="employerDetails.contactEmail"
+                // value={formData.employerDetails.contactEmail}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Message to Employer (optional)"
+                name="employerDetails.message"
+                // value={formData.employerDetails.message}
+                onChange={handleChange}
+              />
+            </>
+          )}
+          <h2 className="text-[#000000] text-lg font-bold">
+            Notifications & Communication Preferences
+          </h2>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Receive notifications via:</label>
+            <Select options={options} isMulti />
+          </div>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">Job Alerts Frequency:</label>
+            <select
+              name="jobAlertsFrequency"
+              // onChange={handleChange}
+              // value={formData.jobAlertsFrequency}
+              className="border p-2 w-full rounded"
+            >
+              <option value="">Select Frequency</option>
+              <option value="Daily">Daily</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Monthly">Monthly</option>
+            </select>
+          </div>
+          <h2 className="text-[#000000] text-lg font-bold">
+            Referral Information (Optional)
+          </h2>
+          <div className="w-full flex flex-col space-y-1">
+            <label className="text-left">How did you hear about us?:</label>
+            <select
+              name="referralSource"
+              // onChange={handleChange}
+              // value={formData.referralSource}
+              className="border p-2 w-full rounded"
+            >
+              <option value="">Select Source</option>
+              <option value="Friend">Friend</option>
+              <option value="Social Media">Social Media</option>
+              <option value="Web Search">Web Search</option>
+            </select>
+          </div>
+          <InputField
+            label="Referral Code (Optional)"
+            name="referralCode"
+            // value={formData.referralCode}
+            onChange={handleChange}
+          />
+          <h2 className="text-[#000000] text-lg font-bold">
+            Agreement and Submission
+          </h2>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="agreedToTerms"
+              // checked={formData.agreedToTerms}
+              onChange={handleChange}
+            />
+            <label>
+              I agree to the{" "}
+              <Link to="/terms" className="text-blue-500 underline">
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link to="/privacy" className="text-blue-500 underline">
+                Privacy Policy
+              </Link>
+              .
+            </label>
+          </div>
           <button
             type="submit"
             className="w-full bg-[#019529] text-white px-4 py-2 rounded-md"
