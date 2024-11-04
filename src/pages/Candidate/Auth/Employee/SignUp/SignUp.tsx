@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 import { setUserData } from "../../../../../Redux/reducer/userData";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import Loader from "../../../../../components/Loader/Loader";
-import Multiselect from "multiselect-react-dropdown";
 import Select from 'react-select';
 
 interface SignUpFormData {
