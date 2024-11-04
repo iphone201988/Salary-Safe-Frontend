@@ -14,6 +14,8 @@ import { useDispatch } from "react-redux";
 import { setUserData } from "../../../../../Redux/reducer/userData";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import Loader from "../../../../../components/Loader/Loader";
+import Multiselect from "multiselect-react-dropdown";
+import Select from 'react-select';
 
 interface SignUpFormData {
   fullName: string;
@@ -131,7 +133,11 @@ const CandidateSignUp: React.FC = () => {
       toast.error("Registration failed. Please try again.");
     }
   };
-
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+  ];
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       {loading && <Loader />}
@@ -249,7 +255,7 @@ const CandidateSignUp: React.FC = () => {
             error={errors.phone}
               />
                <div className="w-full flex flex-col space-y-1">
-           <label className="text-left">Preferred Salary Type</label>
+           <label className="text-left">Preferred Salary Type:</label>
            <select name="salaryType" 
           //  onChange={handleChange} 
           //  value={formData.salaryType}
@@ -284,7 +290,47 @@ const CandidateSignUp: React.FC = () => {
                />
         <div className="w-full flex flex-col space-y-1">
            <label className="text-left">Preferred Benefits:</label>
-              
+              <Select
+              isMulti
+              options={options}
+              />
+              </div>
+              <h2 className="text-[#000000] text-lg font-bold">Privacy Controls</h2>
+              <div className="w-full flex flex-col space-y-1">
+           <label className="text-left">Preferred Salary Type:</label>
+           <select name="viewSalaryPermission" 
+          //  onChange={handleChange} 
+          //  value={formData.viewSalaryPermission}
+            className="border p-2 w-full rounded">
+                <option value="">Select Permission</option>
+                <option value="Everyone">Everyone</option>
+                <option value="Employers Only">Employers Only</option>
+                <option value="Private">Private</option>
+              </select>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input type="checkbox" name="hideProfileFromEmployer"
+                //  checked={formData.hideProfileFromEmployer}
+                 onChange={handleChange} 
+                 />
+                <label>Hide my profile from current employer(s)</label>
+              </div>
+              <h2 className="text-[#000000] text-lg font-bold">Job Search Preferences</h2>
+              <div className="w-full flex flex-col space-y-1">
+           <label className="text-left">Industries of Interest:</label>
+              <Select
+              options={options}
+              isMulti
+              />
+              </div>
+              <div className="w-full flex flex-col space-y-1">
+           <label className="text-left">Industries of Interest:</label>
+              <Select
+              options={options}
+              isMulti
+
+              />
+            
               </div>
           <button
             type="submit"
