@@ -133,11 +133,12 @@ import {
 import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { userLogin, userSocialLogin } from "../../../../API/apis";
+import { getClientProfile, userLogin } from "../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, googleauthProvider } from "../../../../../firebase";
-import { signInWithPopup } from "firebase/auth";
 import Loader from "../../../../components/Loader/Loader";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../../../Redux/reducer/userData";
+import { login } from "../../../../Redux/reducer/authSlice";
 
 
 const CompanyLogin = () => {
@@ -146,6 +147,7 @@ const CompanyLogin = () => {
     company_name: "",
     password: "",
   });
+  const dispatch = useDispatch();
 
   const [errors, setErrors] = useState<any>({});
   const [loading, setLoading] = useState(false);
@@ -170,34 +172,34 @@ const CompanyLogin = () => {
   //       console.log(error);
   //     }
   //   }
-  const GoggleHandler = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleauthProvider);
-      console.log("google user", result);
-      const data ={
-        email: result.user?.email,
-        full_name: result.user?.displayName,
-        photo: result.user?.photoURL,
-        provider: result.user?.providerData[0].providerId,
-        provider_id: result.user?.uid,
-      }
-      try {
-        const response  = await axios.post(userSocialLogin,data)
-        console.log("social user response", response);
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("token_type", response.data.token_type);
-        toast.success("Logged in successfully!");
-        navigate("/dashboard");
-      } catch (error:any) {
-        console.log(error);
-        const errorMessage = error?.response?.data?.detail || "An error occurred during login.";
-        toast.error(errorMessage);
-      }
+  // const GoggleHandler = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, googleauthProvider);
+  //     console.log("google user", result);
+  //     const data ={
+  //       email: result.user?.email,
+  //       full_name: result.user?.displayName,
+  //       photo: result.user?.photoURL,
+  //       provider: result.user?.providerData[0].providerId,
+  //       provider_id: result.user?.uid,
+  //     }
+  //     try {
+  //       const response  = await axios.post(userSocialLogin,data)
+  //       console.log("social user response", response);
+  //       localStorage.setItem("access_token", response.data.access_token);
+  //       localStorage.setItem("token_type", response.data.token_type);
+  //       toast.success("Logged in successfully!");
+  //       navigate("/dashboard");
+  //     } catch (error:any) {
+  //       console.log(error);
+  //       const errorMessage = error?.response?.data?.detail || "An error occurred during login.";
+  //       toast.error(errorMessage);
+  //     }
 
-      }catch(error:any){
-        console.log(error);
-      }
-    }
+  //     }catch(error:any){
+  //       console.log(error);
+  //     }
+  //   }
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -219,8 +221,22 @@ const CompanyLogin = () => {
       const response = await axios.post(userLogin, data);
 
       if (response.status === 200) {
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("token_type", response.data.token_type);
+        const res:any = await axios.get(getClientProfile,{
+          headers: {
+            Authorization: `Bearer ${response.data.access_token}`,
+          },
+        });
+        console.log("res",res)
+        dispatch(setUserData({
+          name: res.data?.company_name,
+          email: res.data?.email,
+          profile: res.data?.profile,
+          role: res.data?.role,
+          industry: res.data?.industry,
+          location: res.data?.location,
+          size: res.data?.size,
+        }));
+        dispatch(login({token: response?.data?.access_token ,role:"employeer"}));
         toast.success("Logged in successfully!");
         setFormData({
           company_email: "",
@@ -228,7 +244,7 @@ const CompanyLogin = () => {
           password: "",
         });
         setLoading(false);
-        navigate("/dashboard");
+        navigate("/employeer/dashboard");
       } else {
         toast.error("Login failed. Please check your credentials.");
       }
@@ -302,14 +318,17 @@ const CompanyLogin = () => {
           Don't have an account?{" "}
           <Link to="/signup-company" className="text-[#019529] underline">
             Register
+          </Link>{" | "}
+          <Link to="/" className="text-[#019529] underline">
+            Home
           </Link>
         </div>
 
         {/* Social Login (Optional) */}
-        <div className="flex justify-center mt-6 space-x-4">
+        {/* <div className="flex justify-center mt-6 space-x-4">
           <button onClick={GoggleHandler} className="bg-[#4285F4] text-white px-4 py-2 rounded-md">Login with Google</button>
-          <button /* onClick={LinkdinHandler} */ className="bg-[#0077B5] text-white px-4 py-2 rounded-md">Login with LinkedIn</button>
-        </div>
+          <button  onClick={LinkdinHandler}  className="bg-[#0077B5] text-white px-4 py-2 rounded-md">Login with LinkedIn</button>
+        </div> */}
       </div>
     </div>
   );

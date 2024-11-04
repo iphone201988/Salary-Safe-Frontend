@@ -2,16 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaChartPie,
-  FaFileAlt,
-  FaChartLine,
   FaCog,
   FaLock,
   FaUserCircle,
   FaBars,
+
 } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import axios from "axios";
 import { companyDetails } from "../../API/apis";
+import { MdOutlineWork } from "react-icons/md";
+import { VscFileSubmodule } from "react-icons/vsc";
+import { useDispatch } from "react-redux";
+import { clearUserData } from "../../Redux/reducer/userData";
+import { logout } from "../../Redux/reducer/authSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+
 
 interface Data {
   full_name: string;
@@ -21,10 +28,13 @@ const DashboardSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Data | null>(null);
   const navigate = useNavigate();
-  const role = localStorage.getItem("role");
+  const dispatch = useDispatch();
+  const role = useSelector((state: RootState) => state.auth.role);
+  const name = useSelector((state: RootState) => state.user.name);
 
   const handleLogout = () => {
-    localStorage.clear();
+    dispatch(clearUserData())
+    dispatch(logout())
     navigate("/login-employee");
   };
 
@@ -40,6 +50,7 @@ const DashboardSidebar: React.FC = () => {
         },
       });
       setData(response.data);
+      console.log("data",data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching data:", error.message);
@@ -81,6 +92,20 @@ const DashboardSidebar: React.FC = () => {
             <span>Overview</span>
           </Link>
           <Link
+            to={`/${role}/dashboard/job-list`}
+            className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
+          >
+            <MdOutlineWork />
+            <span>Jobs</span>
+          </Link>
+          <Link
+            to={`/${role}/dashboard/submit-application`}
+            className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
+          >
+            <VscFileSubmodule />
+            <span>Submit Application</span>
+          </Link>
+          <Link
             to={`/${role}/dashboard/settings`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
@@ -101,7 +126,8 @@ const DashboardSidebar: React.FC = () => {
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaUserCircle className="text-4xl" />
-            <span>{data?.full_name}</span>
+            <span>{name || 'demo'}</span>
+
           </Link>
         </div>
       </aside>

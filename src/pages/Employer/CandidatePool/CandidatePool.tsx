@@ -8,10 +8,10 @@ const CandidatePoolDashboard = () => {
     salaryExpectation: "",
   });
 
-  const [candidates, setCandidates] = useState([]);
+  const [candidates, setCandidates] = useState<any>([]);
   const [notification, setNotification] = useState("");
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setCandidateData((prevData) => ({
       ...prevData,
@@ -93,7 +93,7 @@ const CandidatePoolDashboard = () => {
       <div className="mt-6">
         <h4 className="text-lg font-semibold mb-2">Candidate List</h4>
         <ul className="list-disc pl-5">
-          {candidates.map((candidate: any, index) => (
+          {candidates.map((candidate: any, index:any) => (
             <li key={index} className="mb-1">
               {candidate.name} - {candidate.skills} - $
               {candidate.salaryExpectation}

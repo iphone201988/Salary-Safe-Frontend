@@ -50,10 +50,23 @@ export const resetPasswordSchema = yup.object({
 
 export const employeeRegistrationSchema = yup
   .object({
+    fullName: yup
+      .string()
+      .required(" name is required"),
+    email: yup.string().email("Must be a valid email"),
+    phone: yup
+      .string()
+      .nullable(),
+    password: yup.string().required("Password is required"),
+  })
+  .test("at-least-one", "Either phone or email is required", function (value) {
+    return !!value.phone || !!value.email;
+  });
+export const employeerRegistrationSchema = yup
+  .object({
     companyName: yup
       .string()
-      .required("Company name is required")
-      .email("Must be a valid email"),
+      .required("Company name is required"),
     companyLocation: yup.string().required("Company Location is required"),
     companySize: yup.string().required("Company Location is required"),
     email: yup.string().email("Must be a valid email"),
@@ -61,6 +74,7 @@ export const employeeRegistrationSchema = yup
       .string()
       .nullable(),
     password: yup.string().required("Password is required"),
+    industry: yup.string().required("Industry is required"),
   })
   .test("at-least-one", "Either phone or email is required", function (value) {
     return !!value.phone || !!value.email;

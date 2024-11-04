@@ -1,21 +1,43 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { companyDetails } from "../../API/apis";
+import InputField from "../InputField/InputField";
+import { useLoadScript, Autocomplete } from "@react-google-maps/api";
+import { industrys } from "../../utils/helper";
+import { useSelector, useDispatch } from "react-redux";
+import { setUserData } from "../../Redux/reducer/userData"; // Import your action
+import { RootState } from "../../Redux/store";
 
 interface Data {
   email: string;
+  phone: string;
   company_name: string;
-  full_name: string;
   notification_prefrence: boolean;
+  size: string;
+  industry: string;
+  location: string;
 }
 
+const libraries: any = ["places"];
 const DashboardSettings: React.FC = () => {
   const [data, setData] = useState<Data | null>(null);
+  const dispatch = useDispatch(); // Get the dispatch function
+  const user:any = useSelector((state: RootState) => state.user); // Access user data from Redux store
+
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    notifications: false,
-    company_name: "",
+    email: user.email || "", // Initialize with Redux state
+    phone: user.phone || "", // Initialize with Redux state
+    notifications: user.notifications || false, // Initialize with Redux state
+    company_name: user.company_name || "", // Initialize with Redux state
+    size: user.size || "", // Initialize with Redux state
+    industry: user.industry || "", // Initialize with Redux state
+    location: user.location || "", // Initialize with Redux state
+  });
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyBFBwlTTtqbm5uwk0tIWEOEwR9CXSeCJuA", // Replace with your API key
+    libraries,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +56,17 @@ const DashboardSettings: React.FC = () => {
         },
       });
       setData(response.data);
+      
+      // Dispatch the action to set user data in Redux
+      dispatch(setUserData({
+        email: response.data.email,
+        phone: response.data.phone,
+        name: response.data.company_name,
+        size: response.data.size,
+        industry: response.data.industry,
+        location: response.data.location,
+        notifications: response.data.notification_prefrence,
+      }));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching data:", error.message);
@@ -47,13 +80,17 @@ const DashboardSettings: React.FC = () => {
     handleFetch();
   }, []);
 
+  // Update formData if data is fetched successfully
   useEffect(() => {
     if (data) {
       setFormData({
-        fullName: data.full_name,
         email: data.email,
         notifications: data.notification_prefrence,
         company_name: data.company_name,
+        size: data.size,
+        industry: data.industry,
+        location: data.location,
+        phone: data.phone, // Add phone field if needed
       });
     }
   }, [data]);
@@ -68,12 +105,30 @@ const DashboardSettings: React.FC = () => {
       });
       setData(response.data);
       console.log("Data updated:", response.data);
+
+      // Optionally, update the Redux store with the new data
+      dispatch(setUserData({
+        email: response.data.email,
+        phone: response.data.phone,
+        name: response.data.company_name,
+        size: response.data.size,
+        industry: response.data.industry,
+        location: response.data.location,
+        notifications: response.data.notification_prefrence,
+      }));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error updating data:", error.message);
       } else {
         console.error("Unexpected error:", error);
       }
+    }
+  };
+
+  const handlePlaceSelect = () => {
+    const place = autocompleteRef.current?.getPlace();
+    if (place && place.formatted_address) {
+      setFormData({ ...formData, location: place.formatted_address });
     }
   };
 
@@ -92,16 +147,6 @@ const DashboardSettings: React.FC = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-600">Full Name</label>
-          <input
-            type="text"
-            name="full_name"
-            value={formData.fullName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-          />
-        </div>
-        <div>
           <label className="block text-gray-600">Email</label>
           <input
             type="email"
@@ -111,6 +156,58 @@ const DashboardSettings: React.FC = () => {
             className="w-full px-4 py-2 border rounded-md"
           />
         </div>
+        <InputField
+            label="Phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          {isLoaded && (
+            <div>
+              <label className="block text-gray-700">Company Location</label>
+              <Autocomplete
+                onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
+                onPlaceChanged={handlePlaceSelect}
+              >
+                <input
+                  name="companyLocation"
+                  value={formData.location}
+                  onChange={handleChange}
+                  placeholder="Search location"
+                  className={`border border-black rounded-md w-full p-2 `}
+                />
+              </Autocomplete>
+            </div>
+          )}
+          {/* Company Size Select */}
+          <label className="block text-gray-700">Company Size</label>
+          <select
+            name="size"
+            className={`border border-black rounded-md w-full p-2 `}
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+            value={formData.size}
+          >
+            <option value="">Select Size</option>
+            <option value="0-10">0-10</option>
+            <option value="10-50">10-50</option>
+            <option value="50-100">50-100</option>
+            <option value="100 or above">100 or above</option>
+          </select>
+          {/* Industry Select */}
+          <label className="block text-gray-700">Industry</label>
+          <select
+            name="industry"
+            className={`border border-black rounded-md w-full p-2 `}
+            onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
+            value={formData.industry}
+          >
+            <option value="">Select Industry</option>
+            {industrys.map((data, index) => (
+              <option key={index} value={data}>
+                {data}
+              </option>
+            ))}
+          </select>
         <div className="flex items-center space-x-2">
           <input
             type="checkbox"

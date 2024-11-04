@@ -1,11 +1,13 @@
 import React from "react";
 import DashboardSidebar from "../../../components/EmployeeDashboard/DashboardSidebar";
 import { Navigate, Outlet } from "react-router-dom";
-import { getToken } from "../../../utils/helper";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../Redux/store";
 
 const Dashboard: React.FC = () => {
-  const token = getToken();
-  if (!token) return <Navigate to="/login-company" />;
+  const token = useSelector((state:RootState ) => state.auth.token);
+  const role = useSelector((state:RootState ) => state.auth.role);
+  if (!token ||!role) return <Navigate to="/" />;
 
   return (
     <div className="flex min-h-screen">

@@ -37,6 +37,9 @@ import InternalSalaryUpload from "../pages/Employer/Internal-upload/InternalUplo
 import CandidatePoolDashboard from "../pages/Employer/CandidatePool/CandidatePool";
 import SalaryAnalysis from "../pages/Employer/Salary-Analysis/SalaryAnalysis";
 import ReportingInsightsHub from "../pages/Employer/Reporting-InsightsHub/ReportingInsightsHub";
+import JobMatchingPage from "../pages/Candidate/Jobs/Jobs";
+import SubmittedApplicationsPage from "../pages/Candidate/Jobs/SubmitApplication";
+import SelectAuth from "../components/Common/SelectAuth";
 
 const router = createBrowserRouter([
   {
@@ -74,9 +77,10 @@ const router = createBrowserRouter([
     element: <JobForm />,
   },
   {
-    path: "job-list",
+    path: "job-salary-adjustment",
     element: <JobSalaryAdjustments />,
   },
+
   {
     path: "feedback",
     element: <SupportFeedback />,
@@ -85,6 +89,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <AuthLayout />,
     children: [
+      {
+        path: "auth",
+        element: <ProtectedAuthRoute element={<SelectAuth />} />,
+      },
       {
         path: "signup-company",
         element: <ProtectedAuthRoute element={<CompanySignUp />} />,
@@ -126,6 +134,10 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <ProtectedCompanyRoute element={<DashboardSummary />} />,
+      },
+      {
+        path: "employeer",
+        element: <ProtectedCompanyRoute element={<Dashboard />} />,
       },
       {
         path: "reports",
@@ -170,6 +182,20 @@ const router = createBrowserRouter([
         element: (
           <ProtectedCandidateRoute element={<EmployeeDashboardSummary />} />
         ),
+      },
+      {
+        path: "candidate",
+        element: (
+          <ProtectedCandidateRoute element={<CandidateDashboard />} />
+        ),
+      },
+      {
+        path: "job-list",
+        element: <ProtectedCandidateRoute element={<JobMatchingPage />} />,
+      },
+      {
+        path: "submit-application",
+        element: <ProtectedCandidateRoute element={<SubmittedApplicationsPage />} />,
       },
       {
         path: "settings",

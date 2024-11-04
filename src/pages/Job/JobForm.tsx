@@ -30,7 +30,7 @@ const JobForm: React.FC = () => {
     try {
       const token = localStorage.getItem("access_token");
       const id = localStorage.getItem("id");
-      const response = await axios.post(
+      await axios.post(
         createJobs,
         {
           title: jobData.title,

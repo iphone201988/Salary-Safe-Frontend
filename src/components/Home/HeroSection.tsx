@@ -7,8 +7,11 @@ const HeroSection: React.FC = () => {
       <h1 className="text-5xl font-bold mb-4">
         Ensure Fair Pay. Promote Equity.
       </h1>
+      <p className="text-xl">
+      Salary-Safe is an innovative platform designed to bring transparency and fairness to salary negotiations
+      </p>
       <p className="text-xl mb-8">
-      Salary-Safe is an innovative platform designed to bring transparency and fairness to salary negotiations by aligning
+      by aligning
       the expectations of candidates, employers and the market.
       </p>
       <div className="flex space-x-4">

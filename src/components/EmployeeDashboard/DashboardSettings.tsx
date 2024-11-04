@@ -11,6 +11,7 @@ interface Data {
   experience?: string;
   location?: string;
   salaryExpectation?: string; // New confidential field
+  profileImage?: string; // URL or path to the profile image
 }
 
 const DashboardSettings: React.FC = () => {
@@ -24,6 +25,7 @@ const DashboardSettings: React.FC = () => {
     experience: "",
     location: "",
     salaryExpectation: "", // New confidential field
+    profileImage: null as File | null, // New field for profile image
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +34,15 @@ const DashboardSettings: React.FC = () => {
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFormData({
+        ...formData,
+        profileImage: e.target.files[0], // Store the uploaded file
+      });
+    }
   };
 
   const handleFetch = async (): Promise<void> => {
@@ -66,17 +77,35 @@ const DashboardSettings: React.FC = () => {
         experience: data.experience || "",
         location: data.location || "",
         salaryExpectation: data.salaryExpectation || "", // Initialize confidential field
+        profileImage: null, // Reset profile image field
       });
     }
   }, [data]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const formData:any = new FormData();
+    
+    // Append each field to FormData, using fallback for potential null values
+    formData.append('fullName', formData.fullName || "");  // Ensures no null
+    formData.append('email', formData.email || "");        // Ensures no null
+    formData.append('phone', formData.phone || "");        // Ensures no null
+    formData.append('qualifications', formData.qualifications || ""); // Ensures no null
+    formData.append('experience', formData.experience || ""); // Ensures no null
+    formData.append('location', formData.location || "");      // Ensures no null
+    formData.append('salaryExpectation', formData.salaryExpectation || ""); // Ensures no null
+  
+    // If you're adding an image
+    if (formData.profileImage) {
+      formData.append('profileImage', formData.profileImage);
+    }
+  
     try {
-      // Ensure salaryExpectation is kept confidential in the backend
-      const response = await axios.patch<Data>(companyDetails, formData, {
+      const response = await axios.patch(companyDetails, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          'Content-Type': 'multipart/form-data', // Ensure correct header for FormData
         },
       });
       setData(response.data);
@@ -89,10 +118,23 @@ const DashboardSettings: React.FC = () => {
       }
     }
   };
+  
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
       <h3 className="text-4xl font-bold my-4 text-center">Candidate Profile</h3>
+      
+      {/* Display the current profile image */}
+      {data?.profileImage && (
+        <div className="mb-4 flex justify-center">
+          <img
+            src={data.profileImage} // Ensure this is a valid URL or path
+            alt="Profile"
+            className="w-32 h-32 rounded-full object-cover"
+          />
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-gray-600">Full Name</label>
@@ -166,6 +208,18 @@ const DashboardSettings: React.FC = () => {
             placeholder="Enter expected salary"
           />
         </div>
+        
+        {/* Profile Image Upload */}
+        <div>
+          <label className="block text-gray-600">Upload Profile Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="w-full px-4 py-2 border rounded-md"
+          />
+        </div>
+        
         <div className="flex items-center space-x-2">
           <input
             type="checkbox"

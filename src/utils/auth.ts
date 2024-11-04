@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../Redux/store";
+
 export const isAuthenticated = () => {
-    const token = localStorage.getItem("access_token");
+  const token = useSelector((state:RootState ) => state.auth.token);
     return !!token; // Returns true if token exists, false otherwise
   };
   

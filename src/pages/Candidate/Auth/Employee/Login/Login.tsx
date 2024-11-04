@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import InputField from "../../../../../components/InputField/InputField";
 import {
-  companyLoginSchema,
   employeeLoginSchema,
   validateForm,
 } from "../../../../../Schema/Schemas";
@@ -13,6 +12,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, googleauthProvider } from "../../../../../../firebase";
 import { signInWithPopup } from "firebase/auth";
 import Loader from "../../../../../components/Loader/Loader";
+import { login } from "../../../../../Redux/reducer/authSlice";
+import { useDispatch } from "react-redux";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
@@ -25,6 +26,7 @@ const EmployeeLogin = () => {
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -45,16 +47,10 @@ const EmployeeLogin = () => {
       try {
         const response = await axios.post(userSocialLogin, data);
         console.log("social user response", response);
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("token_type", response.data.token_type);
+       
+        dispatch(login({token: response?.data?.access_token ,role:"candidate"}));
         toast.success("Logged in successfully!");
-        if(localStorage.getItem("access_token")){
-          if(localStorage.getItem("role")==="employeer"){
-            navigate("/employer/dashboard");
-          }else{
-            navigate("/candidate/dashboard");
-          }
-        }
+        navigate("/candidate/dashboard");
       } catch (error: any) {
         console.log(error);
         const errorMessage =
@@ -82,10 +78,7 @@ const EmployeeLogin = () => {
         password: formData.password,
       };
       const response = await axios.post(userLogin, data);
-
-      if (response.status === 200) {
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("token_type", response.data.token_type);
+        dispatch(login({token: response?.data?.access_token ,role:"candidate"}));
         toast.success("Logged in successfully!");
         setFormData({
           email: "",
@@ -93,10 +86,7 @@ const EmployeeLogin = () => {
           password: "",
         });
         setLoading(false);
-        navigate("/dashboard");
-      } else {
-        toast.error("Login failed. Please check your credentials.");
-      }
+        navigate("/candidate/dashboard");
     } catch (error: any) {
       setLoading(false);
       const errorMessage =
@@ -108,6 +98,7 @@ const EmployeeLogin = () => {
         password: "",
       });
     } finally {
+      setLoading(false);
       setIsSubmitting(false);
     }
   };
@@ -116,7 +107,7 @@ const EmployeeLogin = () => {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       {loading && <Loader />}
       <div className="w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg">
-        <h1 className="text-3xl font-bold text-center">Login as Employer</h1>
+        <h1 className="text-3xl font-bold text-center">Login as Candidate</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
           <InputField

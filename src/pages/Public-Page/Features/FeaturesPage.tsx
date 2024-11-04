@@ -11,7 +11,7 @@ const features = [
   },
   {
     title: 'Data-Driven Salary Analysis',
-    description: 'Analyzes the company&#39;s internal salary data including calculating median and average salaries and comparing them against market benchmarks. We then generate a fair salary recommendation for both parties based on data and analytics.',
+    description: "Analyzes the company's internal salary data including calculating median and averagesalaries and comparing them against market benchmarks. We then generate a fairsalary recommendation for both parties based on data and analytics.",
     icon: 'https://picsum.photos/51', // Replace with a relevant icon
   },
   {
