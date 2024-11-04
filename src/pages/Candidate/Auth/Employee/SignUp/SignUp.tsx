@@ -19,6 +19,7 @@ import { setUserData } from "../../../../../Redux/reducer/userData";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import Loader from "../../../../../components/Loader/Loader";
 import Select from "react-select";
+import MultiSelectComponent from "../../../../../components/MultiSelect/MultiSelect";
 
 interface SignUpFormData {
   fullName: string;
@@ -32,7 +33,6 @@ interface SignUpFormData {
   experience: string;
   educationLevel: string;
   inviteEmployer: boolean;
-  
 }
 
 interface SignUpFormErrors {
@@ -302,10 +302,11 @@ const CandidateSignUp: React.FC = () => {
               <option value="PhD">PhD</option>
             </select>
           </div>
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Skill:</label>
-            <Select options={options} isMulti />
-          </div>
+          <MultiSelectComponent
+            isMulti={true}
+            label="Skill:"
+            options={options}
+          />
           <h2 className="text-[#000000] text-lg font-bold">
             Salary Expectations
           </h2>
@@ -354,10 +355,11 @@ const CandidateSignUp: React.FC = () => {
             value={formData.phone}
             onChange={handleChange}
           />
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Preferred Benefits:</label>
-            <Select isMulti options={options} />
-          </div>
+          <MultiSelectComponent
+            isMulti={true}
+            label="Preferred Benefits:"
+            options={options}
+          />
           <h2 className="text-[#000000] text-lg font-bold">Privacy Controls</h2>
           <div className="w-full flex flex-col space-y-1">
             <label className="text-left">Preferred Salary Type:</label>
@@ -385,14 +387,17 @@ const CandidateSignUp: React.FC = () => {
           <h2 className="text-[#000000] text-lg font-bold">
             Job Search Preferences
           </h2>
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Industries of Interest:</label>
-            <Select options={options} isMulti />
-          </div>
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Industries of Interest:</label>
-            <Select options={options} isMulti />
-          </div>
+
+          <MultiSelectComponent
+            isMulti={true}
+            label="Industries of Interest:"
+            options={options}
+          />
+          <MultiSelectComponent
+            isMulti={true}
+            label="Industries of Interest:"
+            options={options}
+          />
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -408,10 +413,11 @@ const CandidateSignUp: React.FC = () => {
             value={formData.phone}
             onChange={handleChange}
           />
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Professional Development Areas:</label>
-            <Select options={options} isMulti />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Professional Development Areas:"
+            options={options}
+          />
           <h2 className="text-[#000000] text-lg font-bold">
             Salary Insights & Customization
           </h2>
@@ -495,10 +501,11 @@ const CandidateSignUp: React.FC = () => {
           <h2 className="text-[#000000] text-lg font-bold">
             Notifications & Communication Preferences
           </h2>
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Receive notifications via:</label>
-            <Select options={options} isMulti />
-          </div>
+          <MultiSelectComponent
+            isMulti={true}
+            label="Receive notifications via:"
+            options={options}
+          />
           <div className="w-full flex flex-col space-y-1">
             <label className="text-left">Job Alerts Frequency:</label>
             <select
