@@ -7,7 +7,9 @@ import ImageLoader from "./ImageLoader";
 const SelectAuth: React.FC = () => {
   // const dispatch = useDispatch();
   const navigate = useNavigate();
-  const authType = useSelector((state: RootState) => state.selectOption.authType);
+  const authType = useSelector(
+    (state: RootState) => state.selectOption.authType
+  );
 
   const handleClick = (role: string) => {
     const path = authType === "login" ? `/login-${role}` : `/signup-${role}`;

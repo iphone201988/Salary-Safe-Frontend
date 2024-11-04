@@ -12,6 +12,7 @@ import { userRegister } from "../../../../API/apis";
 import Loader from "../../../../components/Loader/Loader";
 import { industrys } from "../../../../utils/helper";
 import Select from "react-select";
+import MultiSelectComponent from "../../../../components/MultiSelect/MultiSelect";
 
 interface SignUpFormData {
   companyName: string;
@@ -260,6 +261,7 @@ const CompanySignUp: React.FC = () => {
             onChange={handleChange}
             error={errors.PrimaryContact}
           />
+
           <InputField
             label="Email"
             name="email"
@@ -268,11 +270,7 @@ const CompanySignUp: React.FC = () => {
             onChange={handleChange}
             error={errors.email}
           />
-          {/* <div className="flex items-center justify-around w-[80%] mx-auto my-2">
-            <span className="h-[1px] bg-[#3D3D3D] w-[100px]"></span>
-            <span className="text-[#3D3D3D]">OR</span>
-            <span className="h-[1px] bg-[#3D3D3D] w-[100px]"></span>
-          </div> */}
+
           <InputField
             label="Phone"
             name="phone"
@@ -291,86 +289,99 @@ const CompanySignUp: React.FC = () => {
 
           <div className="font-[600] text-lg">Hiring Goals and Preferences</div>
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Primary Hiring Goals</label>
-            <Select options={options} isMulti />
-          </div>
+          <MultiSelectComponent
+            isMulti={true}
+            label="Primary Hiring Goals"
+            options={options}
+          />
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Preferred Job Locations</label>
-            <Select options={options} isMulti />
-          </div>
+          <MultiSelectComponent
+            isMulti={true}
+            label="Preferred Job Locations"
+            options={options}
+          />
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Roles/Positions of Interest</label>
-            <Select options={options} isMulti />
-          </div>
+          <MultiSelectComponent
+            isMulti={true}
+            label="Roles/Positions of Interest"
+            options={options}
+          />
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Job Types</label>
-            <Select options={options} isMulti />
-          </div>
+          <MultiSelectComponent
+            isMulti={true}
+            label="Job Types"
+            options={options}
+          />
 
           <div className="font-[600] text-lg">Dashboard Customization</div>
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Select Key Metrics and Widgets</label>
-            <Select options={options} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Select Key Metrics and Widgets"
+            options={options}
+          />
 
           <div className="font-[600] text-lg">Job Posting Preferences</div>
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Role-Specific Customization</label>
-            <Select options={preference} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Role-Specific Customization"
+            options={preference}
+          />
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Salary Benchmarking Preferences</label>
-            <Select options={preference2} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Salary Benchmarking Preferences"
+            options={preference2}
+          />
 
           <div className="font-[600] text-lg">Candidate Pool Access</div>
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Candidate Viewing Preferences</label>
-            <Select options={pool} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Candidate Viewing Preferences"
+            options={pool}
+          />
 
           <div className="font-[600] text-lg">Offer and Negotiation Tools</div>
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Offer Optimization</label>
-            <Select options={offer} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Offer Optimization"
+            options={offer}
+          />
 
           <div className="font-[600] text-lg">
             Reporting and Performance Tracking
           </div>
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Market and Role Alerts</label>
-            <Select options={[]} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Market and Role Alerts"
+            options={[]}
+          />
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Custom Reports</label>
-            <Select options={[]} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Custom Reports"
+            options={[]}
+          />
 
           <div className="font-[600] text-lg">
             Communication and Candidate Engagement
           </div>
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Automated Updates to Candidates</label>
-            <Select options={[]} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Automated Updates to Candidates"
+            options={[]}
+          />
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">Candidate Feedback Insights</label>
-            <Select options={[]} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="Candidate Feedback Insights"
+            options={[]}
+          />
 
           <div>
             <div className="font-[600] text-lg">
@@ -421,10 +432,11 @@ const CompanySignUp: React.FC = () => {
             Referral Information (Optional)
           </div>
 
-          <div className="w-full flex flex-col space-y-1">
-            <label className="text-left">How did you hear about us?</label>
-            <Select options={[]} />
-          </div>
+          <MultiSelectComponent
+            isMulti={false}
+            label="How did you hear about us?"
+            options={[]}
+          />
 
           <InputField label="Referral Code" value={""} onChange={""} name="" />
 

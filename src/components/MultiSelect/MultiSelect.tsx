@@ -1,39 +1,29 @@
 import React from 'react';
+import Select from 'react-select';
 
-interface MultiSelectDropdownProps {
+interface OptionType {
+  value: string;
   label: string;
-  options: string[];
-  selectedOptions: string[];
-  setSelectedOptions: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
-  label,
-  options,
-  selectedOptions,
-  setSelectedOptions,
-}) => {
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
-    const newSelectedOptions = selectedOptions.includes(value)
-      ? selectedOptions.filter(option => option !== value)
-      : [...selectedOptions, value];
+interface MultiSelectComponentProps {
+  options: OptionType[];
+  label: string;
+  isMulti: boolean;
+}
 
-    setSelectedOptions(newSelectedOptions);
-  };
-
+const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({ options, label, isMulti }) => {
   return (
-    <div>
-      <label>{label}</label>
-      <select multiple value={selectedOptions} onChange={handleChange}>
-        {options.map(option => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+    <div className="w-full flex flex-col space-y-1">
+      <label className="text-left">{label}</label>
+      <Select<OptionType, boolean>
+        options={options}
+        isMulti={isMulti} // Use isMulti prop
+        className="react-select"
+        classNamePrefix="select"
+      />
     </div>
   );
 };
 
-export default MultiSelectDropdown;
+export default MultiSelectComponent;
