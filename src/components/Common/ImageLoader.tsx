@@ -16,14 +16,14 @@ const ImageLoader: React.FC<ImageLoaderProps> = ({ src, alt, className }) => {
 
   return (
     <div className={`relative ${className}`}>
-      {isLoading && <Loader/>}
+      {isLoading && <Loader />}
       <img
         src={src}
         alt={alt}
         onLoad={handleImageLoad}
         className={`transition-opacity duration-500 ease-in-out absolute ${
           isLoading ? "opacity-0" : "opacity-100"
-        }`}
+        } md:h-[400px] md:w-[400px] h-[200px] w-[350px] object-cover`}
       />
     </div>
   );

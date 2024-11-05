@@ -3,6 +3,7 @@ import Footer from "../../../components/Home/Footer";
 import Header from "../../../components/Home/Header";
 import { useState } from "react";
 // import NavBar from "../../components/Navbar/Navbar";
+import About from "../../../assets/About.png"
 
 const AboutPage = () => {
   const [teamImageLoaded, setTeamImageLoaded] = useState(false);
@@ -107,7 +108,7 @@ const AboutPage = () => {
                 </div>
               )}
               <img
-                src="https://picsum.photos/200"
+                src={About}
                 alt="Team"
                 className={`w-full rounded-lg shadow-lg transition-opacity duration-500 ${teamImageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 onLoad={() => setTeamImageLoaded(true)}
@@ -122,7 +123,7 @@ const AboutPage = () => {
                 </div>
               )}
               <img
-                src="https://picsum.photos/201"
+                src={About}
                 alt="Salary Gap Chart"
                 className={`w-full rounded-lg shadow-lg transition-opacity duration-500 ${chartImageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 onLoad={() => setChartImageLoaded(true)}

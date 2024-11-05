@@ -10,6 +10,9 @@ export default {
         primary: '#ffffff',    
         secondary: '#F3F4F6 ',  
       },
+      screens: {
+        "max-720": { max: "720px" },
+      },
     },
   },
   plugins: [],
