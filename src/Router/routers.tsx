@@ -40,6 +40,8 @@ import ReportingInsightsHub from "../pages/Employer/Reporting-InsightsHub/Report
 import JobMatchingPage from "../pages/Candidate/Jobs/Jobs";
 import SubmittedApplicationsPage from "../pages/Candidate/Jobs/SubmitApplication";
 import SelectAuth from "../components/Common/SelectAuth";
+import TermsOfService from "../pages/TermsOfService";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +64,15 @@ const router = createBrowserRouter([
     path: "request-demo",
     element: <RequestDemoPage />,
   },
+  {
+    path: "terms",
+    element: <TermsOfService />,
+  },
+  {
+    path: "privacy",
+    element: <PrivacyPolicy />,
+  },
+  
   {
     path: "contact",
     element: <ContactPage />,

@@ -81,7 +81,7 @@ const JobForm: React.FC = () => {
       <NavBar />
       <div className="flex flex-col lg:flex-row items-center justify-between w-full flex-grow p-6 bg-gray-100">
         {/* Job form */}
-        <div className="w-full min-h-fit lg:w-1/2 bg-white p-8 rounded-lg shadow-lg mb-8 lg:mb-0 lg:mr-6 md:mt-20">
+        <div className="w-full min-h-fit lg:w-1/2  p-8 rounded-lg shadow-lg mb-8 lg:mb-0 lg:mr-6 md:mt-20">
           <h1 className="text-3xl font-bold mb-6 text-center">Create Job</h1>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>

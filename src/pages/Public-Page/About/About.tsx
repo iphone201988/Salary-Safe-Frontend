@@ -25,7 +25,7 @@ const AboutPage = () => {
 
     //   {/* Main Content */}
     //   <main className="mt-10">
-    //     <section className="min-h-screen bg-white text-gray-800 py-20 px-6 text-center">
+    //     <section className="min-h-screen bg-white  py-20 px-6 text-center">
     //       {/* Headline */}
     //       <h1 className="text-4xl font-bold mb-8">
     //         Our Mission: Promoting Fairness and Transparency in Compensation
@@ -81,14 +81,14 @@ const AboutPage = () => {
 
       {/* Main Content */}
       <main className="mt-10">
-        <section className="min-h-screen bg-white text-gray-800 py-20 px-6 text-center">
+        <section className="min-h-screen py-20 px-6 text-center">
           {/* Headline */}
-          <h1 className="text-4xl font-bold mb-8">
+          <h1 className="text-4xl text-primary font-bold mb-8">
             Our Mission: Promoting Fairness and Transparency in Compensation
           </h1>
 
           {/* Mission and Vision Text */}
-          <p className="text-lg mb-8 max-w-4xl mx-auto">
+          <p className="text-lg text-primary  mb-8 max-w-4xl mx-auto">
             Salary-Safe is committed to ensuring that companies promote fairness
             and transparency in compensation. Our platform helps organizations
             address the critical issue of gender pay gaps, providing data-driven

@@ -41,7 +41,7 @@ const SubmittedApplicationsPage: React.FC = () => {
         )}
 
         {applications.length > 0 && (
-          <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg">
+          <div className="max-w-3xl mx-auto  shadow-lg rounded-lg">
             <ul className="divide-y divide-gray-200">
               {applications.map((application) => (
                 <li key={application.id} className="p-4 flex justify-between items-center">

@@ -48,7 +48,7 @@ const JobMatchingPage: React.FC = () => {
 
   return (
     <>
-        <div className="p-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg">
+        <div className="p-6 max-w-3xl mx-auto  shadow-lg rounded-lg">
           <h2 className="text-3xl font-semibold text-center mb-8">Job Matching and Application</h2>
 
           {/* Salary Expectation Input */}

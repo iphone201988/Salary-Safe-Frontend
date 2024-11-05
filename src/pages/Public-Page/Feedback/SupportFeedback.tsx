@@ -29,12 +29,12 @@ const SupportFeedback: React.FC = () => {
     <>
       <Header />
       <main className="mt-32 mx-auto">
-        <div className="p-8 max-w-4xl mx-auto bg-white shadow-xl rounded-lg">
-          <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800">Support and Feedback</h2>
+        <div className="p-8 max-w-4xl mx-auto shadow-xl rounded-lg">
+          <h2 className="text-3xl font-semibold text-center mb-8 ">Support and Feedback</h2>
 
           {/* In-App Support Section */}
           <section className="mb-12">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-6">In-App Support</h3>
+            <h3 className="text-2xl font-semibold  mb-6">In-App Support</h3>
             
             {/* FAQs */}
             <div className="space-y-6">
@@ -49,7 +49,7 @@ const SupportFeedback: React.FC = () => {
 
           {/* Feedback Mechanism Section */}
           <section>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-6">Feedback</h3>
+            <h3 className="text-2xl font-semibold  mb-6">Feedback</h3>
             <form onSubmit={handleFeedbackSubmit} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-gray-700 mb-2 font-medium">Email</label>

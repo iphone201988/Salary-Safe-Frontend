@@ -44,9 +44,9 @@ const FeaturesPage: React.FC = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="mt-10 py-16 px-6 bg-white text-gray-800">
-        <section className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Explore Our Key Features</h2>
+      <main className="mt-20 py-16 px-6 ">
+        <section className="max-w-6xl mx-auto ">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">Explore Our Key Features</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
             {features.map((feature, index) => (
               <div

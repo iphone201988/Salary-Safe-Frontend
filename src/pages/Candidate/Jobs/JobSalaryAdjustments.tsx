@@ -86,7 +86,7 @@ const JobSalaryAdjustments: React.FC = () => {
   }, [selectedJob, salary]);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg">
+    <div className="p-6 max-w-3xl mx-auto  shadow-lg rounded-lg">
       <h2 className="text-3xl font-semibold text-center mb-6">Job-Specific Salary Adjustments</h2>
 
       <div className="mb-4">

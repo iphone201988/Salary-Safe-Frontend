@@ -75,9 +75,9 @@ const RequestDemoPage: React.FC = () => {
     <>
 {/* header */}
 <Header />
-<main className='mt-10'>
+<main className='mt-16 '>
 {loading && <Loader />}
-<div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
+<div className="min-h-screen bg-[#1B1035] flex items-center justify-center px-6 py-12">
       <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold text-center mb-6">Request a Demo</h2>
         

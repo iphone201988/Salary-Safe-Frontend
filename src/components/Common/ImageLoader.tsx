@@ -21,7 +21,7 @@ const ImageLoader: React.FC<ImageLoaderProps> = ({ src, alt, className }) => {
         src={src}
         alt={alt}
         onLoad={handleImageLoad}
-        className={`transition-opacity duration-500 ease-in-out ${
+        className={`transition-opacity duration-500 ease-in-out absolute ${
           isLoading ? "opacity-0" : "opacity-100"
         }`}
       />

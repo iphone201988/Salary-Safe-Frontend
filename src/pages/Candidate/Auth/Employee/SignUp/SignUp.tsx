@@ -7,16 +7,16 @@ import {
   employeeRegistrationSchema,
   validateForm,
 } from "../../../../../Schema/Schemas";
-import { signInWithPopup } from "firebase/auth";
-import { auth, googleauthProvider } from "../../../../../../firebase";
+// import { signInWithPopup } from "firebase/auth";
+// import { auth, googleauthProvider } from "../../../../../../firebase";
 import {
-  getcandidatesProfile,
+ /*  getcandidatesProfile, */
   userRegister,
-  userSocialLogin,
+  /* userSocialLogin, */
 } from "../../../../../API/apis";
-import { useDispatch } from "react-redux";
-import { setUserData } from "../../../../../Redux/reducer/userData";
-import { login } from "../../../../../Redux/reducer/authSlice";
+// import { useDispatch } from "react-redux";
+// import { setUserData } from "../../../../../Redux/reducer/userData";
+// import { login } from "../../../../../Redux/reducer/authSlice";
 import Loader from "../../../../../components/Loader/Loader";
 import MultiSelectComponent from "../../../../../components/MultiSelect/MultiSelect";
 
@@ -80,65 +80,65 @@ const CandidateSignUp: React.FC = () => {
     // referralCode: "",
     // agreedToTerms: false,
   });
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState<SignUpFormErrors>({});
   const navigate = useNavigate();
 
-  const GoggleHandler = async () => {
-    try {
-      setLoading(true);
-      const result = await signInWithPopup(auth, googleauthProvider);
-      console.log("google user", result);
-      const data = {
-        email: result.user?.email,
-        full_name: result.user?.displayName,
-        photo: result.user?.photoURL,
-        provider: result.user?.providerData[0].providerId,
-        provider_id: result.user?.uid,
-        role: "candidate",
-      };
-      try {
-        const response = await axios.post(userSocialLogin, data);
-        const res = await axios.get(getcandidatesProfile, {
-          headers: {
-            Authorization: `Bearer ${response.data.access_token}`,
-          },
-        });
-        console.log("social user response", response);
-        dispatch(
-          setUserData({
-            name: res.data?.full_name,
-            email: res.data?.email,
-            profile: res.data?.profile,
-            role: res.data?.role,
-            industry: res.data?.industry,
-            location: res.data?.location,
-            size: res.data?.size,
-          })
-        );
-        dispatch(
-          login({ token: response?.data?.access_token, role: "employeer" })
-        );
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("token_type", response.data.token_type);
-        toast.success("Logged in successfully!");
-        navigate("/candidate/dashboard");
-        setLoading(false);
-      } catch (error: any) {
-        console.log(error);
-        setLoading(false);
-        const errorMessage =
-          error?.response?.data?.detail || "An error occurred during login.";
-        toast.error(errorMessage);
-      }
-    } catch (error: any) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const GoggleHandler = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const result = await signInWithPopup(auth, googleauthProvider);
+  //     console.log("google user", result);
+  //     const data = {
+  //       email: result.user?.email,
+  //       full_name: result.user?.displayName,
+  //       photo: result.user?.photoURL,
+  //       provider: result.user?.providerData[0].providerId,
+  //       provider_id: result.user?.uid,
+  //       role: "candidate",
+  //     };
+  //     try {
+  //       const response = await axios.post(userSocialLogin, data);
+  //       const res = await axios.get(getcandidatesProfile, {
+  //         headers: {
+  //           Authorization: `Bearer ${response.data.access_token}`,
+  //         },
+  //       });
+  //       console.log("social user response", response);
+  //       dispatch(
+  //         setUserData({
+  //           name: res.data?.full_name,
+  //           email: res.data?.email,
+  //           profile: res.data?.profile,
+  //           role: res.data?.role,
+  //           industry: res.data?.industry,
+  //           location: res.data?.location,
+  //           size: res.data?.size,
+  //         })
+  //       );
+  //       dispatch(
+  //         login({ token: response?.data?.access_token, role: "employeer" })
+  //       );
+  //       localStorage.setItem("access_token", response.data.access_token);
+  //       localStorage.setItem("token_type", response.data.token_type);
+  //       toast.success("Logged in successfully!");
+  //       navigate("/candidate/dashboard");
+  //       setLoading(false);
+  //     } catch (error: any) {
+  //       console.log(error);
+  //       setLoading(false);
+  //       const errorMessage =
+  //         error?.response?.data?.detail || "An error occurred during login.";
+  //       toast.error(errorMessage);
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -184,9 +184,9 @@ const CandidateSignUp: React.FC = () => {
     { value: "vanilla", label: "Vanilla" },
   ];
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen">
       {loading && <Loader />}
-      <div className="w-full max-w-lg p-8 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-lg p-8 m-10 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">
           Candidate Sign Up
         </h2>
@@ -578,7 +578,7 @@ const CandidateSignUp: React.FC = () => {
           </div>
 
           {/* Social Login (Optional) */}
-          <div className="flex justify-center mt-6 space-x-4">
+          {/* <div className="flex justify-center mt-6 space-x-4">
             <button
               onClick={GoggleHandler}
               className="bg-[#4285F4] text-white px-4 py-2 rounded-md"
@@ -586,11 +586,11 @@ const CandidateSignUp: React.FC = () => {
               Login with Google
             </button>
             <button
-              /* onClick={LinkdinHandler} */ className="bg-[#0077B5] text-white px-4 py-2 rounded-md"
+              onClick={LinkdinHandler} className="bg-[#0077B5] text-white px-4 py-2 rounded-md"
             >
               Login with LinkedIn
             </button>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

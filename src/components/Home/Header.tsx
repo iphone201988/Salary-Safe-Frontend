@@ -33,7 +33,7 @@ const Header: React.FC = () => {
     }`;
 
   return (
-    <header className="bg-[#1B1035] text-[#F5EDEF] p-5 flex justify-between items-center fixed top-0 w-full z-10 shadow-md">
+    <header className="bg-[#1B1035] text-[#F5EDEF] p-5 flex justify-between items-center fixed top-0 w-full z-10 shadow-lg ">
       <div onClick={homePage} className="text-2xl font-bold cursor-pointer">
         Salary-Safe
       </div>

@@ -17,7 +17,7 @@ const SelectAuth: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row justify-center items-center h-screen">
       <div
         onClick={() => handleClick("company")}
         className="bg-white rounded-lg shadow-md p-8 w-3/4 md:w-1/3 m-2 cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out transform hover:-translate-y-1"

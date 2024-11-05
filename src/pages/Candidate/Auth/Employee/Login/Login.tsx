@@ -7,10 +7,10 @@ import {
 import Button from "../../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { userLogin, userSocialLogin } from "../../../../../API/apis";
+import { userLogin, /* userSocialLogin */ } from "../../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, googleauthProvider } from "../../../../../../firebase";
-import { signInWithPopup } from "firebase/auth";
+// import { auth, googleauthProvider } from "../../../../../../firebase";
+// import { signInWithPopup } from "firebase/auth";
 import Loader from "../../../../../components/Loader/Loader";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import { useDispatch } from "react-redux";
@@ -33,34 +33,34 @@ const EmployeeLogin = () => {
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const GoggleHandler = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleauthProvider);
-      console.log("google user", result);
-      const data = {
-        email: result.user?.email,
-        full_name: result.user?.displayName,
-        photo: result.user?.photoURL,
-        provider: result.user?.providerData[0].providerId,
-        provider_id: result.user?.uid,
-      };
-      try {
-        const response = await axios.post(userSocialLogin, data);
-        console.log("social user response", response);
+  // const GoggleHandler = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, googleauthProvider);
+  //     console.log("google user", result);
+  //     const data = {
+  //       email: result.user?.email,
+  //       full_name: result.user?.displayName,
+  //       photo: result.user?.photoURL,
+  //       provider: result.user?.providerData[0].providerId,
+  //       provider_id: result.user?.uid,
+  //     };
+  //     try {
+  //       const response = await axios.post(userSocialLogin, data);
+  //       console.log("social user response", response);
        
-        dispatch(login({token: response?.data?.access_token ,role:"candidate"}));
-        toast.success("Logged in successfully!");
-        navigate("/candidate/dashboard");
-      } catch (error: any) {
-        console.log(error);
-        const errorMessage =
-          error?.response?.data?.detail || "An error occurred during login.";
-        toast.error(errorMessage);
-      }
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
+  //       dispatch(login({token: response?.data?.access_token ,role:"candidate"}));
+  //       toast.success("Logged in successfully!");
+  //       navigate("/candidate/dashboard");
+  //     } catch (error: any) {
+  //       console.log(error);
+  //       const errorMessage =
+  //         error?.response?.data?.detail || "An error occurred during login.";
+  //       toast.error(errorMessage);
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //   }
+  // };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -104,7 +104,7 @@ const EmployeeLogin = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen">
       {loading && <Loader />}
       <div className="w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg">
         <h1 className="text-3xl font-bold text-center">Login as Candidate</h1>
@@ -170,7 +170,7 @@ const EmployeeLogin = () => {
         </div>
 
         {/* Social Login (Optional) */}
-        <div className="flex justify-center mt-6 space-x-4">
+        {/* <div className="flex justify-center mt-6 space-x-4">
           <button
             onClick={GoggleHandler}
             className="bg-[#4285F4] text-white px-4 py-2 rounded-md"
@@ -178,11 +178,11 @@ const EmployeeLogin = () => {
             Login with Google
           </button>
           <button
-            /* onClick={LinkdinHandler} */ className="bg-[#0077B5] text-white px-4 py-2 rounded-md"
+            onClick={LinkdinHandler} className="bg-[#0077B5] text-white px-4 py-2 rounded-md"
           >
             Login with LinkedIn
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
