@@ -50,31 +50,118 @@ export const resetPasswordSchema = yup.object({
 
 export const employeeRegistrationSchema = yup
   .object({
-    fullName: yup
-      .string()
-      .required(" name is required"),
+    fullName: yup.string().required(" name is required"),
     email: yup.string().email("Must be a valid email"),
-    phone: yup
-      .string()
-      .nullable(),
+    phone: yup.string().nullable(),
     password: yup.string().required("Password is required"),
   })
   .test("at-least-one", "Either phone or email is required", function (value) {
     return !!value.phone || !!value.email;
   });
+
 export const employeerRegistrationSchema = yup
   .object({
-    companyName: yup
-      .string()
-      .required("Company name is required"),
+    companyName: yup.string().required("Company name is required"),
+
     companyLocation: yup.string().required("Company Location is required"),
-    companySize: yup.string().required("Company Location is required"),
-    email: yup.string().email("Must be a valid email"),
+
+    companySize: yup.string().required("Company Size is required"),
+
+    email: yup
+      .string()
+      .email("Must be a valid email")
+      .required("Email is required"),
+
     phone: yup
       .string()
-      .nullable(),
-    password: yup.string().required("Password is required"),
+      .nullable()
+      .matches(/^[0-9]+$/, "Phone number must only contain numbers"),
+
+    password: yup
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+
     industry: yup.string().required("Industry is required"),
+
+    PrimaryContact: yup.string().required("Primary contact is required"),
+
+    primaryHiringGoals: yup
+      .array()
+      .min(1, "Please select at least one primary hiring goal")
+      .of(yup.string().required("Each goal must be selected")),
+
+    preferredJobLocations: yup
+      .array()
+      .min(1, "Please select at least one preferred job location")
+      .of(yup.string().required("Each location must be selected")),
+
+    rolesPositions: yup
+      .array()
+      .min(1, "Please select at least one role/position")
+      .of(yup.string().required("Each role must be selected")),
+
+    jobTypes: yup
+      .array()
+      .min(1, "Please select at least one job type")
+      .of(yup.string().required("Each job type must be selected")),
+
+    keyMetrics: yup
+      .string()
+      .required("Please select at least one key metric")
+      /* .of(yup.string().required("Each metric must be selected")) */,
+
+    roleCustomization: yup
+      .string()
+      .required("Please select at least one role customization option")
+      /* .of(yup.string().required("Each customization option must be selected")) */,
+
+    salaryBenchmarking: yup
+      .string()
+      .required("Please select at least one salary benchmarking option")
+      /* .of(yup.string().required("Each benchmarking option must be selected")) */,
+
+    candidateViewingPreferences: yup
+      .string()
+      .required("Please select at least one candidate viewing preference")
+      /* .of(yup.string().required("Each preference must be selected")) */,
+
+    offerOptimization: yup
+      .string()
+      .required("Please select at least one offer optimization option"),
+      // .of(yup.string().required("Each optimization option must be selected")),
+
+    marketRoleAlerts: yup
+      .string()
+      .required("Please select at least one market role alert"),
+      // .of(yup.string().required("Each market role alert must be selected")),
+
+    customReports: yup
+      .string()
+      .required("Please select at least one custom report option"),
+      // .of(yup.string().required("Each report option must be selected")),
+
+    automatedUpdates: yup
+      .string()
+      .required("Please select automated update option"),
+    // .of(yup.string().required("Each update option must be selected")),
+
+    candidateFeedback: yup
+      .string()
+      .required("Please select at least one candidate feedback option"),
+    // .of(
+    //   yup
+    //     .string()
+    //     .required("Each feedback option must be selected")
+    //     .test(
+    //       "is-string",
+    //       "Each item must be a valid string",
+    //       (value) => typeof value === "string"
+    //     )
+    // )
+    referralHow: yup.string().nullable(),
+
+    referralCode: yup.string().nullable(),
   })
   .test("at-least-one", "Either phone or email is required", function (value) {
     return !!value.phone || !!value.email;
@@ -86,9 +173,7 @@ export const employeeLoginSchema = yup
       .string()
       .required("Email is required")
       .email("Must be a valid email"),
-    phone: yup
-      .string()
-      .nullable(),
+    phone: yup.string().nullable(),
     password: yup.string().required("Password is required"),
   })
   .test("at-least-one", "Either phone or email is required", function (value) {

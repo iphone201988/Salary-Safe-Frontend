@@ -10,7 +10,7 @@ import {
 // import { signInWithPopup } from "firebase/auth";
 // import { auth, googleauthProvider } from "../../../../../../firebase";
 import {
- /*  getcandidatesProfile, */
+  /*  getcandidatesProfile, */
   userRegister,
   /* userSocialLogin, */
 } from "../../../../../API/apis";

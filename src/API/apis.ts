@@ -20,3 +20,5 @@ export const candidateLogin = url + "/candidates/login";
 export const getJobs = url + "/jobs";
 export const createJobs = url + "/jobs";
 export const companyDetails = url + "/users/me"
+//Employeer register
+export const employeerRegister = url + "/clients/register";
