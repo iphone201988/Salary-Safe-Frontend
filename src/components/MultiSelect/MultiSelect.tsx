@@ -11,7 +11,8 @@ interface MultiSelectComponentProps {
   label: string;
   isMulti: boolean;
   onChange: (selectedOptions: OnChangeValue<OptionType, boolean>) => void;
-  value: OptionType[] | any | null; 
+  value: OptionType[] | any | null;
+  error?: any;
 }
 
 const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
@@ -20,19 +21,26 @@ const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
   isMulti,
   onChange,
   value,
+  error,
 }) => {
   return (
-    <div className="w-full flex flex-col space-y-1">
-      <label className="text-left">{label}</label>
-      <Select<OptionType, boolean>
-        options={options}
-        isMulti={isMulti}
-        onChange={onChange}
-        value={value} 
-        className="react-select"
-        classNamePrefix="select"
-      />
-    </div>
+    <>
+      <div className="w-full flex flex-col space-y-1">
+        <label className="text-left">{label}</label>
+        <Select<OptionType, boolean>
+          options={options}
+          isMulti={isMulti}
+          onChange={onChange}
+          value={value}
+          className="react-select"
+          classNamePrefix="select"
+        />
+      </div>
+
+      {error && (
+        <small className="text-red-600 font-bold text-sm">{error}</small>
+      )}
+    </>
   );
 };
 

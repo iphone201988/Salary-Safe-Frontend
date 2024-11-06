@@ -12,6 +12,23 @@ import { employeerRegister } from "../../../../API/apis";
 import Loader from "../../../../components/Loader/Loader";
 import { industrys } from "../../../../utils/helper";
 import MultiSelectComponent from "../../../../components/MultiSelect/MultiSelect";
+import {
+  options,
+  Positions_of_Interest,
+  Key_Metrics,
+  Role_Specific,
+  SalaryBenchmarkingOptions,
+  MarketAndRoleAlertsOptions,
+  CustomReportsOptions,
+  AutomatedUpdatesOptions,
+  CandidateFeedbackInsightsOptions,
+  Preferred_Job_Locations,
+  jobtypesOptions,
+  pool,
+  offer,
+  roleOptions,
+  referralHow,
+} from "./options";
 
 interface SignUpFormData {
   companyName: string;
@@ -175,7 +192,7 @@ const CompanySignUp: React.FC = () => {
         industry: formData.industry,
         company_size: formData.companySize,
         headquarters_location: formData.companyLocation,
-        primary_contact_person: formData.PrimaryContact, 
+        primary_contact_person: formData.PrimaryContact,
         contact_phone_number: formData.phone,
         primary_hiring_goals: data.primaryHiringGoals,
         preferred_job_locations: data.preferredJobLocations,
@@ -219,106 +236,6 @@ const CompanySignUp: React.FC = () => {
       setFormData({ ...formData, companyLocation: place.formatted_address });
     }
   };
-
-  const options = [
-    { value: "goal1", label: "goal1" },
-    { value: "goal2", label: "goal2" },
-    { value: "goal3", label: "goal3" },
-  ];
-
-  const jobtypesOptions = [
-    { value: "Full-Time", label: "Full-Time" },
-    { value: "Part-Time", label: "Part-Time" },
-    { value: "Contract", label: "Contract" },
-    { value: "Internship", label: "Internship" },
-    { value: "Freelance", label: "Freelance" },
-  ];
-
-  // const preference = [
-  //   { value: "Yes", label: "Yes" },
-  //   { value: "No", label: "No" },
-  // ];
-
-  const pool = [
-    { value: "1", label: "Experience and Skill Sets" },
-    { value: "2", label: "Salary Expectations" },
-    { value: "3", label: "Fit and Alignment Insights" },
-    { value: "4", label: "Engagement Metrics" },
-  ];
-
-  const offer = [
-    { value: "1", label: "Salary Negotiation Support" },
-    { value: "2", label: "Offer Acceptance Probability Model" },
-    { value: "3", label: "Budget Impact Analysis" },
-  ];
-
-  // const preference2 = [
-  //   { value: "1", label: "Enable Competitive Salary Benchmarking" },
-  //   { value: "2", label: "Receive Salary Adjustment Suggestions" },
-  // ];
-
-  const referralHow = [
-    { value: "Referral", label: "Referral" },
-    { value: "Friend", label: "Friend" },
-    { value: "Social Media", label: "Social Media" },
-    { value: "Other", label: "Other" },
-  ];
-
-  const roleOptions = [
-    { value: "admin", label: "Admin" },
-    { value: "editor", label: "Editor" },
-    { value: "viewer", label: "Viewer" },
-  ];
-
-  const Preferred_Job_Locations = [
-    { value: "1", label: "Remote" },
-    { value: "2", label: "On-site" },
-  ];
-
-  const Positions_of_Interest = [{ value: "1", label: "Software Engineer" }];
-
-  const Key_Metrics = [
-    { value: "candidateViews", label: "Candidate Views" },
-    { value: "rolePerformance", label: "Role Performance" },
-    { value: "salaryCompetitiveness", label: "Salary Competitiveness" },
-    { value: "budgetImpactAnalysis", label: "Budget Impact Analysis" },
-    { value: "engagementData", label: "Engagement Data" },
-  ];
-
-  const Role_Specific = [
-    { value: "Yes", label: "Yes" },
-    { value: "No", label: "No" },
-  ];
-
-  const SalaryBenchmarkingOptions = [
-    {
-      value: "enableBenchmarking",
-      label: "Enable Competitive Salary Benchmarking",
-    },
-    {
-      value: "receiveAdjustmentSuggestions",
-      label: "Receive Salary Adjustment Suggestions",
-    },
-  ];
-
-  const MarketAndRoleAlertsOptions = [
-    { value: "enableRealTimeAlerts", label: "Enable Real-Time Market Alerts" },
-  ];
-
-  const CustomReportsOptions = [
-    { value: "enableCustomReports", label: "Enable Custom Reporting" },
-  ];
-
-  const AutomatedUpdatesOptions = [
-    { value: "enableAutomatedUpdates", label: "Enable Automated Updates" },
-  ];
-
-  const CandidateFeedbackInsightsOptions = [
-    {
-      value: "enableFeedbackAnalysis",
-      label: "Enable Candidate Feedback Analysis",
-    },
-  ];
 
   const handleAddMember = () => {
     setTeamMembers([...teamMembers, { name: "", email: "", role: "" }]);
@@ -469,13 +386,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("primaryHiringGoals", selected)
             }
             value={formData.primaryHiringGoals}
+            error={errors.primaryHiringGoals}
           />
-
-          {errors?.primaryHiringGoals && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.primaryHiringGoals}
-            </small>
-          )}
 
           <MultiSelectComponent
             isMulti={true}
@@ -485,13 +397,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("preferredJobLocations", selected)
             }
             value={formData.preferredJobLocations}
+            error={errors.preferredJobLocations}
           />
-
-          {errors?.preferredJobLocations && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.preferredJobLocations}
-            </small>
-          )}
 
           <MultiSelectComponent
             isMulti={true}
@@ -501,13 +408,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("rolesPositions", selected)
             }
             value={formData.rolesPositions}
+            error={errors.rolesPositions}
           />
-
-          {errors?.rolesPositions && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.rolesPositions}
-            </small>
-          )}
 
           <MultiSelectComponent
             isMulti={true}
@@ -517,13 +419,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("jobTypes", selected)
             }
             value={formData.jobTypes}
+            error={errors.jobTypes}
           />
-
-          {errors?.jobTypes && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.jobTypes}
-            </small>
-          )}
 
           <div className="font-[600] text-lg">Dashboard Customization</div>
           <MultiSelectComponent
@@ -534,13 +431,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("keyMetrics", selected)
             }
             value={formData.keyMetrics}
+            error={errors.keyMetrics}
           />
-
-          {errors?.keyMetrics && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.keyMetrics}
-            </small>
-          )}
 
           <div className="font-[600] text-lg">Job Posting Preferences</div>
 
@@ -552,13 +444,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("roleCustomization", selected)
             }
             value={formData.roleCustomization}
+            error={errors.roleCustomization}
           />
-
-          {errors?.roleCustomization && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.roleCustomization}
-            </small>
-          )}
 
           <MultiSelectComponent
             isMulti={false}
@@ -568,13 +455,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("salaryBenchmarking", selected)
             }
             value={formData.salaryBenchmarking}
+            error={errors.salaryBenchmarking}
           />
-
-          {errors?.salaryBenchmarking && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.salaryBenchmarking}
-            </small>
-          )}
 
           <div className="font-[600] text-lg">Candidate Pool Access</div>
 
@@ -586,13 +468,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("candidateViewingPreferences", selected)
             }
             value={formData.candidateViewingPreferences}
+            error={errors.candidateViewingPreferences}
           />
-
-          {errors?.candidateViewingPreferences && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.candidateViewingPreferences}
-            </small>
-          )}
 
           <div className="font-[600] text-lg">Offer and Negotiation Tools</div>
 
@@ -604,13 +481,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("offerOptimization", selected)
             }
             value={formData.offerOptimization}
+            error={errors.offerOptimization}
           />
-
-          {errors?.offerOptimization && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.offerOptimization}
-            </small>
-          )}
 
           <div className="font-[600] text-lg">
             Reporting and Performance Tracking
@@ -624,13 +496,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("marketRoleAlerts", selected)
             }
             value={formData.marketRoleAlerts}
+            error={errors.marketRoleAlerts}
           />
-
-          {errors?.marketRoleAlerts && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.marketRoleAlerts}
-            </small>
-          )}
 
           <MultiSelectComponent
             isMulti={false}
@@ -640,13 +507,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("customReports", selected)
             }
             value={formData.customReports}
+            error={errors.customReports}
           />
-
-          {errors?.primaryHiringGoals && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.customReports}
-            </small>
-          )}
 
           <div className="font-[600] text-lg">
             Communication and Candidate Engagement
@@ -660,13 +522,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("automatedUpdates", selected)
             }
             value={formData.automatedUpdates}
+            error={errors.automatedUpdates}
           />
-
-          {errors?.automatedUpdates && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.automatedUpdates}
-            </small>
-          )}
 
           <MultiSelectComponent
             isMulti={false}
@@ -676,13 +533,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("candidateFeedback", selected)
             }
             value={formData.candidateFeedback}
+            error={errors.candidateFeedback}
           />
-
-          {errors?.candidateFeedback && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.candidateFeedback}
-            </small>
-          )}
 
           <div>
             <div className="font-[600] text-lg">
@@ -751,13 +603,8 @@ const CompanySignUp: React.FC = () => {
               handleMultiSelectChange("referralHow", selected)
             }
             value={formData.referralHow}
+            error={errors?.referralHow}
           />
-          {errors?.referralHow && (
-            <small className="text-red-600 font-bold text-sm">
-              {errors.referralHow}
-            </small>
-          )}
-
           <InputField
             label="Referral Code"
             name="referralCode"
