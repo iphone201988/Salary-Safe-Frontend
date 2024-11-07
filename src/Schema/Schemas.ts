@@ -203,3 +203,130 @@ export const validateForm = async (
     return formattedErrors;
   }
 };
+
+export const candidateSignUpSchema = yup.object({
+  full_name: yup.string().required("Full name is required"),
+
+  email: yup
+    .string()
+    .email("Must be a valid email")
+    .required("Email is required"),
+
+    phone_number: yup
+    .string()
+    .required("Phone number is required")
+    .matches(
+      /^\+\d{1,3}\d{6,15}$/,
+      "Phone number must start with '+' followed by 1-3 digit country code and 6-15 digit phone number"
+    ),
+
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+
+  location: yup.string().required("Location is required"),
+
+  current_job_title: yup.string().nullable(),
+
+  linkedin_profile_url: yup.string().url("Must be a valid URL").nullable(),
+
+  job_titles_of_interest: yup
+    .string()
+    .required("Job titles of interest are required"),
+
+  total_years_of_experience: yup
+  .string().required("Education level is required"),
+
+  education_level: yup.string().required("Education level is required"),
+
+  key_skills: yup
+    .array()
+    .of(yup.string().required("Each skill is required"))
+    .min(1, "Please add at least one key skill"),
+
+  general_salary_range: yup.string().required("Salary range is required"),
+
+  preferred_salary_type: yup.string().required("Salary type is required"),
+
+  open_to_performance_based_compensation: yup.boolean().required(),
+
+  willing_to_negociate: yup.boolean().required(),
+
+  minimum_acceptable_salary: yup
+    .string()
+    .required("Minimum acceptable salary is required"),
+
+  preferred_benefits: yup
+    .array()
+    .of(yup.string().required("Each benefit is required"))
+    .min(1, "Please select at least one preferred benefit"),
+
+  view_salary_expectations: yup.string().required(),
+
+  hide_profile_from_current_employer: yup.boolean().required(),
+
+  industries_of_interest: yup
+    .array()
+    .of(yup.string().required("Each industry is required"))
+    .min(1, "Please select at least one industry of interest"),
+
+  job_type_preferences: yup
+    .array()
+    .of(yup.string().required("Each job type is required"))
+    .min(1, "Please select at least one job type"),
+
+  actively_looking_for_new_job: yup.boolean().required(),
+
+  career_goals: yup.string().nullable(),
+
+  professional_development_areas: yup
+    .array()
+    .of(yup.string().required("Each area is required"))
+    .min(1, "Please specify at least one development area"),
+
+  role_specific_salary_adjustments: yup.string().nullable(),
+
+  salaryInsightsInterest: yup.boolean().required(),
+
+  resume_upload: yup.mixed().nullable().required(),
+
+  cover_letter_upload: yup.mixed().nullable(),
+
+  invite_employer: yup.boolean(),
+  employer_name: yup.string().when("invite_employer", {
+    is: true,
+    then: (schema) => schema.required("Employer name is required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+
+  contact_person_name: yup.string().when("invite_employer", {
+    is: true,
+    then: (schema) => schema.required("Contact person name is required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+
+  contact_email: yup.string().when("invite_employer", {
+    is: true,
+    then: (schema) => schema.email("Must be a valid email").required("Contact email is required"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+
+  message_to_employer: yup.string().nullable(),
+
+  notificationPreferences: yup
+    .array()
+    .of(yup.string().required("Each preference is required"))
+    .min(1, "Please select at least one notification preference"),
+
+  job_alerts_frequency: yup.string().nullable(),
+
+  referral_source: yup.string().nullable(),
+
+  referral_code: yup.string().nullable(),
+
+  terms_accepted: yup
+    .boolean()
+    .oneOf([true], "You must accept the terms and conditions"),
+});
+

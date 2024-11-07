@@ -7,7 +7,7 @@ import About from "../../../assets/About.png"
 
 const AboutPage = () => {
   const [teamImageLoaded, setTeamImageLoaded] = useState(false);
-  const [chartImageLoaded, setChartImageLoaded] = useState(false);
+  // const [chartImageLoaded, setChartImageLoaded] = useState(false);
   return (
     // <div className="flex flex-col min-h-screen overflow-hidden">
     //   <NavBar />
@@ -116,7 +116,7 @@ const AboutPage = () => {
             </div>
 
             {/* Data Visualization */}
-            <div className="relative w-full sm:w-1/3">
+            {/* <div className="relative w-full sm:w-1/3">
               {!chartImageLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="loader"></div>
@@ -128,7 +128,7 @@ const AboutPage = () => {
                 className={`w-full rounded-lg shadow-lg transition-opacity duration-500 ${chartImageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 onLoad={() => setChartImageLoaded(true)}
               />
-            </div>
+            </div> */}
           </div>
 
           {/* CTA Buttons */}

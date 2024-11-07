@@ -34,6 +34,7 @@ const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
           value={value}
           className="react-select"
           classNamePrefix="select"
+          placeholder="Select...."
         />
       </div>
 
