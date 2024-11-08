@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { EmployeerDetails } from "../../types";
+import { candidateDetails , EmployeerDetails } from "../../types";
 
 interface UserState {
   employeerDetails?: EmployeerDetails;
-  employeDetails?: {};
+  employeDetails?: candidateDetails;
 }
 
 const initialState: UserState = {
   employeerDetails: {} as EmployeerDetails,
+  employeDetails: {} as candidateDetails,
 };
 
 const userDataSlice = createSlice({
@@ -21,7 +22,7 @@ const userDataSlice = createSlice({
     setemployeerDetails: (state, action: PayloadAction<EmployeerDetails>) => {
       state.employeerDetails = action.payload;
     },
-    setemployeDetails: (state, action) => {
+    setemployeDetails: (state, action: PayloadAction<candidateDetails>) => {
       state.employeDetails = action.payload;
     },
   },

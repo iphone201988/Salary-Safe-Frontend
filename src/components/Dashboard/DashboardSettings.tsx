@@ -19,9 +19,9 @@ interface Data {
 }
 
 const DashboardSettings: React.FC = () => {
-  const [data, setData] = useState<Data | null>(null);
+  // const [data, setData] = useState<Data | null>(null);
   // const dispatch = useDispatch(); // Get the dispatch function
-  const user: any = useSelector((state: RootState) => state.user); // Access user data from Redux store
+  // const user: any = useSelector((state: RootState) => state.user); // Access user data from Redux store
 
   const [formData, setFormData] = useState<SignUpFormData>({
     companyName: "",
@@ -49,7 +49,7 @@ const DashboardSettings: React.FC = () => {
     referralCode: "",
   });
 
-  const [errors, setErrors] = useState<SignUpFormErrors>({});
+  const [errors, _setErrors] = useState<SignUpFormErrors>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -59,25 +59,25 @@ const DashboardSettings: React.FC = () => {
     });
   };
 
-  const handleFetch = async (): Promise<void> => {
-    const token = useSelector((state: RootState) => state.auth.token);
-    try {
-      const response = await axios.get<Data>(companyDetails, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  // const handleFetch = async (): Promise<void> => {
+  //   const token = useSelector((state: RootState) => state.auth.token);
+  //   try {
+  //     const response = await axios.get<Data>(companyDetails, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      console.log("response::::::", response.data);
-      setData(response.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Error fetching data:", error.message);
-      } else {
-        console.error("Unexpected error:", error);
-      }
-    }
-  };
+  //     console.log("response::::::", response.data);
+  //     setData(response.data);
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       console.error("Error fetching data:", error.message);
+  //     } else {
+  //       console.error("Unexpected error:", error);
+  //     }
+  //   }
+  // };
 
   const { employeerDetails } = useSelector((state: RootState) => state.user);
   console.log("employeerDetails", employeerDetails);
@@ -101,28 +101,28 @@ const DashboardSettings: React.FC = () => {
   //   }
   // }, [data]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await axios.patch<Data>(companyDetails, formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      setData(response.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Error updating data:", error.message);
-      } else {
-        console.error("Unexpected error:", error);
-      }
-    }
-  };
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.patch<Data>(companyDetails, formData, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  //       },
+  //     });
+  //     // setData(response.data);
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       console.error("Error updating data:", error.message);
+  //     } else {
+  //       console.error("Unexpected error:", error);
+  //     }
+  //   }
+  // };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h3 className="text-4xl font-bold my-4 text-center">Company Profile</h3>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form className="space-y-4">
         <CompanyProfile
           formData={formData}
           errors={errors}

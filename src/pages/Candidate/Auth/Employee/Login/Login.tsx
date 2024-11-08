@@ -7,7 +7,7 @@ import {
 import Button from "../../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { userLogin, /* userSocialLogin */ } from "../../../../../API/apis";
+import { candidateLogin /* userSocialLogin */ } from "../../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
 // import { auth, googleauthProvider } from "../../../../../../firebase";
 // import { signInWithPopup } from "firebase/auth";
@@ -47,7 +47,7 @@ const EmployeeLogin = () => {
   //     try {
   //       const response = await axios.post(userSocialLogin, data);
   //       console.log("social user response", response);
-       
+
   //       dispatch(login({token: response?.data?.access_token ,role:"candidate"}));
   //       toast.success("Logged in successfully!");
   //       navigate("/candidate/dashboard");
@@ -74,19 +74,21 @@ const EmployeeLogin = () => {
     try {
       setLoading(true);
       const data: any = {
-        username: formData.email,
+        email: formData.email,
         password: formData.password,
       };
-      const response = await axios.post(userLogin, data);
-        dispatch(login({token: response?.data?.access_token ,role:"candidate"}));
-        toast.success("Logged in successfully!");
-        setFormData({
-          email: "",
-          phone: "",
-          password: "",
-        });
-        setLoading(false);
-        navigate("/candidate/dashboard");
+      const response = await axios.post(candidateLogin, data);
+      dispatch(
+        login({ token: response?.data?.access_token, role: "candidate" })
+      );
+      toast.success("Logged in successfully!");
+      setFormData({
+        email: "",
+        phone: "",
+        password: "",
+      });
+      setLoading(false);
+      navigate("/candidate/dashboard");
     } catch (error: any) {
       setLoading(false);
       const errorMessage =
@@ -168,9 +170,9 @@ const EmployeeLogin = () => {
             Register
           </Link>
           {" | "}
-            <Link to="/" className="text-[#019529] underline">
-              Home
-            </Link>
+          <Link to="/" className="text-[#019529] underline">
+            Home
+          </Link>
         </div>
 
         {/* Social Login (Optional) */}
