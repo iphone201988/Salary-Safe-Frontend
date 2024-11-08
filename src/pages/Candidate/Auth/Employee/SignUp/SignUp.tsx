@@ -197,7 +197,11 @@ const CandidateSignUp: React.FC = () => {
       if (Array.isArray(value)) {
         // For arrays, append each item individually
         value.forEach((item) => formDataToSend.append(key, item));
-      } else {
+      } else if(key=="resume_upload"||key=="cover_letter_upload"){
+        // For files, append the file directly
+        // formDataToSend.append(key, value as any);
+      }
+       else {
         formDataToSend.append(key, value as any);
       }
     });
@@ -245,13 +249,12 @@ const CandidateSignUp: React.FC = () => {
   // console.log("from", formData);
   return (
     <div className="flex justify-center items-center min-h-screen">
-      {loading && <Loader />}
-      <div className="w-full max-w-lg p-8 m-10 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-lg p-8 m-10 bg-white rounded-lg shadow-md ">
         <h2 className="text-2xl font-bold text-center mb-6">
           Candidate Sign Up
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={`space-y-4 ${loading?"backdrop:blur-sm":""}`}>
           <h2 className="text-[#000000] text-lg font-bold">
             Personal Information
           </h2>
@@ -409,6 +412,7 @@ const CandidateSignUp: React.FC = () => {
             onChange={handleChange}
             error={errors.general_salary_range}
             placeholder="Enter General Salary Range"
+            min={5000}
           />
           <MultiSelectComponent
             isMulti={false}
@@ -466,6 +470,7 @@ const CandidateSignUp: React.FC = () => {
             onChange={handleChange}
             error={errors.minimum_acceptable_salary}
             placeholder="Enter Minimum Acceptable Salary"
+            min={5000}
           />
           <MultiSelectComponent
             isMulti={true}
@@ -777,14 +782,27 @@ const CandidateSignUp: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#019529] text-white px-4 py-2 rounded-md"
+            className={`w-full bg-[#019529] text-white px-4 py-2 rounded-md  ${
+              formData.terms_accepted ? "bg-[#019529]" : "bg-gray-400 cursor-not-allowed"
+            }`}
+            disabled={!formData.terms_accepted || loading}
           >
-            Sign Up
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <div className="w-4 h-4 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              "Sign Up"
+            )}
           </button>
           <div className="text-center mt-4">
             Already have an account?{" "}
             <Link to="/login-employee" className="text-[#019529] underline">
               Login
+            </Link>
+            {" | "}
+            <Link to="/" className="text-[#019529] underline">
+              Home
             </Link>
           </div>
 

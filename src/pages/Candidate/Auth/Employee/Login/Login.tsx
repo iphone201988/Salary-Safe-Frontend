@@ -167,6 +167,10 @@ const EmployeeLogin = () => {
           <Link to="/signup-employee" className="text-[#019529] underline">
             Register
           </Link>
+          {" | "}
+            <Link to="/" className="text-[#019529] underline">
+              Home
+            </Link>
         </div>
 
         {/* Social Login (Optional) */}

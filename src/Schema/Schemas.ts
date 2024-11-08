@@ -226,7 +226,7 @@ export const candidateSignUpSchema = yup.object({
 
   location: yup.string().required("Location is required"),
 
-  current_job_title: yup.string().nullable(),
+  current_job_title: yup.string().nullable().required("Current job title is required"),
 
   linkedin_profile_url: yup.string().url("Must be a valid URL").nullable(),
 
@@ -248,9 +248,9 @@ export const candidateSignUpSchema = yup.object({
 
   preferred_salary_type: yup.string().required("Salary type is required"),
 
-  open_to_performance_based_compensation: yup.boolean().required(),
+  open_to_performance_based_compensation: yup.boolean(),
 
-  willing_to_negociate: yup.boolean().required(),
+  willing_to_negociate: yup.boolean(),
 
   minimum_acceptable_salary: yup
     .string()
@@ -275,20 +275,20 @@ export const candidateSignUpSchema = yup.object({
     .of(yup.string().required("Each job type is required"))
     .min(1, "Please select at least one job type"),
 
-  actively_looking_for_new_job: yup.boolean().required(),
+  actively_looking_for_new_job: yup.boolean(),
 
-  career_goals: yup.string().nullable(),
+  career_goals: yup.string().nullable().required("career goals is required"),
 
   professional_development_areas: yup
     .array()
     .of(yup.string().required("Each area is required"))
     .min(1, "Please specify at least one development area"),
 
-  role_specific_salary_adjustments: yup.string().nullable(),
+  role_specific_salary_adjustments: yup.string().nullable().required("Role-Specific Salary Adjustments is required"),
 
   salaryInsightsInterest: yup.boolean().required(),
 
-  resume_upload: yup.mixed().nullable().required(),
+  resume_upload: yup.mixed().nullable(),
 
   cover_letter_upload: yup.mixed().nullable(),
 
@@ -318,7 +318,7 @@ export const candidateSignUpSchema = yup.object({
     .of(yup.string().required("Each preference is required"))
     .min(1, "Please select at least one notification preference"),
 
-  job_alerts_frequency: yup.string().nullable(),
+  job_alerts_frequency: yup.string().nullable().required("Job alerts frequency is required"),
 
   referral_source: yup.string().nullable(),
 

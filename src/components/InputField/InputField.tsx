@@ -7,6 +7,7 @@ interface InputFieldProps {
   type?: string;
   placeholder?: string;
   classes?: string;
+  min?: number;
 }
 const InputField = ({
   label,
@@ -17,6 +18,7 @@ const InputField = ({
   type = "text",
   placeholder = "",
   classes = "",
+  min=0
 }: InputFieldProps) => (
   <div className="w-full flex flex-col space-y-1">
     <label className="text-left">{label}:</label>
@@ -26,6 +28,7 @@ const InputField = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      min={min}
       className={`border border-black rounded-md w-full px-2 py-1 ${
         error && "border-red-600"
       } ${classes}`}

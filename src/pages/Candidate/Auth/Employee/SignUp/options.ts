@@ -27,9 +27,9 @@ export const options = [
   ];
   
   export const experienceOptions = [
-    { value: "1-3", label: "1-3" },
-    { value: "4-6", label: "4-6" },
-    { value: "7+", label: "7+" },
+    { value: 3, label: "1-3" },
+    { value: 6, label: "4-6" },
+    { value: 8, label: "7+" },
   ];
   
   export const salaryTypeOptions = [
