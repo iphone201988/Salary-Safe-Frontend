@@ -29,8 +29,7 @@ export const companyRegistrationStep3Schema = yup.object({
   notifications: yup.boolean().required(),
 });
 export const companyLoginSchema = yup.object({
-  company_name: yup.string().required("Company name is required"),
-  company_email: yup
+  email: yup
     .string()
     .required("Email is required")
     .email("Must be a valid email"),

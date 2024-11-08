@@ -9,7 +9,6 @@ import {
 } from "../../../../Schema/Schemas";
 import { useLoadScript, Autocomplete } from "@react-google-maps/api";
 import { employeerRegister } from "../../../../API/apis";
-import Loader from "../../../../components/Loader/Loader";
 import { industrys } from "../../../../utils/helper";
 import MultiSelectComponent from "../../../../components/MultiSelect/MultiSelect";
 import {
@@ -29,64 +28,8 @@ import {
   roleOptions,
   referralHow,
 } from "./options";
+import { SignUpFormData, SignUpFormErrors, TeamMember } from "../../../../types";
 
-interface SignUpFormData {
-  companyName: string;
-  companyLocation: string;
-  companySize: string;
-  email: string;
-  phone: string;
-  password: string;
-  industry: string;
-  PrimaryContact: string;
-  primaryHiringGoals: any[];
-  preferredJobLocations: any[];
-  rolesPositions: any[];
-  jobTypes: any[];
-  keyMetrics: any | string;
-  roleCustomization: any | string;
-  salaryBenchmarking: any | string;
-  candidateViewingPreferences: any | string;
-  offerOptimization: any | string;
-  marketRoleAlerts: any | string;
-  customReports: any | any;
-  automatedUpdates: any | string;
-  candidateFeedback: any | string;
-  referralHow: string | any;
-  referralCode: string | any;
-}
-
-interface SignUpFormErrors {
-  companyName?: string;
-  companyLocation?: string;
-  companySize?: string;
-  email?: string;
-  phone?: string;
-  password?: string;
-  industry?: string;
-  PrimaryContact?: string;
-  primaryHiringGoals?: string;
-  preferredJobLocations?: string;
-  rolesPositions?: string;
-  jobTypes?: string;
-  keyMetrics?: string;
-  roleCustomization?: string;
-  salaryBenchmarking?: string;
-  candidateViewingPreferences?: string;
-  offerOptimization?: any | string;
-  marketRoleAlerts?: string;
-  customReports?: any | string;
-  automatedUpdates?: any | string;
-  candidateFeedback?: any | string;
-  referralHow?: string;
-  referralCode?: string;
-}
-
-interface TeamMember {
-  name: string;
-  email: string;
-  role: string;
-}
 
 const libraries: any = ["places"];
 
@@ -95,7 +38,8 @@ const CompanySignUp: React.FC = () => {
     googleMapsApiKey: "AIzaSyBFBwlTTtqbm5uwk0tIWEOEwR9CXSeCJuA",
     libraries,
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   const [formData, setFormData] = useState<SignUpFormData>({
     companyName: "",
@@ -131,6 +75,12 @@ const CompanySignUp: React.FC = () => {
   const navigate = useNavigate();
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
 
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(event.target.checked);
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -143,6 +93,13 @@ const CompanySignUp: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    if (formRef) {
+      formRef.current
+        ?.querySelectorAll("input, button")
+        .forEach((element: any) => {
+          element.disabled = true;
+        });
+    }
 
     const data = {
       ...formData,
@@ -182,6 +139,13 @@ const CompanySignUp: React.FC = () => {
     if (currentErrors) {
       setErrors(currentErrors);
       setLoading(false);
+      if (formRef) {
+        formRef.current
+          ?.querySelectorAll("input, button")
+          .forEach((element: any) => {
+            element.disabled = false;
+          });
+      }
       return;
     }
     setErrors({});
@@ -205,15 +169,15 @@ const CompanySignUp: React.FC = () => {
         candidate_viewing_preferences: data.candidateViewingPreferences,
         enable_offer_optimization: data.offerOptimization,
         enable_budget_analysis: "",
-        enable_real_time_market_alerts: "",
-        enable_custom_reporting: "",
+        enable_real_time_market_alerts: true,
+        enable_custom_reporting: true,
         preferred_report_frequency: "string",
         enable_automated_updates: data.automatedUpdates,
         enable_candidate_feedback_analysis: data.candidateFeedback,
         invite_team_member: data.teamMembers,
         referral_source: data.referralHow,
         referral_code: data.referralCode,
-        terms_accepted: true,
+        terms_accepted: isChecked,
         password: formData.password,
       };
       const response = await axios.post(employeerRegister, body);
@@ -227,6 +191,14 @@ const CompanySignUp: React.FC = () => {
     } catch (error: any) {
       setLoading(false);
       toast.error("Registration failed. Please try again.");
+    }
+
+    if (formRef) {
+      formRef.current
+        ?.querySelectorAll("input, button")
+        .forEach((element: any) => {
+          element.disabled = false;
+        });
     }
   };
 
@@ -253,12 +225,11 @@ const CompanySignUp: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      {loading && <Loader />}
       <div className="w-full max-w-lg p-8 m-10 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">
           Employer Sign-Up
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" ref={formRef}>
           <div className="font-[600] text-lg">Company Information</div>
           <InputField
             label="Company Name"
@@ -617,7 +588,13 @@ const CompanySignUp: React.FC = () => {
           <div className="font-[600] text-lg">Agreement and Submission</div>
 
           <div className="flex items-center">
-            <input type="checkbox" id="terms" className="mr-2" />
+            <input
+              type="checkbox"
+              id="terms"
+              className="mr-2"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
             <label htmlFor="terms" className="text-sm">
               I agree to the{" "}
               <a href="/terms" className="text-blue-600 underline">
@@ -643,10 +620,20 @@ const CompanySignUp: React.FC = () => {
           </div>
 
           <button
-            type="submit"
-            className="w-full bg-[#019529] text-white px-4 py-2 rounded-md"
+            type="button"
+            onClick={handleSubmit}
+            className={`w-full text-white px-4 py-2 rounded-md ${
+              isChecked ? "bg-[#019529]" : "bg-gray-400 cursor-not-allowed"
+            }`}
+            disabled={!isChecked || loading}
           >
-            Sign Up
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <div className="w-4 h-4 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
       </div>

@@ -12,7 +12,7 @@ import {
   FaUpload,
   FaUsers,
   FaChartBar,
-  FaInfoCircle
+  FaInfoCircle,
 } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import axios from "axios";
@@ -20,28 +20,27 @@ import { companyDetails } from "../../API/apis";
 import { useDispatch } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { useSelector } from "react-redux";
-import { clearUserData } from "../../Redux/reducer/userData";
+import {
+  clearUserData,
+  setemployeerDetails,
+} from "../../Redux/reducer/userData";
 import { logout } from "../../Redux/reducer/authSlice";
-
-interface Data {
-  full_name: string;
-}
+import { EmployeerDetails } from "../../types";
 
 const DashboardSidebar: React.FC = () => {
+  const token = useSelector((state: any) => state.auth.token);
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState<Data | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const role = useSelector((state: RootState) => state.auth.role);
-  const name = useSelector((state: RootState) => state.user.name);
-  const profile = useSelector((state: RootState) => state.user.profile);
+  const { employeerDetails } = useSelector((state: RootState) => state.user);
   const handleLogout = () => {
     localStorage.clear();
     if (role) {
       navigate(role === "employeer" ? "/login-company" : "/login-employee");
     }
-    dispatch(clearUserData())
-    dispatch(logout())
+    dispatch(clearUserData());
+    dispatch(logout());
   };
 
   const toggleSidebar = () => {
@@ -50,13 +49,14 @@ const DashboardSidebar: React.FC = () => {
 
   const handleFetch = async (): Promise<void> => {
     try {
-      const response = await axios.get<Data>(companyDetails, {
+      const response = await axios.get<EmployeerDetails>(companyDetails, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      setData(response.data);
-      console.log("data",data)
+      if (response.data) {
+        dispatch(setemployeerDetails(response.data));
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching data:", error.message);
@@ -69,7 +69,6 @@ const DashboardSidebar: React.FC = () => {
   useEffect(() => {
     handleFetch();
   }, []);
-
   return (
     <>
       <button
@@ -180,8 +179,12 @@ const DashboardSidebar: React.FC = () => {
             to="#"
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
-            <div>{profile ?(<img src={profile} alt="profile" /> ):(<FaUserCircle className="text-4xl" />)}</div>
-            <span>{name||"demo"}</span>
+            <div>
+              {employeerDetails && (
+                <FaUserCircle className="text-4xl" />
+              )}
+            </div>
+            <span>{employeerDetails?.company_name || "demo"}</span>
           </Link>
         </div>
       </aside>

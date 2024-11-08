@@ -12,10 +12,6 @@ export const options = [
     { value: "Freelance", label: "Freelance" },
   ];
 
-  // const preference = [
-  //   { value: "Yes", label: "Yes" },
-  //   { value: "No", label: "No" },
-  // ];
 
   export const pool = [
     { value: "1", label: "Experience and Skill Sets" },
@@ -30,10 +26,6 @@ export const options = [
     { value: "3", label: "Budget Impact Analysis" },
   ];
 
-  // const preference2 = [
-  //   { value: "1", label: "Enable Competitive Salary Benchmarking" },
-  //   { value: "2", label: "Receive Salary Adjustment Suggestions" },
-  // ];
 
   export const referralHow = [
     { value: "Referral", label: "Referral" },

@@ -1,10 +1,10 @@
 import React from "react";
 import DashboardSidebar from "../../../components/Dashboard/DashboardSidebar";
 import { Navigate, Outlet } from "react-router-dom";
-import { getToken } from "../../../utils/helper";
+import { useSelector } from "react-redux";
 
 const Dashboard: React.FC = () => {
-  const token = getToken();
+  const token = useSelector((state: any) => state.auth.token);
   if (!token) return <Navigate to="/login-company" />;
 
   return (

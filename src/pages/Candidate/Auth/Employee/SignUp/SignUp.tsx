@@ -33,91 +33,13 @@ import {
   skillsOptions,
   viewSalaryPermissionOptions,
 } from "./options";
-
-interface SignUpFormData {
-  full_name: string;
-  email: string;
-  phone_number: string;
-  password: string;
-  location: string;
-  current_job_title: string;
-  linkedin_profile_url: string;
-  job_titles_of_interest: string;
-  total_years_of_experience: string | any;
-  key_skills: any | string;
-  preferred_benefits: any | string;
-  industries_of_interest: any | string;
-  job_type_preferences: any | string;
-  professional_development_areas: any | string;
-  resume_upload: any;
-  cover_letter_upload: any;
-  notificationPreferences: any | string;
-  education_level: string | any;
-  general_salary_range: string;
-  preferred_salary_type: string | any;
-  open_to_performance_based_compensation: boolean;
-  willing_to_negociate: boolean;
-  minimum_acceptable_salary: string;
-  view_salary_expectations: string | any;
-  hide_profile_from_current_employer: boolean;
-  actively_looking_for_new_job: boolean;
-  career_goals: string;
-  role_specific_salary_adjustments: string;
-  employer_name: string;
-  contact_person_name: string;
-  contact_email: string;
-  message_to_employer: string;
-  referral_code: string;
-  referral_source: string | any;
-  job_alerts_frequency: string | any;
-  salaryInsightsInterest: boolean;
-  invite_employer: boolean;
-  terms_accepted: boolean;
-}
-
-interface SignUpFormErrors {
-  full_name?: string;
-  email?: string;
-  phone_number?: string;
-  password?: string;
-  location?: string;
-  current_job_title?: string;
-  linkedin_profile_url?: string;
-  job_titles_of_interest?: string;
-  total_years_of_experience?: string;
-  key_skills?: any;
-  preferred_benefits?: any;
-  industries_of_interest?: any;
-  job_type_preferences?: any;
-  professional_development_areas?: any;
-  resume_upload?: any;
-  cover_letter_upload?: any;
-  notificationPreferences?: any;
-  education_level?: string;
-  general_salary_range?: string;
-  preferred_salary_type?: string;
-  open_to_performance_based_compensation?: boolean;
-  willing_to_negociate?: boolean;
-  minimum_acceptable_salary?: string;
-  view_salary_expectations?: string;
-  hide_profile_from_current_employer?: boolean;
-  actively_looking_for_new_job?: boolean;
-  career_goals?: string;
-  role_specific_salary_adjustments?: string;
-  employer_name?: string;
-  contact_person_name?: string;
-  contact_email?: string;
-  message_to_employer?: string;
-  referral_code?: string;
-  referral_source?: string;
-  job_alerts_frequency?: string;
-  salaryInsightsInterest?: boolean;
-  invite_employer?: boolean;
-  terms_accepted?: boolean;
-}
+import {
+  SignUpCandidate,
+  SignUpCandidateFormErrors,
+} from "../../../../../types";
 
 const CandidateSignUp: React.FC = () => {
-  const [formData, setFormData] = useState<SignUpFormData>({
+  const [formData, setFormData] = useState<SignUpCandidate>({
     full_name: "",
     email: "",
     phone_number: "",
@@ -160,7 +82,7 @@ const CandidateSignUp: React.FC = () => {
   // const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const [errors, setErrors] = useState<SignUpFormErrors>({});
+  const [errors, setErrors] = useState<SignUpCandidateFormErrors>({});
   const navigate = useNavigate();
 
   // const GoggleHandler = async () => {
@@ -263,7 +185,7 @@ const CandidateSignUp: React.FC = () => {
     const currentErrors: any = await validateForm(candidateSignUpSchema, data);
 
     if (currentErrors) {
-      console.log("currentErrors",currentErrors)
+      console.log("currentErrors", currentErrors);
       setErrors(currentErrors);
       setLoading(false);
       return;
@@ -289,7 +211,7 @@ const CandidateSignUp: React.FC = () => {
         formData.cover_letter_upload
       );
     }
-    console.log("formDataToSend",formDataToSend)
+    console.log("formDataToSend", formDataToSend);
 
     try {
       const response = await axios.post(candidateRegister, formDataToSend, {
@@ -522,7 +444,9 @@ const CandidateSignUp: React.FC = () => {
               checked={formData.open_to_performance_based_compensation}
               onChange={handleChange}
             />
-            <label htmlFor="open_to_performance_based_compensation">Open to performance-based compensation?</label>
+            <label htmlFor="open_to_performance_based_compensation">
+              Open to performance-based compensation?
+            </label>
           </div>
           <div className="flex items-center space-x-2">
             <input
@@ -586,7 +510,9 @@ const CandidateSignUp: React.FC = () => {
               checked={formData.hide_profile_from_current_employer}
               onChange={handleChange}
             />
-            <label htmlFor="hide_profile_from_current_employer">Hide my profile from current employer(s)</label>
+            <label htmlFor="hide_profile_from_current_employer">
+              Hide my profile from current employer(s)
+            </label>
           </div>
           <h2 className="text-[#000000] text-lg font-bold">
             Job Search Preferences
@@ -620,7 +546,9 @@ const CandidateSignUp: React.FC = () => {
               checked={formData.actively_looking_for_new_job}
               onChange={handleChange}
             />
-            <label htmlFor="actively_looking_for_new_job">Are you actively looking for a new job?</label>
+            <label htmlFor="actively_looking_for_new_job">
+              Are you actively looking for a new job?
+            </label>
           </div>
           <InputField
             label="Career Goals"
@@ -662,7 +590,9 @@ const CandidateSignUp: React.FC = () => {
               checked={formData.salaryInsightsInterest}
               onChange={handleChange}
             />
-            <label htmlFor="salaryInsightsInterest">Interested in salary benchmarks and market insights?</label>
+            <label htmlFor="salaryInsightsInterest">
+              Interested in salary benchmarks and market insights?
+            </label>
           </div>
           <h2 className="text-[#000000] text-lg font-bold">
             Additional Details (Optional)
@@ -680,8 +610,10 @@ const CandidateSignUp: React.FC = () => {
               className="border p-2 w-full rounded"
             />
             {errors.resume_upload && (
-        <small className="text-red-600 font-bold text-sm">{errors.resume_upload}</small>
-      )}
+              <small className="text-red-600 font-bold text-sm">
+                {errors.resume_upload}
+              </small>
+            )}
           </div>
           <div className="w-full flex flex-col space-y-1">
             <label className="text-left">Upload Cover Letter (Optional):</label>
@@ -706,7 +638,9 @@ const CandidateSignUp: React.FC = () => {
                 checked={formData.invite_employer}
                 onChange={handleChange}
               />
-              <label htmlFor="invite_employer">Invite an employer to participate in Salary-Safe?</label>
+              <label htmlFor="invite_employer">
+                Invite an employer to participate in Salary-Safe?
+              </label>
             </div>
           </div>
           {formData.invite_employer && (
