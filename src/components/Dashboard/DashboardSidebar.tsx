@@ -82,7 +82,7 @@ const DashboardSidebar: React.FC = () => {
         onClick={() => setIsOpen(false)}
         className={`fixed top-0 right-0 h-full w-64 z-50 flex flex-col justify-between bg-gradient-to-b from-[#1B1035] to-[#120A2A] text-[#F5EDEF] shadow-lg transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
-        } md:translate-x-0 md:static md:h-auto md:w-64`}
+        } md:translate-x-0 md:static md:h-auto md:w-64 overflow-auto hide-scrollbar`}
       >
         <nav className="flex flex-col p-6 space-y-6">
           <div className="flex p-6">
@@ -180,9 +180,7 @@ const DashboardSidebar: React.FC = () => {
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <div>
-              {employeerDetails && (
-                <FaUserCircle className="text-4xl" />
-              )}
+              {employeerDetails && <FaUserCircle className="text-4xl" />}
             </div>
             <span>{employeerDetails?.company_name || "demo"}</span>
           </Link>

@@ -177,3 +177,10 @@ export interface SignUpCandidateFormErrors {
   invite_employer?: boolean;
   terms_accepted?: boolean;
 }
+
+export type CompanyProfileType = {
+  formData: SignUpFormData;
+  errors: SignUpFormErrors;
+  setFormData: React.Dispatch<React.SetStateAction<SignUpFormData>>;
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};

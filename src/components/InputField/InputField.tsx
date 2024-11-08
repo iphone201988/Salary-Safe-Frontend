@@ -6,6 +6,7 @@ interface InputFieldProps {
   error?: string | undefined;
   type?: string;
   placeholder?: string;
+  classes?: string;
 }
 const InputField = ({
   label,
@@ -14,7 +15,8 @@ const InputField = ({
   onChange,
   error,
   type = "text",
-  placeholder=""
+  placeholder = "",
+  classes = "",
 }: InputFieldProps) => (
   <div className="w-full flex flex-col space-y-1">
     <label className="text-left">{label}:</label>
@@ -26,7 +28,7 @@ const InputField = ({
       placeholder={placeholder}
       className={`border border-black rounded-md w-full px-2 py-1 ${
         error && "border-red-600"
-      }`}
+      } ${classes}`}
     />
     {error && <small className="text-red-600 font-bold text-sm">{error}</small>}
   </div>
