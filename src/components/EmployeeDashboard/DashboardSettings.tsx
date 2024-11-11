@@ -1,6 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { companyDetails } from "../../API/apis";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Redux/store";
+import CandidateProfile from "./DashboardSettings/CandidateProfile";
+import { FaUserEdit } from "react-icons/fa";
+import ProfileSetup from "./DashboardSettings/ProfileSetup";
 
 interface Data {
   email: string;
@@ -16,16 +21,39 @@ interface Data {
 
 const DashboardSettings: React.FC = () => {
   const [data, setData] = useState<Data | null>(null);
+  const [errors, setErrors] = useState<any>({});
+  const [edit, setEdit] = useState<boolean>(true);
+  const { employeDetails } = useSelector((state: RootState) => state.user);
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    notifications: false,
-    phone: "",
-    qualifications: "",
-    experience: "",
-    location: "",
-    salaryExpectation: "", // New confidential field
-    profileImage: null as File | null, // New field for profile image
+    full_name: employeDetails?.full_name || "",
+    email: employeDetails?.email || "",
+    phone_number: employeDetails?.phone_number || "",
+    location: employeDetails?.location || "",
+    current_job_title: employeDetails?.current_job_title || "",
+    linkedin_profile_url: employeDetails?.linkedin_profile_url || "",
+    job_titles_of_interest: employeDetails?.job_titles_of_interest || "",
+    total_years_of_experience: employeDetails?.total_years_of_experience || 0,
+    education_level: employeDetails?.education_level || "",
+    key_skills: employeDetails?.key_skills || [],
+    general_salary_range: employeDetails?.general_salary_range || "",
+    preferred_salary_type: employeDetails?.preferred_salary_type || "Annual",
+    open_to_performance_based_compensation: employeDetails?.open_to_performance_based_compensation || false,
+    willing_to_negociate: employeDetails?.willing_to_negociate || false,
+    minimum_acceptable_salary: employeDetails?.minimum_acceptable_salary || 0,
+    preferred_benefits: employeDetails?.preferred_benefits || [],
+    view_salary_expectations: employeDetails?.view_salary_expectations || "Private",
+    hide_profile_from_current_employer: employeDetails?.hide_profile_from_current_employer || false,
+    industries_of_interest: employeDetails?.industries_of_interest || [],
+    job_type_preferences: employeDetails?.job_type_preferences || [],
+    actively_looking_for_new_job: employeDetails?.actively_looking_for_new_job || false,
+    career_goals: employeDetails?.career_goals || "",
+    professional_development_areas: employeDetails?.professional_development_areas || [],
+    role_specific_salary_adjustments: employeDetails?.role_specific_salary_adjustments || "",
+    resume_upload: employeDetails?.resume_upload || null,
+    cover_letter_upload: employeDetails?.cover_letter_upload || null,
+    invite_employer: employeDetails?.invite_employer || [],
+    job_alerts_frequency: employeDetails?.job_alerts_frequency || "instant",
+    profileImage: null as File | null,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,42 +73,42 @@ const DashboardSettings: React.FC = () => {
     }
   };
 
-  const handleFetch = async (): Promise<void> => {
-    try {
-      const response = await axios.get<Data>(companyDetails, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      setData(response.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Error fetching data:", error.message);
-      } else {
-        console.error("Unexpected error:", error);
-      }
-    }
-  };
+  // const handleFetch = async (): Promise<void> => {
+  //   try {
+  //     const response = await axios.get<Data>(getcandidatesProfile, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  //       },
+  //     });
+  //     setData(response.data);
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       console.error("Error fetching data:", error.message);
+  //     } else {
+  //       console.error("Unexpected error:", error);
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
-    handleFetch();
+    // handleFetch();
   }, []);
 
-  useEffect(() => {
-    if (data) {
-      setFormData({
-        fullName: data.full_name,
-        email: data.email,
-        notifications: data.notification_preference,
-        phone: data.phone,
-        qualifications: data.qualifications || "",
-        experience: data.experience || "",
-        location: data.location || "",
-        salaryExpectation: data.salaryExpectation || "", // Initialize confidential field
-        profileImage: null, // Reset profile image field
-      });
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setFormData({
+  //       fullName: data.full_name,
+  //       email: data.email,
+  //       notifications: data.notification_preference,
+  //       phone: data.phone,
+  //       qualifications: data.qualifications || "",
+  //       experience: data.experience || "",
+  //       location: data.location || "",
+  //       salaryExpectation: data.salaryExpectation || "", // Initialize confidential field
+  //       profileImage: null, // Reset profile image field
+  //     });
+  //   }
+  // }, [data]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,8 +149,12 @@ const DashboardSettings: React.FC = () => {
   
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="relative">
       <h3 className="text-4xl font-bold my-4 text-center">Candidate Profile</h3>
+      <FaUserEdit onClick={()=>setEdit(!edit)} className="absolute top-0 right-0 cursor-pointer"/>
+
+      </div>
       
       {/* Display the current profile image */}
       {data?.profileImage && (
@@ -134,107 +166,16 @@ const DashboardSettings: React.FC = () => {
           />
         </div>
       )}
-
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-600">Full Name</label>
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-600">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-            disabled
-          />
-        </div>
-        <div>
-          <label className="block text-gray-600">Phone</label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-600">Qualifications</label>
-          <input
-            type="text"
-            name="qualifications"
-            value={formData.qualifications}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-600">Experience</label>
-          <input
-            type="text"
-            name="experience"
-            value={formData.experience}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-600">Location</label>
-          <input
-            type="text"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-600">Salary Expectation (Confidential)</label>
-          <input
-            type="text"
-            name="salaryExpectation"
-            value={formData.salaryExpectation}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md"
-            placeholder="Enter expected salary"
-          />
-        </div>
-        
-        {/* Profile Image Upload */}
-        <div>
-          <label className="block text-gray-600">Upload Profile Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="w-full px-4 py-2 border rounded-md"
-          />
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            name="notifications"
-            checked={formData.notifications}
-            onChange={handleChange}
-          />
-          <label className="text-gray-600">Receive Notifications</label>
-        </div>
-        <button
+       <CandidateProfile formData={formData} setFormData={setFormData}  handleChange={handleChange} errors={errors} edit={edit} />
+       <ProfileSetup formData={formData}  setFormData={setFormData} handleChange={handleChange} errors={errors} edit={edit} />
+        {!edit&&<button
           type="submit"
           className="bg-[#019529] text-white px-4 py-2 rounded-md hover:bg-[#017a22] w-full"
         >
           Save Changes
         </button>
+}
       </form>
     </div>
   );

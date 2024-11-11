@@ -52,7 +52,7 @@ const ResetPassword = () => {
       toast.success("Password reset successfully.");
       localStorage.removeItem("type");
       setLoading(false);
-      navigate("/login-company");
+      navigate("/auth");
     } catch (error: any) {
       setLoading(false);
       const errorMessage =

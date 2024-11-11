@@ -6,12 +6,14 @@ import {
   Preferred_Job_Locations,
 } from "../../../pages/Employer/Auth/SignUp/options";
 import { CompanyProfileType } from "../../../types";
+// import { getMultiSelectValues } from "../../../utils/helper";
 import MultiSelectComponent from "../../MultiSelect/MultiSelect";
 
 const HiringGoals = ({ formData, setFormData, errors }: CompanyProfileType) => {
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
     setFormData({ ...formData, [field]: selectedOptions });
   };
+  console.log("hello2145241",formData.keyMetrics)
   return (
     <>
       <fieldset className="border border-black p-4 rounded-md">
@@ -22,8 +24,8 @@ const HiringGoals = ({ formData, setFormData, errors }: CompanyProfileType) => {
             isMulti={true}
             label="Primary Hiring Goals"
             options={options}
-            onChange={(selected) =>
-              handleMultiSelectChange("primaryHiringGoals", selected)
+            onChange={(selected:any) =>
+              handleMultiSelectChange("primaryHiringGoals", selected.value)
             }
             value={formData.primaryHiringGoals}
             error={errors.primaryHiringGoals}

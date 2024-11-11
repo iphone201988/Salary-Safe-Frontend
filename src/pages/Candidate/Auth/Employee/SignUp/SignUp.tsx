@@ -17,7 +17,7 @@ import {
 // import { useDispatch } from "react-redux";
 // import { setUserData } from "../../../../../Redux/reducer/userData";
 // import { login } from "../../../../../Redux/reducer/authSlice";
-import Loader from "../../../../../components/Loader/Loader";
+// import Loader from "../../../../../components/Loader/Loader";
 import MultiSelectComponent from "../../../../../components/MultiSelect/MultiSelect";
 import {
   benefitsOptions,
@@ -37,6 +37,7 @@ import {
   SignUpCandidate,
   SignUpCandidateFormErrors,
 } from "../../../../../types";
+import { GrFormView,GrFormViewHide  } from "react-icons/gr";
 
 const CandidateSignUp: React.FC = () => {
   const [formData, setFormData] = useState<SignUpCandidate>({
@@ -81,6 +82,7 @@ const CandidateSignUp: React.FC = () => {
   });
   // const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [veiwPassword, setVeiwPassword] = useState(false);
 
   const [errors, setErrors] = useState<SignUpCandidateFormErrors>({});
   const navigate = useNavigate();
@@ -187,6 +189,7 @@ const CandidateSignUp: React.FC = () => {
     if (currentErrors) {
       console.log("currentErrors", currentErrors);
       setErrors(currentErrors);
+      toast.error("Plaese Fill All Required Fields");
       setLoading(false);
       return;
     }
@@ -198,11 +201,19 @@ const CandidateSignUp: React.FC = () => {
         // For arrays, append each item individually
         value.forEach((item) => formDataToSend.append(key, item));
       } else if(key=="resume_upload"||key=="cover_letter_upload"){
-        // For files, append the file directly
-        // formDataToSend.append(key, value as any);
+      } else if(key=="invite_employer"){
+      } else if (
+        key === "employer_name" ||
+        key === "contact_person_name" ||
+        key === "message_to_employer" ||
+        key === "contact_email"
+      ) {
+        // Prefix certain keys with "invite_employer."
+        formDataToSend.append(`invite_employer.${key}`, value as any);
+
       }
-       else {
-        formDataToSend.append(key, value as any);
+      else {
+         formDataToSend.append(key, value as any);
       }
     });
     // Append the resume and cover letter files
@@ -230,6 +241,7 @@ const CandidateSignUp: React.FC = () => {
       }
     } catch (error) {
       setLoading(false);
+      console.log("error",error);
       toast.error("Registration failed. Please try again.");
     }
   };
@@ -292,16 +304,19 @@ const CandidateSignUp: React.FC = () => {
             onChange={handleChange}
             error={errors.phone_number}
           />
-
+          <div className="relative">
           <InputField
             label="Password"
             name="password"
-            type="password"
+            type={veiwPassword ?"text":"password"}
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
             placeholder="Enter Password"
-          />
+            />
+            <div className="absolute right-1 top-10 cursor-pointer" onClick={()=>setVeiwPassword(!veiwPassword)}>{veiwPassword?<GrFormViewHide />:<GrFormView />
+            }</div>
+            </div>
           <InputField
             label="Location"
             name="location"
@@ -768,7 +783,7 @@ const CandidateSignUp: React.FC = () => {
               checked={formData.terms_accepted}
               onChange={handleChange}
             />
-            <label>
+            <label htmlFor="terms_accepted">
               I agree to the{" "}
               <Link to="/terms" className="text-blue-500 underline">
                 Terms of Service

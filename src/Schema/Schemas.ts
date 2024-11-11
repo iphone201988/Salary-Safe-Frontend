@@ -175,7 +175,7 @@ export const employeeLoginSchema = yup
     phone: yup.string().nullable(),
     password: yup.string().required("Password is required"),
   })
-  .test("at-least-one", "Either phone or email is required", function (value) {
+  .test("at-least-one", "email is required", function (value) {
     return !!value.phone || !!value.email;
   });
 

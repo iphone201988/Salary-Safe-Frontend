@@ -5,3 +5,7 @@ export const industrys = [
     "Manufacturing", "Construction", "Real Estate", "Consulting",
     "Transportation", "Hospitality", "Agriculture",
   ];
+
+  export const getMultiSelectValues=(options:any,values:any)=>{
+    return options.filter((option:any) => values.includes(option.value))
+  }

@@ -8,6 +8,7 @@ interface InputFieldProps {
   placeholder?: string;
   classes?: string;
   min?: number;
+  view?: boolean;
 }
 const InputField = ({
   label,
@@ -18,11 +19,14 @@ const InputField = ({
   type = "text",
   placeholder = "",
   classes = "",
-  min=0
+  min=0,
+  view =false
 }: InputFieldProps) => (
   <div className="w-full flex flex-col space-y-1">
     <label className="text-left">{label}:</label>
-    <input
+    {view 
+    ? (<div className="text-gray-700 w-full p-1 rounded-md">{value}</div>)
+    :(<input
       type={type}
       name={name}
       value={value}
@@ -32,7 +36,8 @@ const InputField = ({
       className={`border border-black rounded-md w-full px-2 py-1 ${
         error && "border-red-600"
       } ${classes}`}
-    />
+    />)
+    }
     {error && <small className="text-red-600 font-bold text-sm">{error}</small>}
   </div>
 );

@@ -13,6 +13,7 @@ interface MultiSelectComponentProps {
   onChange: (selectedOptions: OnChangeValue<OptionType, boolean>) => void;
   value: OptionType[] | any | null;
   error?: any;
+  view?: boolean
 }
 
 const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
@@ -22,6 +23,7 @@ const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
   onChange,
   value,
   error,
+  view=false
 }) => {
   return (
     <>

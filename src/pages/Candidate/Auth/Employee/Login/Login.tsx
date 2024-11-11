@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../../../../components/Loader/Loader";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import { useDispatch } from "react-redux";
+import { GrFormView, GrFormViewHide, GrHide } from "react-icons/gr";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
@@ -25,6 +26,8 @@ const EmployeeLogin = () => {
   const [errors, setErrors] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [veiwPassword, setVeiwPassword] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -66,6 +69,8 @@ const EmployeeLogin = () => {
 
     const errors = await validateForm(employeeLoginSchema, formData);
     if (errors) {
+      const firstErrorMessage:any = Object.values(errors)[0];
+      toast.error(firstErrorMessage);
       setErrors(errors);
       return;
     }
@@ -108,7 +113,7 @@ const EmployeeLogin = () => {
   return (
     <div className="flex justify-center items-center min-h-screen">
       {loading && <Loader />}
-      <div className="w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg">
+      <div className={`w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg ${loading?"backdrop-blur-sm":""}`}>
         <h1 className="text-3xl font-bold text-center">Login as Candidate</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
@@ -120,7 +125,7 @@ const EmployeeLogin = () => {
             error={errors.email}
           />
 
-          <div
+          {/* <div
             className="flex items-center justify-around w-[80%] mx-auto my-2"
             id="separator"
           >
@@ -134,17 +139,21 @@ const EmployeeLogin = () => {
             value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
-          />
+          /> */}
 
           {/* Password */}
+          <div className="relative">
           <InputField
             label="Password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
-            type="password"
-          />
+            type={veiwPassword ?"text":"password"}
+            />
+           <div className="absolute right-1 top-10 cursor-pointer" onClick={()=>setVeiwPassword(!veiwPassword)}>{veiwPassword?<GrFormViewHide />:<GrFormView />
+           }</div>
+          </div>
 
           {/* Forgot Password */}
           <div className="text-right">

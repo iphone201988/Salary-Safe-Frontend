@@ -6,7 +6,7 @@ import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
 import {
-  employeerLogin /* getClientProfile, userLogin */,
+  employeerLogin ,
 } from "../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../../../components/Loader/Loader";
