@@ -105,7 +105,7 @@ export interface SignUpCandidate {
   current_job_title: string;
   linkedin_profile_url: string;
   job_titles_of_interest: string;
-  total_years_of_experience: string | any;
+  total_years_of_experience: string | any | undefined;
   key_skills: any | string;
   preferred_benefits: any | string;
   industries_of_interest: any | string;
@@ -231,5 +231,6 @@ export interface candidateDetails {
   terms_accepted?: boolean;
   id?: string;
   profileImage?:any|null
+  notificationPreferences?:any|string[]
 }
   

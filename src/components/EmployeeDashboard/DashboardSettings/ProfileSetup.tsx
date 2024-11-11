@@ -1,5 +1,9 @@
-import { experienceOptions } from "../../../pages/Candidate/Auth/Employee/SignUp/options";
-import { CandidateProfileType } from "../../../types";
+import {
+  educationLevelOptions,
+  experienceOptions,
+  skillsOptions,
+} from "../../../pages/Candidate/Auth/Employee/SignUp/options";
+// import { CandidateProfileType } from "../../../types";
 import InputField from "../../InputField/InputField";
 import MultiSelectComponent from "../../MultiSelect/MultiSelect";
 
@@ -8,8 +12,8 @@ const ProfileSetup = ({
   setFormData,
   handleChange,
   errors,
-  edit
-}: CandidateProfileType) => {
+  edit,
+}: any) => {
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
     setFormData({ ...formData, [field]: selectedOptions });
   };
@@ -19,78 +23,58 @@ const ProfileSetup = ({
       <div className="flex flex-col">
         <div className="flex w-full space-x-2">
           <div className="w-full">
-          <InputField
-            label="Job Titles/Positions of Interest"
-            name="job_titles_of_interest"
-            placeholder="Manager"
-            value={formData.job_titles_of_interest}
-            onChange={handleChange}
-            error={errors.job_titles_of_interest}
-            view={edit}
-          />
-          </div>
-          <div className="w-full">
-          <MultiSelectComponent
-            isMulti={false}
-            label="Total Years of Experience:"
-            value={formData.total_years_of_experience}
-            options={experienceOptions}
-            onChange={(selected) =>
-              handleMultiSelectChange("total_years_of_experience", selected)
-            }
-            error={errors.total_years_of_experience}
-          />
-          </div>
-        </div>
-        <div className="flex w-full space-x-2">
-          <div className="w-full">
             <InputField
-              label="Email"
-              name="email"
-              type="email"
-              value={formData.email}
+              label="Job Titles/Positions of Interest"
+              name="job_titles_of_interest"
+              placeholder="Manager"
+              value={formData.job_titles_of_interest}
               onChange={handleChange}
-              error={errors.email}
-              placeholder="Enter Email"
-              view ={edit}
+              error={errors.job_titles_of_interest}
+              view={edit}
             />
           </div>
-          <div className="w-full">
-            <InputField
-              label="Location"
-              name="location"
-              placeholder="City, State/Region, Country"
-              value={formData.location}
-              onChange={handleChange}
-              error={errors.location}
-              view ={edit}
 
+          <div className="w-full">
+            <MultiSelectComponent
+              isMulti={false}
+              label="Total Years of Experience:"
+              value={formData.total_years_of_experience}
+              options={experienceOptions}
+              onChange={(selected) =>
+                handleMultiSelectChange("total_years_of_experience", selected)
+              }
+              error={errors.total_years_of_experience}
+              isDisabled={edit}
             />
           </div>
         </div>
+
         <div className="flex w-full space-x-2">
-         
           <div className="w-full">
-            <InputField
-              label="Current Job Title"
-              name="current_job_title"
-              placeholder="baackend devolper"
-              value={formData.current_job_title}
-              onChange={handleChange}
-              error={errors.current_job_title}
-              view ={edit}
+            <MultiSelectComponent
+              isMulti={false}
+              label="Education Level:"
+              value={formData.education_level}
+              options={educationLevelOptions}
+              onChange={(selected) =>
+                handleMultiSelectChange("education_level", selected)
+              }
+              error={errors.education_level}
+              isDisabled={edit}
             />
           </div>
-         
+
           <div className="w-full">
-            <InputField
-              label="LinkedIn Profile URL"
-              name="linkedin_profile_url"
-              placeholder="https://www.linkedin.com/in/techwin-labs-8b131b282/"
-              value={formData.linkedin_profile_url}
-              onChange={handleChange}
-              error={errors.linkedin_profile_url}
-              view ={edit}
+            <MultiSelectComponent
+              isMulti={false}
+              label="Skills:"
+              value={formData.key_skills}
+              options={skillsOptions}
+              onChange={(selected) =>
+                handleMultiSelectChange("key_skills", selected)
+              }
+              error={errors.key_skills}
+              isDisabled={edit}
             />
           </div>
         </div>

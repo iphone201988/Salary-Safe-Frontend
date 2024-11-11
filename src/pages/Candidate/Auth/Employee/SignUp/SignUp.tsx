@@ -245,6 +245,7 @@ const CandidateSignUp: React.FC = () => {
       toast.error("Registration failed. Please try again.");
     }
   };
+  
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     if (files && files[0]) {
@@ -500,7 +501,7 @@ const CandidateSignUp: React.FC = () => {
           <h2 className="text-[#000000] text-lg font-bold">Privacy Controls</h2>
           <MultiSelectComponent
             isMulti={false}
-            label="Preferred Salary Type:"
+            label="Who can view your salary expectations?"
             value={formData.view_salary_expectations}
             options={viewSalaryPermissionOptions}
             onChange={(selected) =>

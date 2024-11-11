@@ -1,11 +1,31 @@
 export const getToken = () => localStorage.getItem("access_token");
-export const setToken = (token: string) => localStorage.setItem("access_token", token);
+export const setToken = (token: string) =>
+  localStorage.setItem("access_token", token);
 export const industrys = [
-    "Technology", "Finance", "Healthcare", "Retail", "Education",
-    "Manufacturing", "Construction", "Real Estate", "Consulting",
-    "Transportation", "Hospitality", "Agriculture",
-  ];
+  "Technology",
+  "Finance",
+  "Healthcare",
+  "Retail",
+  "Education",
+  "Manufacturing",
+  "Construction",
+  "Real Estate",
+  "Consulting",
+  "Transportation",
+  "Hospitality",
+  "Agriculture",
+];
 
-  export const getMultiSelectValues=(options:any,values:any)=>{
-    return options.filter((option:any) => values.includes(option.value))
-  }
+interface Option {
+  value: string | number;
+  label: string;
+}
+
+export const getMultiSelectValues = (
+  options: Option[],
+  values: string | number | (string | number | any)[]
+): Option[] => {
+  const valueArray = Array.isArray(values) ? values : [values];
+
+  return options.filter((option) => valueArray.includes(option.value));
+};

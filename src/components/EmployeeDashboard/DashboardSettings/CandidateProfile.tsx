@@ -1,13 +1,13 @@
-import { CandidateProfileType } from "../../../types";
+// import { CandidateProfileType } from "../../../types";
 import InputField from "../../InputField/InputField";
 
 const CandidateProfile = ({
   formData,
-  setFormData,
+  // setFormData,
   errors,
   handleChange,
   edit
-}: CandidateProfileType) => {
+}: any) => {
   return (
     <fieldset className="border border-black p-4 rounded-md">
       <legend>Personal Information</legend>

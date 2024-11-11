@@ -1,7 +1,7 @@
 interface InputFieldProps {
   label: string;
   name: string;
-  value?: string;
+  value?: any | string;
   onChange: any;
   error?: string | undefined;
   type?: string;
@@ -25,7 +25,18 @@ const InputField = ({
   <div className="w-full flex flex-col space-y-1">
     <label className="text-left">{label}:</label>
     {view 
-    ? (<div className="text-gray-700 w-full p-1 rounded-md">{value}</div>)
+    ? (<input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      min={min}
+      disabled
+      className={`border border-black rounded-md w-full px-2 py-1 ${
+        error && "border-red-600"
+      } ${classes}`}
+    />)
     :(<input
       type={type}
       name={name}

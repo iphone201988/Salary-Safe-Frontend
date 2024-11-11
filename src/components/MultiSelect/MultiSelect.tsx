@@ -14,6 +14,7 @@ interface MultiSelectComponentProps {
   value: OptionType[] | any | null;
   error?: any;
   view?: boolean
+  isDisabled?: boolean
 }
 
 const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
@@ -23,8 +24,10 @@ const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
   onChange,
   value,
   error,
-  view=false
+  // view=false,
+  isDisabled
 }) => {
+  console.log("on change",value);
   return (
     <>
       <div className="w-full flex flex-col space-y-1">
@@ -37,6 +40,7 @@ const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
           className="react-select"
           classNamePrefix="select"
           placeholder="Select...."
+          isDisabled={isDisabled}
         />
       </div>
 
