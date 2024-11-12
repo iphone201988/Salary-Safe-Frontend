@@ -5,8 +5,8 @@ import EmployeeContractType from './EmployeeContractType';
 import CardShowDashboard from './CardShowDashboard';
 import EmploymentStatus from './EmploymentStatus';
 import HiredVsLeftChart from './HiredVsLeftChart';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../Redux/store';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../../../Redux/store';
 import CandidateTable from './CandidateRecommdation';
 interface CandidateRecommendation {
     name: string;

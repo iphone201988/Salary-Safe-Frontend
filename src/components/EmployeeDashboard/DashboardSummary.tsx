@@ -1,7 +1,7 @@
 import React from "react";
 import CardShowDashboard from "../Dashboard/DashboardSummary/CardShowDashboard";
 import MarketSalaryChart from "./Market-Salary/MarketSalary";
-import HistoryOfRoles from "./HistroyRoles/HistoryROles";
+import HistoryOfRoles from "./HistroyRoles/HistoryRoles";
 
 const DashboardSummary: React.FC = () => {
   return (

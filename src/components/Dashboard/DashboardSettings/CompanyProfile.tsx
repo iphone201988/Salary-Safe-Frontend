@@ -9,6 +9,7 @@ const CompanyProfile = ({
   errors,
   setFormData,
   handleChange,
+  edit,
 }: CompanyProfileType) => {
   const libraries: any = ["places"];
   const { isLoaded } = useLoadScript({
@@ -28,7 +29,6 @@ const CompanyProfile = ({
     <fieldset className="border border-black p-4 rounded-md">
       <legend>Company Information</legend>
       <div className="flex flex-col">
-
         <div className="flex w-full space-x-2">
           <div className="w-full">
             <InputField
@@ -37,6 +37,7 @@ const CompanyProfile = ({
               value={formData.companyName}
               onChange={handleChange}
               error={errors.companyName}
+              view={edit}
             />
           </div>
           <div className="w-full">
@@ -49,6 +50,7 @@ const CompanyProfile = ({
               onChange={(e) =>
                 setFormData({ ...formData, [e.target.name]: e.target.value })
               }
+              disabled={edit}
               value={formData.industry}
             >
               <option value="">Select Industry</option>
@@ -75,6 +77,7 @@ const CompanyProfile = ({
                 setFormData({ ...formData, [e.target.name]: e.target.value })
               }
               value={formData.companySize}
+              disabled={edit}
             >
               <option value="">Select Size</option>
               <option value="0-10">0-10</option>
@@ -109,6 +112,7 @@ const CompanyProfile = ({
                 className={`border border-black rounded-md w-full p-2 ${
                   errors?.companyLocation && "border-red-600"
                 }`}
+                disabled={edit}
               />
             </Autocomplete>
             {errors?.companyLocation && (
@@ -125,6 +129,7 @@ const CompanyProfile = ({
             value={formData.PrimaryContact}
             onChange={handleChange}
             error={errors?.PrimaryContact}
+            view={edit}
           />
         </div>
         <div className="w-full">
@@ -135,6 +140,7 @@ const CompanyProfile = ({
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
+            view={edit}
           />
         </div>
       </div>
@@ -147,6 +153,7 @@ const CompanyProfile = ({
             value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
+            view={edit}
           />
         </div>
 
@@ -165,6 +172,7 @@ const CompanyProfile = ({
                 onChange={handleChange}
                 placeholder="Search location"
                 className={`border border-black rounded-md w-full p-2 `}
+                disabled={edit}
               />
             </Autocomplete>
           </div>
@@ -179,6 +187,7 @@ const CompanyProfile = ({
               setFormData({ ...formData, [e.target.name]: e.target.value })
             }
             // value={formData.size}
+            disabled={edit}
           >
             <option value="">Select Size</option>
             <option value="0-10">0-10</option>
@@ -198,6 +207,7 @@ const CompanyProfile = ({
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
           value={formData.industry}
+          disabled={edit}
         >
           <option value="">Select Industry</option>
           {industrys.map((data, index) => (

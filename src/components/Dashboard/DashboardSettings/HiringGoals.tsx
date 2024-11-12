@@ -9,7 +9,7 @@ import { CompanyProfileType } from "../../../types";
 // import { getMultiSelectValues } from "../../../utils/helper";
 import MultiSelectComponent from "../../MultiSelect/MultiSelect";
 
-const HiringGoals = ({ formData, setFormData, errors }: CompanyProfileType) => {
+const HiringGoals = ({ formData, setFormData, errors , edit }: CompanyProfileType) => {
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
     setFormData({ ...formData, [field]: selectedOptions });
   };
@@ -29,6 +29,7 @@ const HiringGoals = ({ formData, setFormData, errors }: CompanyProfileType) => {
             }
             value={formData.primaryHiringGoals}
             error={errors.primaryHiringGoals}
+            isDisabled={edit}
           />
 
           <MultiSelectComponent
@@ -40,6 +41,7 @@ const HiringGoals = ({ formData, setFormData, errors }: CompanyProfileType) => {
             }
             value={formData.preferredJobLocations}
             error={errors.preferredJobLocations}
+            isDisabled={edit}
           />
         </div>
 
@@ -53,6 +55,7 @@ const HiringGoals = ({ formData, setFormData, errors }: CompanyProfileType) => {
             }
             value={formData.rolesPositions}
             error={errors.rolesPositions}
+            isDisabled={edit}
           />
 
           <MultiSelectComponent
@@ -64,6 +67,7 @@ const HiringGoals = ({ formData, setFormData, errors }: CompanyProfileType) => {
             }
             value={formData.jobTypes}
             error={errors.jobTypes}
+            isDisabled={edit}
           />
         </div>
       </fieldset>
@@ -79,6 +83,7 @@ const HiringGoals = ({ formData, setFormData, errors }: CompanyProfileType) => {
           }
           value={formData.keyMetrics}
           error={errors.keyMetrics}
+          isDisabled={edit}
         />
       </fieldset>
     </>

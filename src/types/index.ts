@@ -183,6 +183,7 @@ export type CompanyProfileType = {
   errors: SignUpFormErrors;
   setFormData: React.Dispatch<React.SetStateAction<SignUpFormData>>;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  edit?: boolean;
 };
 export type CandidateProfileType = {
   formData: candidateDetails;

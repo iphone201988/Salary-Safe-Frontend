@@ -10,7 +10,7 @@ import {
 import { CompanyProfileType } from "../../../types";
 import MultiSelectComponent from "../../MultiSelect/MultiSelect";
 
-const OtherFields = ({ formData, errors, setFormData }: CompanyProfileType) => {
+const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileType) => {
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
     setFormData({ ...formData, [field]: selectedOptions });
   };
@@ -29,6 +29,7 @@ const OtherFields = ({ formData, errors, setFormData }: CompanyProfileType) => {
             }
             value={formData.roleCustomization}
             error={errors.roleCustomization}
+            isDisabled={edit}
           />
 
           <MultiSelectComponent
@@ -40,6 +41,7 @@ const OtherFields = ({ formData, errors, setFormData }: CompanyProfileType) => {
             }
             value={formData.salaryBenchmarking}
             error={errors.salaryBenchmarking}
+            isDisabled={edit}
           />
         </div>
       </fieldset>
@@ -57,6 +59,7 @@ const OtherFields = ({ formData, errors, setFormData }: CompanyProfileType) => {
             }
             value={formData.candidateViewingPreferences}
             error={errors.candidateViewingPreferences}
+            isDisabled={edit}
           />
         </div>
       </fieldset>
@@ -74,6 +77,7 @@ const OtherFields = ({ formData, errors, setFormData }: CompanyProfileType) => {
             }
             value={formData.marketRoleAlerts}
             error={errors.marketRoleAlerts}
+            isDisabled={edit}
           />
 
           <MultiSelectComponent
@@ -85,6 +89,7 @@ const OtherFields = ({ formData, errors, setFormData }: CompanyProfileType) => {
             }
             value={formData.customReports}
             error={errors.customReports}
+            isDisabled={edit}
           />
         </div>
       </fieldset>
@@ -102,6 +107,7 @@ const OtherFields = ({ formData, errors, setFormData }: CompanyProfileType) => {
             }
             value={formData.automatedUpdates}
             error={errors.automatedUpdates}
+            isDisabled={edit}
           />
 
           <MultiSelectComponent
@@ -113,6 +119,7 @@ const OtherFields = ({ formData, errors, setFormData }: CompanyProfileType) => {
             }
             value={formData.candidateFeedback}
             error={errors.candidateFeedback}
+            isDisabled={edit}
           />
         </div>
       </fieldset>

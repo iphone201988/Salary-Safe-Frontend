@@ -119,31 +119,35 @@ const DashboardSettings: React.FC = () => {
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="relative">
         <h3 className="text-4xl font-bold my-4 text-center">
-          Candidate Profile
+          Employeer Profile
         </h3>
         <FaUserEdit
           onClick={() => setEdit(!edit)}
           className="absolute top-0 right-0 cursor-pointer"
         />
       </div>
+      
       <form className="space-y-4">
         <CompanyProfile
           formData={formData}
           errors={errors}
           setFormData={setFormData}
           handleChange={handleChange}
+          edit={edit}
         />
 
         <HiringGoals
           formData={formData}
           errors={errors}
           setFormData={setFormData}
+          edit={edit}
         />
 
         <OtherFields
           formData={formData}
           errors={errors}
           setFormData={setFormData}
+          edit={edit}
         />
 
         <div className="flex items-center space-x-2">
@@ -152,6 +156,7 @@ const DashboardSettings: React.FC = () => {
             name="notifications"
             // checked={formData.notifications}
             onChange={handleChange}
+            disabled={edit}
           />
           <label className="text-gray-600">Receive Notifications</label>
         </div>
