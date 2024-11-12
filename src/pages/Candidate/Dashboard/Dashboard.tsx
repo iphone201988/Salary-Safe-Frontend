@@ -10,9 +10,9 @@ const Dashboard: React.FC = () => {
   if (!token ||!role) return <Navigate to="/" />;
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen">
       <DashboardSidebar />
-      <main className="flex-1 p-6 bg-gray-100">
+      <main className="flex-1 p-6 bg-gray-100 overflow-y-auto">
         <div className="mt-[3rem]">
           <Outlet />
         </div>

@@ -26,30 +26,30 @@ const DashboardSummary: React.FC = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
 
   // Fetch insights and history on mount
-  useEffect(() => {
-    fetchInsights();
-    fetchHistory();
-  }, []);
+  // useEffect(() => {
+  //   fetchInsights();
+  //   fetchHistory();
+  // }, []);
 
   // Fetch market insights
-  const fetchInsights = async () => {
-    try {
-      const response = await axios.get<Insight[]>(insightsAPI);
-      setInsights(response.data);
-    } catch (error) {
-      console.error("Error fetching market insights:", error);
-    }
-  };
+  // const fetchInsights = async () => {
+  //   try {
+  //     const response = await axios.get<Insight[]>(insightsAPI);
+  //     setInsights(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching market insights:", error);
+  //   }
+  // };
 
   // Fetch salary history
-  const fetchHistory = async () => {
-    try {
-      const response = await axios.get<HistoryItem[]>(historyAPI);
-      setHistory(response.data);
-    } catch (error) {
-      console.error("Error fetching salary history:", error);
-    }
-  };
+  // const fetchHistory = async () => {
+  //   try {
+  //     const response = await axios.get<HistoryItem[]>(historyAPI);
+  //     setHistory(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching salary history:", error);
+  //   }
+  // };
 
   return (
     <div className="p-6 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
