@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../../../../components/Loader/Loader";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import { useDispatch } from "react-redux";
-import { GrFormView, GrFormViewHide, GrHide } from "react-icons/gr";
+import { GrFormView, GrFormViewHide } from "react-icons/gr";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
