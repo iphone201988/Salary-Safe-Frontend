@@ -126,7 +126,7 @@ const DashboardSettings: React.FC = () => {
           className="absolute top-0 right-0 cursor-pointer"
         />
       </div>
-      
+
       <form className="space-y-4">
         <CompanyProfile
           formData={formData}
@@ -160,12 +160,16 @@ const DashboardSettings: React.FC = () => {
           />
           <label className="text-gray-600">Receive Notifications</label>
         </div>
-        <button
-          type="submit"
-          className="bg-[#019529] text-white px-4 py-2 rounded-md hover:bg-[#017a22] w-full"
-        >
-          Save Changes
-        </button>
+        {!edit && (
+          <div className="w-full flex justify-center">
+            <button
+              type="submit"
+              className="bg-[#019529] text-white text-center px-4 py-2 rounded-md hover:bg-[#017a22] w-full"
+            >
+              Save Changes
+            </button>
+          </div>
+        )}
       </form>
     </div>
   );

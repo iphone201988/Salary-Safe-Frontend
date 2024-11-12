@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   font-family: "Poppins";
 
@@ -10,7 +9,7 @@ body {
   padding: 0;
   /* overflow: hidden; */
   height: 100vh;
-  background-color:#1B1035;
+  background-color: #1b1035;
 }
 
 html {
@@ -30,7 +29,6 @@ html {
 .btn-primary {
   @apply rounded-md px-4 py-2 text-base font-medium font-sans bg-black cursor-pointer;
 }
-
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -69,7 +67,6 @@ a:hover {
   line-height: 1.1;
 } */
 
-
 /* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -83,7 +80,26 @@ a:hover {
   }
 } */
 
+.react-select {
+  background-color: #ffffff !important;
+}
 
-.react-select{
-  background-color: #FFFFFF !important; 
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, #e0e5ec, #f7f9fc);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #f68914, #fc5c7d);
+  border-radius: 10px;
+  border: 3px solid #f7f9fc;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #fc5c7d, #6a82fb);
+  opacity: 0.9;
 }

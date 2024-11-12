@@ -11,7 +11,7 @@ const DashboardSummary: React.FC = () => {
           Candidate Dashboard
         </h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-          <CardShowDashboard title="Job Title" data="Devlovper" />
+          <CardShowDashboard title="Job Title" data="Developer" />
           <CardShowDashboard title="Employment Type" data="Full-Time" />
           <CardShowDashboard
             title="Date"
