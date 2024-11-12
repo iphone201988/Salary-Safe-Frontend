@@ -1,5 +1,5 @@
 import React from "react";
-import CountUp from "react-countup";
+// import CountUp from "react-countup";
 import HrDashboard from "./DashboardSummary/HrDashboard";
 
 const DashboardSummary: React.FC = () => {

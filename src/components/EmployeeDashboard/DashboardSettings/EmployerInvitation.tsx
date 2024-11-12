@@ -6,12 +6,11 @@
     errors,
     edit,
   }: any) => {
-   
+
     const handleCheckboxChange = (field: string) => {
       setFormData({ ...formData, [field]: !formData[field] });
     };
-  
-  
+    
     return (
       <fieldset className="border border-black p-4 rounded-md">
         <legend>Employer Invitation</legend>

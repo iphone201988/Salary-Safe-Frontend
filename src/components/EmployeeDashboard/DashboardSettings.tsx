@@ -241,7 +241,7 @@ const DashboardSettings: React.FC = () => {
       {data?.profileImage && (
         <div className="mb-4 flex justify-center">
           <img
-            src={data.profileImage} // Ensure this is a valid URL or path
+            src={data.profileImage}
             alt="Profile"
             className="w-32 h-32 rounded-full object-cover"
           />
