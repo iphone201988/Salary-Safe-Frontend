@@ -22,21 +22,17 @@ import {
     LineElement,      // Needed for line charts
     PointElement      // Needed for line charts
   );
-const EmployeeContractType: React.FC = () => {
-  const data = {
-    labels: ['Full-Time', 'Part-Time', 'Contractor'],
-    datasets: [
-      {
-        label: 'Employee Contract Type',
-        data: [300, 50, 100],
-        backgroundColor: ['#4CAF50', '#FF9800', '#2196F3'],
-      },
-    ],
+interface EmployeeContractProps{labels:Array<Object>,datasets:Array<Object>,title:string}
+
+const EmployeeContractType: React.FC<EmployeeContractProps> = ({labels,datasets,title}:EmployeeContractProps) => {
+  const data:any = {
+    labels: labels,
+    datasets: datasets,
   };
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-center">
-      <h2 className="text-lg font-medium">Type of Employee Contract</h2>
+      <h2 className="text-lg font-medium">{title}</h2>
       <Doughnut data={data} />
     </div>
   );

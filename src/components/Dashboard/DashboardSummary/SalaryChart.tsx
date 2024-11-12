@@ -4,25 +4,18 @@ import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, ArcElement, 
 
 // Register chart components
 ChartJS.register(CategoryScale, LinearScale, LineElement, ArcElement, BarElement, Title, Tooltip, Legend, PointElement);
+interface SalaryChartProps{labels:Array<Object>,datasets:Array<Object>,title:string}
 
 // SalaryChart Component (Line Chart)
-const SalaryChart: React.FC = () => {
-  const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'Salary (in thousands)',
-        data: [300, 320, 330, 340, 360, 380],
-        fill: false,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        tension: 0.1,
-      },
-    ],
+const SalaryChart: React.FC<SalaryChartProps> = ({labels,datasets,title}:SalaryChartProps) => {
+  const data:any = {
+    labels:labels,
+    datasets: datasets,
   };
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-center">
-      <h2 className="text-lg font-medium">Total Salary</h2>
+      <h2 className="text-lg font-medium">{title}</h2>
       <Line data={data} />
     </div>
   );

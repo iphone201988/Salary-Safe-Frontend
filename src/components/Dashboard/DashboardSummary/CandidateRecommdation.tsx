@@ -32,7 +32,7 @@ const CandidateTable: React.FC<{ data: CandidateRecommendation[] }> = ({ data })
   });
 
   return (
-    <table className="min-w-full bg-white rounded-lg shadow-md">
+    <table className="min-w-full bg-white rounded-lg shadow-md ">
       <TableHead table={table} />
       <TableBody table={table} />
     </table>
