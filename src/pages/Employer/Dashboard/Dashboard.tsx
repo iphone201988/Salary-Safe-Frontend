@@ -10,8 +10,8 @@ const Dashboard: React.FC = () => {
   return (
     <div className="flex h-screen">
       <DashboardSidebar />
-      <main className="flex-1 p-6 bg-gray-100 overflow-auto">
-        <div className="mt-[3rem]">
+      <main className="flex-1 bg-gray-100 overflow-y-auto">
+        <div /* className="mt-[3rem]" */>
           <Outlet />
         </div>
       </main>

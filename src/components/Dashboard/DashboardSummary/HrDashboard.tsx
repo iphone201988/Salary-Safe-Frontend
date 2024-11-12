@@ -101,11 +101,11 @@ const HrDashboard: React.FC = () => {
         <HiredVsLeftChart /> */}
       </div>
 
-      <div className="p-6 rounded-lg shadow-md mt-10 border">
+      <div className="p-6 rounded-lg shadow-md mt-10 border bg-white">
         <h2 className="text-xl font-semibold mb-4 text-center">
           Candidate Recommendations
         </h2>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border ">
           <CandidateTable data={candidateData} />
         </div>
       </div>
@@ -138,7 +138,9 @@ const HrDashboard: React.FC = () => {
           title="Trends and Analysis"
         />
       </div>
+    <div className="mt-10">
       <HistoryOfRoles/>
+      </div>
     </div>
   );
 };
