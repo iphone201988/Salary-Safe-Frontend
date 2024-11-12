@@ -4,22 +4,18 @@ import React from 'react';
 
 // Register chart components
 ChartJS.register(CategoryScale, LinearScale, LineElement, ArcElement, BarElement, Title, Tooltip, Legend, PointElement);
-const EmploymentStatus: React.FC = () => {
-    const data = {
-      labels: ['Full-Time', 'Part-Time', 'Contract'],
-      datasets: [
-        {
-          label: 'Employment Status',
-          data: [60, 30, 10],
-          backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 99, 132, 0.6)'],
-        },
-      ],
+
+interface EmployeeStatusProps{labels:Array<Object>,datasets:Array<Object>,title:string}
+const EmploymentStatus: React.FC<EmployeeStatusProps> = ({labels,datasets,title}:EmployeeStatusProps) => {
+    const data:any = {
+      labels: labels,
+      datasets: datasets,
     };
   
     return (
-      <div className="p-4 bg-white rounded-lg shadow-md text-center ">
-        <h2 className="text-lg font-medium">Employment Status</h2>
-        <Pie data={data}  />
+      <div className="p-4 bg-white rounded-lg shadow-md text-center">
+        <h2 className="text-lg font-medium">{title}</h2>
+        <Pie data={data} width={200} height={200} />
       </div>
     );
   };

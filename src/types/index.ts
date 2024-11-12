@@ -233,4 +233,4 @@ export interface candidateDetails {
   profileImage?:any|null
   notificationPreferences?:any|string[]
 }
-  
+    
