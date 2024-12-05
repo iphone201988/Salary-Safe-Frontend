@@ -16,9 +16,18 @@ export const companyLogin = url + "/employers/login";
 export const companyProfile = url + "/employers/employer";
 export const candidateRegister = url + "/candidates/register";
 export const candidateLogin = url + "/candidates/login";
-export const getJobs = url + "/jobs";
-export const createJobs = url + "/jobs";
+export const getClientJobs = url + "/jobs/me";
+export const createJobs = url + "/jobs/";
 export const companyDetails = url + "/clients/me"
+export const getSearchJobsToCandiDate = url + "/jobs/filters/search"
+export const getJobsToCandiDate = url + "/jobs/me/matches"
+export const getJobsByIdToCandiDate = url + "/jobs"
+export const applyJob = url + "/jobs/id/apply"
+export const submittedApplication = url + "/jobs/applications/me"
+export const submittedApplicationById = url + "/jobs/applications"
+export const candidateDashboard = url + "/jobs/filters/insights"
+export const getAllCandidateApplyOnJob = url + "/jobs/:job_id/applications"
+
 //Employeer register
 export const employeerRegister = url + "/clients/register";
 export const employeerLogin = url + "/clients/login";

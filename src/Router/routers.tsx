@@ -42,12 +42,13 @@ import SubmittedApplicationsPage from "../pages/Candidate/Jobs/SubmitApplication
 import SelectAuth from "../components/Common/SelectAuth";
 import TermsOfService from "../pages/TermsOfService";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
+import JobByIdPage from "../pages/Candidate/Jobs/JobByIdPage";
+import SearchJob from "../pages/Candidate/Jobs/SearchJob";
+import SubmitApplicationByIdPage from "../pages/Candidate/Jobs/SubmitApplicationByIdPage";
+import ApplicationByJobIdPage from "../pages/Employer/JobListing/ApplicationByJobIdPage";
 
 const router = createBrowserRouter([
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
+ 
   {
     path: "/",
     element: <HomePage />,
@@ -159,6 +160,10 @@ const router = createBrowserRouter([
         element: <ProtectedCompanyRoute element={<JobListings />} />,
       },
       {
+        path: "job-listing/:id",
+        element: <ProtectedCompanyRoute element={<ApplicationByJobIdPage />} />,
+      },
+      {
         path: "internal-uploads",
         element: <ProtectedCompanyRoute element={<InternalSalaryUpload />} />,
       },
@@ -205,8 +210,20 @@ const router = createBrowserRouter([
         element: <ProtectedCandidateRoute element={<JobMatchingPage />} />,
       },
       {
+        path: "SearchJob",
+        element: <ProtectedCandidateRoute element={<SearchJob />} />,
+      },
+      {
+        path: "job-list/:id",
+        element: <ProtectedCandidateRoute element={<JobByIdPage />} />,
+      },
+      {
         path: "submit-application",
         element: <ProtectedCandidateRoute element={<SubmittedApplicationsPage />} />,
+      },
+      {
+        path: "submit-application/:id",
+        element: <ProtectedCandidateRoute element={<SubmitApplicationByIdPage />} />,
       },
       {
         path: "settings",
@@ -215,6 +232,10 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
 

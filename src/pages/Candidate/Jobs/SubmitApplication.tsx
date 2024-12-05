@@ -1,64 +1,88 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import SubmittedJobApplication from "../../../components/Table/SubmittedJobApplication";
+import { columnsSubmittedApplication } from "./Options";
+import { useSelector } from "react-redux";
+import Loader from "../../../components/Loader/Loader";
+import { submittedApplication } from "../../../API/apis";
+import { getOptionText, jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
+
 
 interface Application {
-  id: string; // Unique identifier for the application
-  jobTitle: string; // Title of the job
-  companyName: string; // Name of the company
-  status: string; // Status of the application (e.g., Pending, Accepted, Rejected)
-  submittedDate: string; // Date of application submission
+  id: string;
+  job_id: string;
+  candidate_id: string;
+  status:string;
+  title: string;
+  workplace_type: string |undefined;
+  job_type: string |undefined;
+  company_name: string;
+  location: string; 
+  created_at: string;
 }
+  
 
 const SubmittedApplicationsPage: React.FC = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
+  const [_error, setError] = useState<any>("");
+  const token = useSelector((state: any) => state.auth.token);
 
-  useEffect(() => {
-    // Fetch submitted applications from the API
-    const fetchApplications = async () => {
-      try {
-        const response = await axios.get("https://api.example.com/applications"); // Replace with your actual API endpoint
-        setApplications(response.data); // Assuming the response is an array of applications
-      } catch (err) {
-        setError("Failed to fetch applications. Please try again later.");
-      } finally {
-        setLoading(false);
+  async function getData(): Promise<any> {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios({
+        method: "get",
+        url: `${submittedApplication}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("log",response)
+      if (response.status === 200) {
+        const data = response.data?.data || [];
+        const formattedApplications = data.map((item: any): Application => ({
+          title: item.job_details.title,
+          location: item.job_details.location,
+          status: item.status,
+          job_type: getOptionText(jobTypeOptions,item.job_details.job_type),
+          workplace_type: getOptionText(workplaceTypeOptions,item.job_details.workplace_type),
+          company_name: item.job_details.client_details.company_name,
+          created_at: item.created_at,
+          candidate_id: item.candidate_id,
+          job_id: item.job_id,
+          id:item.id
+        }));
+        setApplications(formattedApplications);
+      } else {
+        setApplications([]);
       }
-    };
-
-    fetchApplications();
+    } catch (error: any) {
+      setError(error.response?.data?.message || error.message);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+  useEffect(() => {
+    getData();
   }, []);
-
+  if (loading) {
+    return <Loader />;
+  }
+  console.log("applications",applications)
   return (
-    <>
-        <h2 className="text-3xl font-semibold text-center mb-8">My Submitted Applications</h2>
-
-        {loading && <p className="text-center">Loading applications...</p>}
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        {applications.length === 0 && !loading && (
-          <p className="text-center">No applications submitted yet.</p>
-        )}
-
-        {applications.length > 0 && (
-          <div className="max-w-3xl mx-auto  shadow-lg rounded-lg">
-            <ul className="divide-y divide-gray-200">
-              {applications.map((application) => (
-                <li key={application.id} className="p-4 flex justify-between items-center">
-                  <div>
-                    <h3 className="font-bold">{application.jobTitle}</h3>
-                    <p className="text-gray-600">{application.companyName}</p>
-                    <p className="text-sm text-gray-500">Submitted on: {application.submittedDate}</p>
-                  </div>
-                  <span className={`px-2 py-1 text-xs font-bold rounded ${application.status === "Accepted" ? "bg-green-200 text-green-600" : application.status === "Rejected" ? "bg-red-200 text-red-600" : "bg-yellow-200 text-yellow-600"}`}>
-                    {application.status}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-    </>
+    <div className="min-h-screen flex flex-col ">
+      <main className=" p-4 container mx-auto bg-white">
+      <h1 className="text-3xl font-bold p-4 text-white bg-[#1B1035]">Submitted Applications</h1>
+        <SubmittedJobApplication
+          columns={columnsSubmittedApplication}
+          rows={applications}
+          showActionButtons={true}
+        />
+      </main>
+    </div>
   );
 };
 

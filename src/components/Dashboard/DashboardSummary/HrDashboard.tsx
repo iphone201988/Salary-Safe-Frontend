@@ -3,7 +3,7 @@ import React from "react";
 import SalaryChart from "./SalaryChart";
 import EmployeeContractType from "./EmployeeContractType";
 import CardShowDashboard from "./CardShowDashboard";
-import EmploymentStatus from "./EmploymentStatus";
+import PieChart from "./PieChart";
 // import HiredVsLeftChart from "./HiredVsLeftChart";
 import CandidateTable from "./CandidateRecommdation";
 import HistoryOfRoles from "./HistoryRoles";
@@ -38,19 +38,9 @@ const HrDashboard: React.FC = () => {
         <CardShowDashboard title="Your Salary Range" data="$500000" />
       </div>
       <div className="grid lg:grid-cols-2 gap-4">
-        <EmploymentStatus
+        <PieChart
           labels={["Man", "Women"]}
-          datasets={[
-            {
-              label: "Actual Salaries (Average by gender)",
-              data: [6000000, 4000000],
-              backgroundColor: [
-                "rgba(54, 162, 235, 0.6)",
-                "rgba(255, 206, 86, 0.6)",
-                "rgba(255, 99, 132, 0.6)",
-              ],
-            },
-          ]}
+          dataValues={[6000000, 4000000]}
           title={"Actual Salaries (Average by gender)"}
         />
          <EmployeeContractType

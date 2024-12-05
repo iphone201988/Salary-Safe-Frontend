@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import JobList from './JobList';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { companyProfile, getJobs } from "../../API/apis";
+import { companyProfile, getJobsByIdToCandiDate } from "../../API/apis";
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/Navbar/Navbar';
 
@@ -28,8 +28,8 @@ const JobPage: React.FC = () => {
     const fetchJobs = async () => {
         try {
             const token = localStorage.getItem('access_token');
-            console.log("token", token,getJobs);
-            const response = await axios.get(getJobs+"/", {
+            console.log("token", token,getJobsByIdToCandiDate);
+            const response = await axios.get(getJobsByIdToCandiDate+"/", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
