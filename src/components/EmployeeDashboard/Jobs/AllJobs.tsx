@@ -31,12 +31,14 @@ interface Job {
   }
   
   const AllJobs: React.FC<{ jobs: Job[] }> = ({ jobs }) => {
-
-  const [viewMode, setViewMode] = useState("list");
-
-const toggleViewMode = (mode:any) => {
-    setViewMode(mode);
-  };
+    const [viewMode, setViewMode] = useState("list");
+    const [page, setPage] = useState(1);
+    const jobsPerPage = 3; // Jobs per page
+  
+    const toggleViewMode = (mode: string) => setViewMode(mode);
+  
+    // Paginate jobs for display
+    const paginatedJobs = jobs.slice((page - 1) * jobsPerPage, page * jobsPerPage);
 
 //   const handleSortChange = (event:any) => {
 //     dispatch(setJobSorting(event.target.value));
@@ -108,29 +110,26 @@ const toggleViewMode = (mode:any) => {
         </div>
       </div>
 
+      
       {viewMode === "list" ? (
         <>
-          {/* List View card */}
-          {jobs.map((job, index) => (
+          {paginatedJobs.map((job, index) => (
             <ApplyJobCard key={index} job={job} />
           ))}
         </>
       ) : (
-        <>
-          {/* Grid View cards */}
-          <div className="flex flex-wrap gap-8 max-lg:justify-center max-lg:mt-4">
-            {jobs.map((job, index) => (
-              <GridJobCard key={index} job={job} />
-            ))}
-          </div>
-        </>
+        <div className="flex flex-wrap gap-8 max-lg:justify-center max-lg:mt-4">
+          {paginatedJobs.map((job, index) => (
+            <GridJobCard key={index} job={job} />
+          ))}
+        </div>
       )}
       <div className=" flex justify-center text-center mt-7 lg:pb-[100px]">
         <Stack spacing={2}>
           <Pagination
-      /*       onChange={handlePagination}
+            onChange={(_event, value) => setPage(value)}
             page={page}
-            count={totalPage} */
+            count={Math.ceil(jobs.length / jobsPerPage)}
             shape="rounded"
             sx={{
               '& .Mui-selected': {

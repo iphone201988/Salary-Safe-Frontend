@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Loader from "../../../components/Loader/Loader";
 import { submittedApplication } from "../../../API/apis";
 import { getOptionText, jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
+import { Link } from "react-router-dom";
 
 
 interface Application {
@@ -68,14 +69,25 @@ const SubmittedApplicationsPage: React.FC = () => {
   useEffect(() => {
     getData();
   }, []);
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
   console.log("applications",applications)
   return (
     <div className="min-h-screen flex flex-col ">
+      <nav className="bg-gray-200 py-3 px-6">
+        <Link to="/candidate/dashboard" className="text-blue-600 hover:underline">
+          Dashboard
+        </Link>{" "}
+        /{" "}
+        <span>Submit Applications</span>
+      </nav>
       <main className=" p-4 container mx-auto bg-white">
-      <h1 className="text-3xl font-bold p-4 text-white bg-[#1B1035]">Submitted Applications</h1>
+      {loading &&(
+        <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-20">
+          <Loader />
+        </div>
+      )}
         <SubmittedJobApplication
           columns={columnsSubmittedApplication}
           rows={applications}

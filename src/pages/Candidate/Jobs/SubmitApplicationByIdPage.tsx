@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { submittedApplicationById } from "../../../API/apis";
+import Loader from "../../../components/Loader/Loader";
 
 const SubmitApplicationByIdPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,16 +32,33 @@ const SubmitApplicationByIdPage = () => {
     fetchApplicationDetails();
   }, [id, token]);
 
-  if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+  // }
 
   if (error) {
     return <div className="flex justify-center items-center min-h-screen text-red-500">{error}</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100">
+      {loading &&(
+        <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-20">
+          <Loader />
+        </div>
+      )}
+      <nav className="bg-gray-200 py-3 px-6">
+        <Link to="/candidate/dashboard" className="text-blue-600 hover:underline">
+          Dashboard
+        </Link>{" "}
+        /{" "}
+        <Link to="/candidate/dashboard/submit-application" className="text-blue-600 hover:underline">
+        Submit Applications
+        </Link>{" "}
+        /{" "}
+        <span>{application?.job_details?.title}</span>
+      </nav>
+      <div className="p-6">
       <div className="container mx-auto bg-white shadow-md rounded-lg p-8">
         <h1 className="text-2xl font-bold text-center mb-6">Application Details</h1>
 
@@ -108,6 +126,7 @@ const SubmitApplicationByIdPage = () => {
           <p className="mt-2">{new Date(application?.created_at).toLocaleString()}</p>
         </div>
       </div>
+    </div>
     </div>
   );
 };

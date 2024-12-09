@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useNavigate } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
 
 
 interface Column<T> {
@@ -19,7 +20,7 @@ interface Column<T> {
 }
 
 interface TableForCandiadteJobProps<T> {
-  columns: Column<T>[];
+  columns: Column<any>[];
   rows: T[];
   rowsPerPageOptions?: number[];
   defaultRowsPerPage?: number;
@@ -79,13 +80,32 @@ const navigator = useNavigate()
                 return <TableRow hover role="checkbox" tabIndex={-1} key={rowIndex}>
                 {columns.map((column) => {
                   const value = row[column.id];
+                  if (column.id === "actions") {
+
+                    return (
+                      <TableCell
+                        key={String(column.id)}
+                        align={column.align}
+                        style={{ textAlign: "center" }}
+                      >
+                        {showActionButtons && (
+                          <>
+                          <button 
+                              onClick={()=>navigator(`/candidate/dashboard/submit-application/${row?.id}`)}        className="text-center bg-blue-600 p-2 rounded-lg cursor-pointer hover:bg-blue-900 text-white">
+                                <FaEye />
+                              </button>
+                          </>
+                        )}
+                      </TableCell>
+                    );
+                  }
                   return (
                     <TableCell
                       key={String(column.id)}
                       align={column.align}
                       style={{ textAlign: "center" }}
                     >
-                      {column.format && typeof value === "number"
+                      {column.format && column.id !== "actions" && typeof value === "number"
                         ? column.format(value)
                         : String(value)}
                     </TableCell>
@@ -95,11 +115,11 @@ const navigator = useNavigate()
                 
                 
                 )}
-                {showActionButtons && (
+                {/* {showActionButtons && (
                   <TableCell align="center" style={{ textAlign: "center" }}>
                   <button onClick={()=>navigator(`/candidate/dashboard/submit-application/${row?.id}`)} className="text-center bg-blue-600 p-2 rounded-lg cursor-pointer hover:bg-blue-900 text-white">View</button>
                   </TableCell>
-                )}
+                )} */}
               </TableRow>
 })}
           </TableBody>

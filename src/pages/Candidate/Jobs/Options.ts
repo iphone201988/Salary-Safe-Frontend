@@ -30,6 +30,7 @@ interface Column<T> {
     workplace_type: string;
     location?: string;
     status?: string;
+    actions?: any;
   }>[] = [
     { id: "company_name", label: "Company Name", minWidth: 120 },
     { id: "title", label: "Job Title", minWidth: 120 },
@@ -37,5 +38,6 @@ interface Column<T> {
     { id: "workplace_type", label: "Workplace Type", minWidth: 150 },
     { id: "status", label: "Status", minWidth: 150 },
     { id: "location", label: "Location", minWidth: 150 },
+    { id: "actions", label: "Actions", minWidth: 50 },
   ];
   

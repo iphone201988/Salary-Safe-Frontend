@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import Loader from "../../../components/Loader/Loader";
@@ -89,11 +89,27 @@ const JobByIdPage: React.FC = () => {
     }
   };
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
   if (error) return <div className="p-4 text-center text-red-500">{error}</div>;
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
+         <nav className="bg-gray-200 py-3 px-6">
+            <Link to="/candidate/dashboard" className="text-blue-600 hover:underline">
+              Dashboard
+            </Link>{" "}
+            /{" "}
+            <Link to="/candidate/dashboard/job-list" className="text-blue-600 hover:underline">
+              Jobs
+            </Link>{" "}
+            /{" "}
+            <span>{job?.title}</span>
+      </nav>
+      {loading &&(
+        <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-20">
+          <Loader />
+        </div>
+      )}
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         {/* Header Section */}
         <div className="flex items-center p-6 border-b border-gray-200">

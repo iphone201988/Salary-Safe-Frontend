@@ -14,6 +14,8 @@ import {
 } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setDetailInApplication } from "../../Redux/reducer/jobSlice";
 
 interface Column<T> {
   id: keyof T;
@@ -60,6 +62,7 @@ StickyHeadTableProps<T>) {
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
+  const dispatch = useDispatch()
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -80,6 +83,10 @@ StickyHeadTableProps<T>) {
     // Implement your edit logic here
   };
   const redirect = (row: any) => {
+    console.log("row:::",row)
+    dispatch(
+      setDetailInApplication({ title: row.title, status: row?.status,location: row.location,postedDate:row.created_at})
+    );
     navigator(`/employeer/dashboard/job-listing/${row.id}`);
   };
 

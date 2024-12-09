@@ -9,6 +9,7 @@ import { columnJobType, columnsName, Job } from "./Options";
 import DeleteConformModel from "../../../components/Modal/DeleteConformModel";
 import ViewModel from "../../../components/Modal/ViewModel";
 import { getOptionText, jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
+import { Link } from "react-router-dom";
 
 
 const JobListings = () => {
@@ -165,12 +166,20 @@ console.log(error)
   // console.log("mappedJobs",mappedJobs)
 console.log("IsModalEditOpen",isModalEditOpen)
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto ">
       {loading && (
         <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-20">
           <Loader />
         </div>
       )}
+        <nav className="bg-gray-200 py-3 px-6">
+        <Link to="/employeer/dashboard" className="text-blue-600 hover:underline">
+          Dashboard
+        </Link>{" "}
+        /{" "}
+        <span>Job Listings</span>
+      </nav>
+      <div className="p-4">
       <div className="flex justify-between items-center mb-10">
         <h3 className="text-2xl font-semibold">Job Listings</h3>
         {/* Create Job Button */}
@@ -192,6 +201,7 @@ console.log("IsModalEditOpen",isModalEditOpen)
         deleteJob={deleteJob}
         tableHeight={580}
       />
+      </div>
 
       {/* Modal for Job Creation */}
       {isModalOpen && (

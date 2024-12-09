@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userData from "../Redux/reducer/userData";
 import authReducer from "../Redux/reducer/authSlice";
+import jobReducer from "../Redux/reducer/jobSlice";
 import selectOptionReducer from "../Redux/reducer/selectOption";
 import { PersistConfig } from "redux-persist";
 
@@ -10,6 +11,8 @@ const rootReducer = combineReducers({
   user: userData,
   auth: authReducer,
   selectOption: selectOptionReducer,
+  JobDetails: jobReducer,
+
 });
 
 // Define persistence configurations with correct typing

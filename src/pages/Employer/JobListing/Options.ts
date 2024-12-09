@@ -1,3 +1,4 @@
+
 interface Column<T> {
     id: keyof T;
     label: string;
@@ -67,24 +68,27 @@ export const columnsName : Column<columnJobType>[] = [
 
 export type applicantColumnsType = {
   id?: string;
-  full_name?: string;
-  email?: string;
-  phone_number?: string;
-  location: string;
-  current_job_title: string;
-  total_years_of_experience?: string;
-  key_skills:string;
+  candidateName?: string;
+  candidateEmail?: string;
+  candidatePhone?: string;
+  candidateLocation: string;
+  candidateCurrentJobTitle: string;
+  candidateEducationLevel?: string; 
+  candidateExperience?: string;
+  key_skills?:string;
+  status?:any;
   actions?:any
 };
 
 
 export const jobApplicantsColumns : Column<applicantColumnsType>[] = [
-  { id: "full_name", label: "Name", minWidth: 120 },
-  { id: "email", label: "Email", minWidth: 150 },
-  { id: "phone_number", label: "Phone", minWidth: 150 },
-  { id: "location", label: "Location", minWidth: 150 },
-  { id: "current_job_title", label: "Current Job Title", minWidth: 150 },
-  { id: "total_years_of_experience", label: "Experience", minWidth: 150 },
-  { id: "key_skills", label: "Skills", minWidth: 150 },
-  { id: "actions", label: "Action", minWidth: 150 },
+  { id: "candidateName", label: "Name", minWidth: 120 },
+  { id: "candidateEmail", label: "Email", minWidth: 150 },
+  // { id: "candidatePhone", label: "Phone", minWidth: 150 },
+  { id: "candidateLocation", label: "Location", minWidth: 150 },
+  { id: "candidateCurrentJobTitle", label: "Current Job Title", minWidth: 150 },
+  { id: "candidateEducationLevel", label: "Education Level", minWidth: 150 },
+  { id: "candidateExperience", label: "Experience", minWidth: 100 },
+  { id: "status", label: "Application Status", minWidth: 100 },
+  { id: "actions", label: "Action", minWidth: 50 },
 ];

@@ -8,6 +8,7 @@ import { getJobsToCandiDate, getSearchJobsToCandiDate } from "../../../API/apis"
 import AllJobs from "../../../components/EmployeeDashboard/Jobs/AllJobs";
 import Select from "../../../components/Select/Select";
 import { jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
+import { Link } from "react-router-dom";
 interface SearchJob {
   job_title: string;
   job_type: string;
@@ -197,9 +198,9 @@ const JobMatchingPage: React.FC = () => {
   ) => {
     setSearchJob({ ...searchJob, [e.target.name]: e.target.value });
   };
-  if (loading) {
-    return <Loader/>;
-  }
+  // if (loading) {
+  //   return <Loader/>;
+  // }
 
   if (error) {
     return <div className="p-4 text-center text-red-500">{error}</div>;
@@ -207,8 +208,14 @@ const JobMatchingPage: React.FC = () => {
   
   return (
     <div className="min-h-screen flex flex-col bg-white ">
-      {/* Fixed Navigation */}
-      <nav className="fixed top-0  right-6 w-[80vw] bg-white shadow p-4 z-10">
+      <nav className="bg-gray-200 py-3 px-6">
+            <Link to="/candidate/dashboard" className="text-blue-600 hover:underline">
+              Dashboard
+            </Link>{" "}
+            /{" "}
+            <span>Jobs</span>
+      </nav>      {/* Fixed Navigation */}
+      <nav className=" bg-white shadow p-4 ">
         <div className="container mx-auto grid grid-cols-7 gap-6 items-center">
           {/* Job Title Input */}
           <input
@@ -261,7 +268,7 @@ const JobMatchingPage: React.FC = () => {
       </nav>
 
       {/* Main Body */}
-      <main className="mt-20 p-4 container mx-auto shadow-md border border-gray-200 rounded-lg">
+      <main className=" p-4 container mx-auto shadow-md border border-gray-200 rounded-lg">
       {/* <TableForCandiadteJob columns={columnsName} rows={jobs} showActionButtons={true} /> */}
         {/* <table className="table-auto w-full border-collapse border border-gray-200">
           <thead>
@@ -295,6 +302,11 @@ const JobMatchingPage: React.FC = () => {
             )}
           </tbody>
         </table> */}
+         {loading &&(
+        <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-20">
+          <Loader />
+        </div>
+      )}
         <AllJobs jobs={jobs}/>
       </main>
     </div>
