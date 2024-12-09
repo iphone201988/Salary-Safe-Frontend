@@ -25,12 +25,61 @@ export const options = [
     { value: "Master's", label: "Master's" },
     { value: "PhD", label: "PhD" },
   ];
+  export const ProficienyLevelOptions = [
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" },
+    { value: "5", label: "5" },
+  ];
   
   export const experienceOptions = [
     { value: 3, label: "1-3" },
     { value: 6, label: "4-6" },
     { value: 8, label: "7+" },
   ];
+
+  export const hiringGoalsOptions = [
+    { value: "revenue growth", label: "Revenue Growth" },
+    { value: "cost reduction", label: "Cost Reduction" },
+    { value: "employee retention", label: "Employee Retention" },
+    { value: "job satisfaction", label: "Job Satisfaction" },
+    { value: "profitability", label: "Profitability" },
+    { value: "customer satisfaction", label: "Customer Satisfaction" },
+    { value: "product innovation", label: "Product Innovation" },
+    { value: "brand recognition", label: "Brand Recognition" },
+    { value: "long-term growth", label: "Long-term Growth" },
+    { value: "short-term success", label: "Short-term Success" },
+    { value: "job security", label: "Job Security" },
+  ]
+  export const preferedJobLocationOption = [
+    { value: "remote", label: "Remote" },
+    { value: "onsite", label: "Onsite" },
+    { value: "both", label: "Both" },
+  ]
+
+  export const rolesPostionOptions =[
+    { value: "software_engineer", label: "Software Engineer" },
+    { value: "data_scientist", label: "Data Scientist" },
+    { value: "product_manager", label: "Product Manager" },
+    { value: " UX_ designer", label: "UX Designer" },
+    { value: "software_tester", label: "Software Tester" },
+    { value: "project_manager", label: "Project Manager" },
+    { value: "business_analyst", label: "Business Analyst" },
+    { value: "ui_developer", label: "UI Developer" },
+    { value: "quality_assurance_engineer", label: "Quality Assurance Engineer" },
+    { value: "data_analyst", label: "Data Analyst" },
+    { value: "ai_engineer", label: "AI Engineer" },
+  ]
+
+  export const JobTypeOptions =[
+    { value: "full_time", label: "Full-time" },
+    { value: "part_time", label: "Part-time" },
+    { value: "contract", label: "Contract" },
+    { value: "internship", label: "Internship" },
+    { value: "freelance", label: "Freelance" },
+    { value: "temporary", label: "Temporary" },
+  ]
   
   export const salaryTypeOptions = [
     { value: "Hourly", label: "Hourly" },

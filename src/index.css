@@ -103,3 +103,13 @@ a:hover {
   background: linear-gradient(135deg, #fc5c7d, #6a82fb);
   opacity: 0.9;
 }
+
+
+/* .fullscreen-bg {
+  background-image: url('/Background.jpg'); 
+  background-size: 100vw 100vh;
+  background-position: center;
+  background-repeat: no-repeat; 
+  width: 100vw;  
+  height: 100vh;
+} */

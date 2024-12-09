@@ -2,8 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import HomePage from "../pages/Public-Page/Home/Home";
 import AboutPage from "../pages/Public-Page/About/About";
 import ContactPage from "../pages/Public-Page/Contact/Contact";
-import CompanySignUp from "../pages/Employer/Auth/SignUp/Signup";
-import EmployeeSignUp from "../pages/Candidate/Auth/Employee/SignUp/SignUp";
+// import CompanySignUp from "../pages/Employer/Auth/SignUp/Signup";
+// import EmployeeSignUp from "../pages/Candidate/Auth/Employee/SignUp/SignUp";
 import AuthLayout from "../pages/Employer/Auth/layout";
 import CompanyLogin from "../pages/Employer/Auth/Login/Login";
 import EmployeeLogin from "../pages/Candidate/Auth/Employee/Login/Login";
@@ -46,9 +46,18 @@ import JobByIdPage from "../pages/Candidate/Jobs/JobByIdPage";
 import SearchJob from "../pages/Candidate/Jobs/SearchJob";
 import SubmitApplicationByIdPage from "../pages/Candidate/Jobs/SubmitApplicationByIdPage";
 import ApplicationByJobIdPage from "../pages/Employer/JobListing/ApplicationByJobIdPage";
+import { Register } from "../pages/Register/Register";
+import ProfileLayout from "../pages/Profile-Setup/ProfileLayout";
+import ProfileCreation from "../pages/Profile-Setup/Profile-Creation/ProfileCreation";
+import ABoutSalary from "../pages/Profile-Setup/About-Salary/Salary";
+import JobSearch from "../pages/Profile-Setup/Job-Search/JobSearch";
+import AdditionalDetail from "../pages/Profile-Setup/Additional-Details/AdditionalDetail";
+import { RegisterCompany } from "../pages/Employer-Register/RegisterCompany";
+import GoalsPreference from "../pages/Profile-Setup/Goals-Preferences/Goals";
+import Customization from "../pages/Profile-Setup/Dashboard-customization/Customization";
+import Details from "../pages/Profile-Setup/Company-Addtional-Detail/Details";
 
 const router = createBrowserRouter([
- 
   {
     path: "/",
     element: <HomePage />,
@@ -73,7 +82,7 @@ const router = createBrowserRouter([
     path: "privacy",
     element: <PrivacyPolicy />,
   },
-  
+
   {
     path: "contact",
     element: <ContactPage />,
@@ -105,9 +114,13 @@ const router = createBrowserRouter([
         path: "auth",
         element: <ProtectedAuthRoute element={<SelectAuth />} />,
       },
+      // {
+      //   path: "signup-company",
+      //   element: <ProtectedAuthRoute element={<CompanySignUp />} />,
+      // },
       {
         path: "signup-company",
-        element: <ProtectedAuthRoute element={<CompanySignUp />} />,
+        element: <ProtectedAuthRoute element={<RegisterCompany />} />,
       },
       {
         path: "login-company",
@@ -117,9 +130,13 @@ const router = createBrowserRouter([
         path: "auth/linkedin/callback",
         element: <ProtectedAuthRoute element={<AuthCallback />} />,
       },
+      // {
+      //   path: "signup-employee",
+      //   element: <ProtectedAuthRoute element={<EmployeeSignUp />} />,
+      // },
       {
         path: "signup-employee",
-        element: <ProtectedAuthRoute element={<EmployeeSignUp />} />,
+        element: <ProtectedAuthRoute element={<Register />} />,
       },
       {
         path: "login-employee",
@@ -136,6 +153,40 @@ const router = createBrowserRouter([
       {
         path: "reset-password",
         element: <ResetPassword />,
+      },
+    ],
+  },
+  {
+    path: "/profile",
+    element: <ProfileLayout />,
+    children: [
+      {
+        path: "add-skill",
+        element: <ProfileCreation />,
+      },
+      {
+        path: "about-salary",
+        element: <ABoutSalary />,
+      },
+      {
+        path: "job-search",
+        element: <JobSearch />,
+      },
+      {
+        path: "additional-detail",
+        element: <AdditionalDetail />,
+      },
+      {
+        path: "hiring-goal",
+        element: <GoalsPreference />,
+      },
+      {
+        path: "dashboard-customization",
+        element: <Customization />,
+      },
+      {
+        path: "company-additional-detail",
+        element: <Details />,
       },
     ],
   },
@@ -201,9 +252,7 @@ const router = createBrowserRouter([
       },
       {
         path: "candidate",
-        element: (
-          <ProtectedCandidateRoute element={<CandidateDashboard />} />
-        ),
+        element: <ProtectedCandidateRoute element={<CandidateDashboard />} />,
       },
       {
         path: "job-list",
@@ -219,11 +268,15 @@ const router = createBrowserRouter([
       },
       {
         path: "submit-application",
-        element: <ProtectedCandidateRoute element={<SubmittedApplicationsPage />} />,
+        element: (
+          <ProtectedCandidateRoute element={<SubmittedApplicationsPage />} />
+        ),
       },
       {
         path: "submit-application/:id",
-        element: <ProtectedCandidateRoute element={<SubmitApplicationByIdPage />} />,
+        element: (
+          <ProtectedCandidateRoute element={<SubmitApplicationByIdPage />} />
+        ),
       },
       {
         path: "settings",
