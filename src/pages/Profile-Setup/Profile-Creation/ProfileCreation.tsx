@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   educationLevelOptions,
   experienceOptions,
@@ -9,9 +9,13 @@ import MultiSelectComponent from "../MultiSelect/Multi";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setemployeDetails } from "../../../Redux/reducer/userData";
 
 const ProfileCreation = () => {
   const navigate = useNavigate();
+  const { employeDetails } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
   const value = [`1`, `2`, `3`, `4`, `5`];
   const [skill, setSkill] = useState("");
   const [selectedProficiency, setSelectedProficiency] = useState<any>("");
@@ -21,7 +25,6 @@ const ProfileCreation = () => {
   const [selectedEducationLevel, setSelectedEducationLevel] = useState<any>();
   const [selectedExperience, setSelectedExperience] = useState<any>();
   const [positionsOfInterest, setPositionsOfInterest] = useState("");
-
 
   const handleAddSkill = () => {
     if (
@@ -42,38 +45,41 @@ const ProfileCreation = () => {
     setSelectedProficiency(selected);
   };
   const token = useSelector((state: any) => state.auth.token);
-console.log("skillsList",skillsList)
-const handleSubmit = async () => {
-  // Prepare the API request payload
-  const data = {
-    key_skills: skillsList,
-    total_years_of_experience: selectedExperience?.value,
-    education_level: selectedEducationLevel?.value,
-    job_titles_of_interest: positionsOfInterest,
-  };
-
-  try {
-    // Make the API call using Axios
-    await axios.patch(
-      'https://salarysafe.ai/api/v1/candidates/me',
-      data,
-      {
+  const handleSubmit = async () => {
+    const data = {
+      key_skills: skillsList,
+      total_years_of_experience: selectedExperience?.value,
+      education_level: selectedEducationLevel?.value,
+      job_titles_of_interest: positionsOfInterest,
+    };
+    try {
+      await axios.patch("https://salarysafe.ai/api/v1/candidates/me", data, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      }
+      });
+      navigate("/profile/about-salary");
+    } catch (error) {
+      console.error("Error updating candidate details:", error);
+    }
+  };
+  useEffect(() => {
+    dispatch(
+      setemployeDetails({
+        ...employeDetails,
+        key_skills: skillsList,
+        total_years_of_experience: selectedExperience?.value,
+        education_level: selectedEducationLevel?.value,
+        job_titles_of_interest: positionsOfInterest,
+      })
     );
-
-    // Navigate to the next page
-    navigate('/profile/about-salary');
-  } catch (error) {
-    console.error('Error updating candidate details:', error);
-    // Optionally handle the error (e.g., show a message to the user)
-  }
-};
-  console.log("selectedExperience",selectedExperience)
-
+  }, [
+    skillsList,
+    selectedExperience,
+    selectedEducationLevel,
+    positionsOfInterest,
+  ]);
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       <Button
@@ -107,7 +113,6 @@ const handleSubmit = async () => {
                 name="positionsOfInterest"
                 value={positionsOfInterest}
                 onChange={(e) => setPositionsOfInterest(e.target.value)}
-
               />
               <MultiSelectComponent
                 isMulti={false}
@@ -115,7 +120,6 @@ const handleSubmit = async () => {
                 options={experienceOptions}
                 value={selectedExperience}
                 onChange={(selected) => setSelectedExperience(selected)}
-
               />
             </div>
 

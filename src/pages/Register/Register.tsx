@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button/Button";
 import Input from "./Input/Input";
 import { validationSchema } from "../../validation";
@@ -8,9 +8,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { login } from "../../Redux/reducer/authSlice";
+import { setemployeDetails } from "../../Redux/reducer/userData";
+import { useSelector } from "react-redux";
 
 export const Register = () => {
   const navigate = useNavigate();
+  const { employeDetails } = useSelector((state: any) => state.user);
 
   const [formData, setFormData] = useState<any>({
     full_name: "",
@@ -21,8 +24,6 @@ export const Register = () => {
     linkedin_profile_url: "",
     terms_accepted: false,
   });
-
-  // console.log("FormData", formData);
 
   const [errors, setErrors] = useState<any>({});
   const [touched, setTouched] = useState<any>({});
@@ -78,7 +79,7 @@ export const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const data ={
+    const data = {
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
@@ -86,15 +87,8 @@ export const Register = () => {
       current_job_title: formData.current_job_title,
       linkedin_profile_url: formData.linkedin_profile_url,
       terms_accepted: formData.terms_accepted,
-    }
-    // const formDataToSend = new FormData();
-    // Object.entries(formData).forEach(([key, value]) => {
-    //   if (Array.isArray(value)) {
-    //     value.forEach((item) => formDataToSend.append(key, item));
-    //   } else {
-    //     formDataToSend.append(key, value);
-    //   }
-    // });
+    };
+
     if (validateForm()) {
       if (formData.terms_accepted) {
         try {
@@ -108,9 +102,7 @@ export const Register = () => {
             dispatch(
               login({ token: response?.data?.access_token, role: "candidate" })
             );
-            // navigate("/login-employee");
             navigate("/profile/add-skill");
-            // navigate("/profile/additional-detail");
           }
         } catch (err) {
           toast.error("Registration failed. Please try again.");
@@ -118,6 +110,29 @@ export const Register = () => {
       }
     }
   };
+
+  useEffect(() => {
+    dispatch(
+      setemployeDetails({
+        ...employeDetails,
+        full_name: formData.name,
+        email: formData.email,
+        phone_number: formData.phone,
+        password: formData.password,
+        current_job_title: formData.current_job_title,
+        linkedin_profile_url: formData.linkedin_profile_url,
+        terms_accepted: formData.terms_accepted,
+      })
+    );
+  }, [
+    formData.name,
+    formData.email,
+    formData.phone,
+    formData.password,
+    formData.current_job_title,
+    formData.linkedin_profile_url,
+    formData.terms_accepted,
+  ]);
 
   return (
     <div className="w-[750px] px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
