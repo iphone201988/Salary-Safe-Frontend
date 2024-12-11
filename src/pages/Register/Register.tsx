@@ -30,10 +30,11 @@ export const Register = () => {
   const dispatch = useDispatch();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prevData: any) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    dispatch(setemployeDetails({...employeDetails,[name]: type === "checkbox" ? checked : value}))
+    // setFormData((prevData: any) => ({
+    //   ...prevData,
+    //   [name]: type === "checkbox" ? checked : value,
+    // }));
 
     if (touched[name]) {
       validateField(name, value);
@@ -111,28 +112,28 @@ export const Register = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(
-      setemployeDetails({
-        ...employeDetails,
-        full_name: formData.name,
-        email: formData.email,
-        phone_number: formData.phone,
-        password: formData.password,
-        current_job_title: formData.current_job_title,
-        linkedin_profile_url: formData.linkedin_profile_url,
-        terms_accepted: formData.terms_accepted,
-      })
-    );
-  }, [
-    formData.name,
-    formData.email,
-    formData.phone,
-    formData.password,
-    formData.current_job_title,
-    formData.linkedin_profile_url,
-    formData.terms_accepted,
-  ]);
+  // useEffect(() => {
+  //   dispatch(
+  //     setemployeDetails({
+  //       ...employeDetails,
+  //       full_name: formData.name,
+  //       email: formData.email,
+  //       phone_number: formData.phone,
+  //       password: formData.password,
+  //       current_job_title: formData.current_job_title,
+  //       linkedin_profile_url: formData.linkedin_profile_url,
+  //       terms_accepted: formData.terms_accepted,
+  //     })
+  //   );
+  // }, [
+  //   formData.name,
+  //   formData.email,
+  //   formData.phone,
+  //   formData.password,
+  //   formData.current_job_title,
+  //   formData.linkedin_profile_url,
+  //   formData.terms_accepted,
+  // ]);
 
   return (
     <div className="w-[750px] px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
@@ -170,7 +171,7 @@ export const Register = () => {
           <Input
             label="Full Name"
             placeholder="enter full name here"
-            value={formData.full_name}
+            value={employeDetails?.full_name}
             name="full_name"
             onChange={handleChange}
             onBlur={handleBlur}
@@ -180,7 +181,7 @@ export const Register = () => {
           <Input
             label="Email"
             placeholder="enter email here"
-            value={formData.email}
+            value={employeDetails?.email}
             name="email"
             onChange={handleChange}
             onBlur={handleBlur}
@@ -190,7 +191,7 @@ export const Register = () => {
           <Input
             label="Phone"
             placeholder="+91 12356789"
-            value={formData.phone_number}
+            value={employeDetails?.phone_number}
             name="phone_number"
             onChange={handleChange}
             onBlur={handleBlur}
@@ -201,7 +202,7 @@ export const Register = () => {
             label="Password"
             placeholder="******"
             type="password"
-            value={formData.password}
+            value={employeDetails?.password}
             name="password"
             onChange={handleChange}
             onBlur={handleBlur}
@@ -211,17 +212,17 @@ export const Register = () => {
           <Input
             label="Current Job title"
             placeholder="Mern Developer"
-            value={formData.current_job_title}
+            value={employeDetails?.current_job_title}
             name="current_job_title"
             onChange={handleChange}
             onBlur={handleBlur}
-            errorMessage={errors.current_job_title}
+            errorMessage={errors?.current_job_title}
           />
 
           <Input
             label="LinkedIn Profile URL"
             placeholder="http://linkdin.in/techwinlabs/"
-            value={formData.linkedin_profile_url}
+            value={employeDetails?.linkedin_profile_url}
             name="linkedin_profile_url"
             onChange={handleChange}
             onBlur={handleBlur}
@@ -236,7 +237,7 @@ export const Register = () => {
               type="checkbox"
               id="terms_accepted"
               name="terms_accepted"
-              checked={formData.terms_accepted}
+              checked={employeDetails?.terms_accepted}
               onChange={handleChange}
               onBlur={handleBlur}
             />
