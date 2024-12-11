@@ -7,6 +7,8 @@ import Button from "../../Register/Button/Button";
 import Input from "../../Register/Input/Input";
 import MultiSelectComponent from "../MultiSelect/Multi";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ProfileCreation = () => {
   const navigate = useNavigate();
@@ -16,6 +18,10 @@ const ProfileCreation = () => {
   const [skillsList, setSkillsList] = useState<any>([]);
   const [showAll, setShowAll] = useState(false);
   const displayedSkills = showAll ? skillsList : skillsList.slice(0, 5);
+  const [selectedEducationLevel, setSelectedEducationLevel] = useState<any>();
+  const [selectedExperience, setSelectedExperience] = useState<any>();
+  const [positionsOfInterest, setPositionsOfInterest] = useState("");
+
 
   const handleAddSkill = () => {
     if (
@@ -25,7 +31,7 @@ const ProfileCreation = () => {
     ) {
       setSkillsList([
         ...skillsList,
-        { skill: skill.trim(), proficiency: selectedProficiency },
+        { name: skill.trim(), profiency: selectedProficiency },
       ]);
       setSkill("");
       setSelectedProficiency("");
@@ -35,6 +41,38 @@ const ProfileCreation = () => {
   const handleRadioChange = (selected: any) => {
     setSelectedProficiency(selected);
   };
+  const token = useSelector((state: any) => state.auth.token);
+console.log("skillsList",skillsList)
+const handleSubmit = async () => {
+  // Prepare the API request payload
+  const data = {
+    key_skills: skillsList,
+    total_years_of_experience: selectedExperience?.value,
+    education_level: selectedEducationLevel?.value,
+    job_titles_of_interest: positionsOfInterest,
+  };
+
+  try {
+    // Make the API call using Axios
+    await axios.patch(
+      'https://salarysafe.ai/api/v1/candidates/me',
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+
+    // Navigate to the next page
+    navigate('/profile/about-salary');
+  } catch (error) {
+    console.error('Error updating candidate details:', error);
+    // Optionally handle the error (e.g., show a message to the user)
+  }
+};
+  console.log("selectedExperience",selectedExperience)
 
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
@@ -65,12 +103,19 @@ const ProfileCreation = () => {
             <div className="w-full">
               <Input
                 label="Job Titles/Positions of Interest:"
-                placeholder="enter job title here"
+                placeholder="Enter job title here"
+                name="positionsOfInterest"
+                value={positionsOfInterest}
+                onChange={(e) => setPositionsOfInterest(e.target.value)}
+
               />
               <MultiSelectComponent
                 isMulti={false}
                 label="Total Years of Experience:"
                 options={experienceOptions}
+                value={selectedExperience}
+                onChange={(selected) => setSelectedExperience(selected)}
+
               />
             </div>
 
@@ -78,6 +123,8 @@ const ProfileCreation = () => {
               isMulti={false}
               label="Education Level:"
               options={educationLevelOptions}
+              value={selectedEducationLevel}
+              onChange={(selected) => setSelectedEducationLevel(selected)}
             />
           </div>
 
@@ -131,10 +178,10 @@ const ProfileCreation = () => {
                     className="bg-gradient-to-r from-blue-100 to-purple-400 text-white rounded-lg p-2 shadow-lg hover:scale-105 transition-transform duration-200 ease-in-out"
                   >
                     <div className="font-semibold text-[14px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                      {item.skill}
+                      {item.name}
                     </div>
                     <div className="text-[12px] text-black">
-                      Proficiency: {item.proficiency}
+                      Proficiency: {item.profiency}
                     </div>
                   </li>
                 ))}
@@ -161,6 +208,7 @@ const ProfileCreation = () => {
         <Button
           text="submit"
           type="button"
+          onClick={handleSubmit}
           color="green"
           textColor="white"
           size="md"

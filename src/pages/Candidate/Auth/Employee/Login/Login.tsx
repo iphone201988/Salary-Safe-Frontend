@@ -109,10 +109,12 @@ const EmployeeLogin = () => {
       setIsSubmitting(false);
     }
   };
-
+console.log("loading",loading)
   return (
     <div className="flex justify-center items-center min-h-screen">
-      {loading && <Loader />}
+      {loading &&  <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-20">
+          <Loader />
+        </div>}
       <div className={`w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg ${loading?"backdrop-blur-sm":""}`}>
         <h1 className="text-3xl font-bold text-center">Login as Candidate</h1>
         <form onSubmit={handleSubmit} className="space-y-4">

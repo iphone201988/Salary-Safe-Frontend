@@ -6,6 +6,8 @@ import { validationSchema } from "../../validation";
 import { candidateRegister } from "../../API/apis";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { login } from "../../Redux/reducer/authSlice";
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ export const Register = () => {
 
   const [errors, setErrors] = useState<any>({});
   const [touched, setTouched] = useState<any>({});
-
+  const dispatch = useDispatch();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData: any) => ({
@@ -76,27 +78,39 @@ export const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/profile/additional-detail");
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        value.forEach((item) => formDataToSend.append(key, item));
-      } else {
-        formDataToSend.append(key, value);
-      }
-    });
+    const data ={
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password,
+      current_job_title: formData.current_job_title,
+      linkedin_profile_url: formData.linkedin_profile_url,
+      terms_accepted: formData.terms_accepted,
+    }
+    // const formDataToSend = new FormData();
+    // Object.entries(formData).forEach(([key, value]) => {
+    //   if (Array.isArray(value)) {
+    //     value.forEach((item) => formDataToSend.append(key, item));
+    //   } else {
+    //     formDataToSend.append(key, value);
+    //   }
+    // });
     if (validateForm()) {
       if (formData.terms_accepted) {
         try {
-          const response = await axios.post(candidateRegister, formDataToSend, {
+          const response = await axios.post(candidateRegister, data, {
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
             },
           });
           if (response.status === 200) {
             toast.success("Registration successful!");
-            navigate("/login-employee");
-            navigate("/profile/additional-detail");
+            dispatch(
+              login({ token: response?.data?.access_token, role: "candidate" })
+            );
+            // navigate("/login-employee");
+            navigate("/profile/add-skill");
+            // navigate("/profile/additional-detail");
           }
         } catch (err) {
           toast.error("Registration failed. Please try again.");
