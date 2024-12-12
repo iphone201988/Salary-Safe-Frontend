@@ -7,54 +7,93 @@ import {
 import Button from "../../Register/Button/Button";
 import Input from "../../Register/Input/Input";
 import MultiSelectComponent from "../MultiSelect/Multi";
-import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setemployeDetails } from "../../../Redux/reducer/userData";
 
 const ABoutSalary = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [genernalSalary, setGenernalSalary] = useState("");
-  const [accecptsalary, setAccecptsalary] = useState("");
-  const [viewSalaryPermission, setViewSalaryPermission] = useState<any>();
-  const [benefits, setBenefits] = useState<any>();
-  const [salaryType, setSalaryType] = useState<any>();
-  const [open_to_performance_based_compensation, set_open_to_performance_based_compensation] = useState(false);
-  const [willing_to_negociate, set_willing_to_negociate] = useState(false);
-  const [hide_profile_from_current_employer, set_hide_profile_from_current_employer] = useState(false);
+
   const token = useSelector((state: any) => state.auth.token);
-const handleSubmit = async () => {
-  // Prepare the API request payload
-  const data = {
-    general_salary_range: genernalSalary,
-    minimum_acceptable_salary: Number(accecptsalary),
-    preferred_benefits: benefits.map((benefit:any)=>{return benefit?.value}),
-    view_salary_expectations: viewSalaryPermission?.value,
-    open_to_performance_based_compensation: open_to_performance_based_compensation,
-    willing_to_negociate: willing_to_negociate,
-    hide_profile_from_current_employer: hide_profile_from_current_employer,
-    preferred_salary_type: salaryType?.value,
+  const { employeDetails } = useSelector((state: any) => state.user);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    dispatch(
+      setemployeDetails({
+        ...employeDetails,
+        [name]: type === "checkbox" ? checked : value,
+      })
+    );
   };
 
-  try {
-    // Make the API call using Axios
-    await axios.patch(
-      'https://salarysafe.ai/api/v1/candidates/me',
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      }
+  const handleMultiSelectChange = (field: string, selectedOptions: any) => {
+    dispatch(
+      setemployeDetails({ ...employeDetails, [field]: selectedOptions })
+    );
+  };
+
+  const handleSubmit = async () => {
+    
+    const formData = new FormData();
+    formData.append(
+      "general_salary_range",
+      employeDetails?.general_salary_range || ""
+    );
+    formData.append(
+      "minimum_acceptable_salary",
+      employeDetails?.minimum_acceptable_salary || ""
     );
 
-    // Navigate to the next page
-    navigate('/profile/job-search');
-  } catch (error) {
-    console.error('Error updating candidate details:', error);
-    // Optionally handle the error (e.g., show a message to the user)
-  }
-};
+    // employeDetails?.preferred_benefits?.forEach((benefit: any, index: number) => {
+    //   formData.append(`preferred_benefits[${index}]`, benefit?.value || "");
+    // });
+
+    formData.append(`preferred_benefits`,JSON.stringify(
+      employeDetails?.preferred_benefits?.map((data: any) => {
+        return data?.value;
+      })
+    ));
+
+    formData.append(
+      "view_salary_expectations",
+      employeDetails?.view_salary_expectations?.value || ""
+    );
+    formData.append(
+      "open_to_performance_based_compensation",
+      employeDetails?.open_to_performance_based_compensation || ""
+    );
+    formData.append(
+      "willing_to_negociate",
+      employeDetails?.willing_to_negociate || ""
+    );
+    formData.append(
+      "hide_profile_from_current_employer",
+      employeDetails?.hide_profile_from_current_employer || ""
+    );
+    formData.append(
+      "preferred_salary_type",
+      employeDetails?.preferred_salary_type?.value || ""
+    );
+
+    try {
+      await axios.patch(
+        "https://salarysafe.ai/api/v1/candidates/me",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      navigate("/profile/job-search");
+    } catch (error) {
+      console.error("Error updating candidate details:", error);
+    }
+  };
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       <Button
@@ -64,7 +103,7 @@ const handleSubmit = async () => {
         textColor="white"
         size="md"
         className="mt-4 text-center bg-black absolute right-3 top-0"
-        onClick={()=>navigate("/profile/job-search")}
+        onClick={() => navigate("/profile/job-search")}
       />
 
       <div className="w-full lg:w-[350px] flex flex-col justify-center items-center">
@@ -85,16 +124,18 @@ const handleSubmit = async () => {
               <Input
                 label="General Salary Range:"
                 placeholder="enter salary range here"
-                name="genernalSalary"
-                value={genernalSalary}
-                onChange={(e) => setGenernalSalary(e.target.value)}
+                name="general_salary_range"
+                value={employeDetails?.general_salary_range}
+                onChange={handleChange}
               />
               <MultiSelectComponent
                 isMulti={false}
                 label="Preferred Salary Type:"
                 options={salaryTypeOptions}
-                value={salaryType}
-                onChange={(selected) => setSalaryType(selected)}
+                value={employeDetails?.preferred_salary_type}
+                onChange={(selected) =>
+                  handleMultiSelectChange("preferred_salary_type", selected)
+                }
               />
             </div>
 
@@ -103,8 +144,8 @@ const handleSubmit = async () => {
                 type="checkbox"
                 id="open_to_performance_based_compensation"
                 name="open_to_performance_based_compensation"
-                checked={open_to_performance_based_compensation}
-                onChange={e =>set_open_to_performance_based_compensation(e.target.checked)}
+                checked={employeDetails?.open_to_performance_based_compensation}
+                onChange={handleChange}
               />
               <label htmlFor="open_to_performance_based_compensation">
                 Open to performance-based compensation?
@@ -115,8 +156,8 @@ const handleSubmit = async () => {
                 type="checkbox"
                 id="willing_to_negociate"
                 name="willing_to_negociate"
-                checked={willing_to_negociate}
-                onChange={ e => set_willing_to_negociate(e.target.checked)}
+                checked={employeDetails?.willing_to_negociate}
+                onChange={handleChange}
               />
               <label htmlFor="willing_to_negociate">
                 Willing to Negotiate?
@@ -126,35 +167,39 @@ const handleSubmit = async () => {
 
           <div className="w-[320px]">
             <Input
-              label="Minimum Acceptable Salary (Optional):"
+              label="Minimum Acceptable Salary:"
               placeholder="enter minium salary here"
               type="number"
-              name="accecptsalary"
-              value={accecptsalary}
-              onChange={(e) => setAccecptsalary(e.target.value)}
+              name="minimum_acceptable_salary"
+              value={employeDetails?.minimum_acceptable_salary}
+              onChange={handleChange}
             />
 
             <MultiSelectComponent
               isMulti={true}
               label="Preferred Benefits:"
               options={benefitsOptions}
-              value={benefits}
-              onChange={(selected) => setBenefits(selected)}
+              value={employeDetails?.preferred_benefits}
+              onChange={(selected) =>
+                handleMultiSelectChange("preferred_benefits", selected)
+              }
             />
             <MultiSelectComponent
               isMulti={false}
               label="Who can view your salary expectations?"
               options={viewSalaryPermissionOptions}
-              value={viewSalaryPermission}
-              onChange={(selected) => setViewSalaryPermission(selected)}
+              value={employeDetails?.view_salary_expectations}
+              onChange={(selected) =>
+                handleMultiSelectChange("view_salary_expectations", selected)
+              }
             />
             <div className="flex items-center space-x-2 mt-2">
               <input
                 type="checkbox"
                 id="hide_profile_from_current_employer"
                 name="hide_profile_from_current_employer"
-                  checked={hide_profile_from_current_employer}
-                  onChange={ e => set_hide_profile_from_current_employer(e.target.checked)}
+                checked={employeDetails?.hide_profile_from_current_employer}
+                onChange={handleChange}
               />
               <label htmlFor="hide_profile_from_current_employer">
                 Hide my profile from current employer(s)
@@ -162,8 +207,8 @@ const handleSubmit = async () => {
             </div>
           </div>
         </div>
-        <div className="w-full flex justify-center">
-          {/* <Button
+        <div className="w-full flex justify-between">
+          <Button
             text="Back"
             type="button"
             color="green"
@@ -171,7 +216,8 @@ const handleSubmit = async () => {
             size="md"
             className="mt-4 text-center bg-[#ef4444]"
             onClick={() => navigate("/profile/add-skill")}
-          /> */}
+          />
+
           <Button
             text="Submit"
             type="button"

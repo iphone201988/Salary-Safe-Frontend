@@ -115,7 +115,7 @@ console.log("loading",loading)
       {loading &&  <div className="absolute inset-0 bg-white bg-opacity-70 flex justify-center items-center z-20">
           <Loader />
         </div>}
-      <div className={`w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg ${loading?"backdrop-blur-sm":""}`}>
+      <div className={`w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-[20px] ${loading?"backdrop-blur-sm":""}`}>
         <h1 className="text-3xl font-bold text-center">Login as Candidate</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
@@ -159,7 +159,7 @@ console.log("loading",loading)
 
           {/* Forgot Password */}
           <div className="text-right">
-            <Link to="/forgot-password" className="text-[#019529] underline">
+            <Link to="/forgot-password" className="text-[#6B7280] underline">
               Forgot your password?
             </Link>
           </div>
@@ -169,7 +169,7 @@ console.log("loading",loading)
             <Button
               type="submit"
               content={isSubmitting ? "Submitting..." : "Login"}
-              className={`bg-[#019529] text-white px-6 py-2 rounded-md w-full`}
+              className={`bg-[black] text-white px-6 py-2 rounded-md w-full`}
             />
           </div>
         </form>
@@ -177,11 +177,11 @@ console.log("loading",loading)
         {/* Register Link */}
         <div className="text-center mt-4">
           Don't have an account?{" "}
-          <Link to="/signup-employee" className="text-[#019529] underline">
+          <Link to="/signup-employee" className="text-[#6B7280] underline">
             Register
           </Link>
           {" | "}
-          <Link to="/" className="text-[#019529] underline">
+          <Link to="/" className="text-[#6B7280] underline">
             Home
           </Link>
         </div>

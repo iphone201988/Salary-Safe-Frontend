@@ -79,7 +79,6 @@ const CompanyLogin = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
     const errors = await validateForm(companyLoginSchema, formData);
     if (errors) {
       console.log("errors", errors, formData);
@@ -129,7 +128,7 @@ const CompanyLogin = () => {
   return (
     <div className="flex justify-center items-center min-h-screen">
       {loading && <Loader />}
-      <div className="w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-lg">
+      <div className="w-full max-w-lg space-y-6 p-8 bg-white shadow-md rounded-[20px]">
         <h1 className="text-3xl font-bold text-center">Login as Employer</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Company Name */}
@@ -153,7 +152,7 @@ const CompanyLogin = () => {
 
           {/* Forgot Password */}
           <div className="text-right">
-            <Link to="/forgot-password" className="text-[#019529] underline">
+            <Link to="/forgot-password" className="text-[#6B7280] underline">
               Forgot your password?
             </Link>
           </div>
@@ -163,7 +162,7 @@ const CompanyLogin = () => {
             <Button
               type="submit"
               content={isSubmitting ? "Submitting..." : "Login"}
-              className={`bg-[#019529] text-white px-6 py-2 rounded-md w-full`}
+              className={`bg-[black] text-white px-6 py-2 rounded-md w-full`}
             />
           </div>
         </form>
@@ -171,11 +170,11 @@ const CompanyLogin = () => {
         {/* Register Link */}
         <div className="text-center mt-4">
           Don't have an account?{" "}
-          <Link to="/signup-company" className="text-[#019529] underline">
+          <Link to="/signup-company" className="text-[#6B7280] underline">
             Register
           </Link>
           {" | "}
-          <Link to="/" className="text-[#019529] underline">
+          <Link to="/" className="text-[#6B7280] underline">
             Home
           </Link>
         </div>

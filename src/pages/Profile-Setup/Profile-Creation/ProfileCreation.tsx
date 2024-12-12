@@ -19,67 +19,103 @@ const ProfileCreation = () => {
   const value = [`1`, `2`, `3`, `4`, `5`];
   const [skill, setSkill] = useState("");
   const [selectedProficiency, setSelectedProficiency] = useState<any>("");
-  const [skillsList, setSkillsList] = useState<any>([]);
+
+  const [skillsList, setSkillsList] = useState<
+    { name: string; proficiency: string }[]
+  >(employeDetails?.key_skills);
+
   const [showAll, setShowAll] = useState(false);
-  const displayedSkills = showAll ? skillsList : skillsList.slice(0, 5);
-  const [selectedEducationLevel, setSelectedEducationLevel] = useState<any>();
-  const [selectedExperience, setSelectedExperience] = useState<any>();
-  const [positionsOfInterest, setPositionsOfInterest] = useState("");
+
+  const displayedSkills = showAll ? skillsList : skillsList?.slice(0, 5);
 
   const handleAddSkill = () => {
     if (
       skill.trim() !== "" &&
       selectedProficiency !== "" &&
-      !skillsList.some((s: any) => s.skill === skill.trim())
+      !skillsList?.some((s: any) => s.name === skill.trim()) // Ensure 'name' is checked instead of 'skill'
     ) {
       setSkillsList([
-        ...skillsList,
-        { name: skill.trim(), profiency: selectedProficiency },
+        ...(employeDetails?.key_skills || []),
+        { name: skill.trim(), proficiency: selectedProficiency },
       ]);
       setSkill("");
       setSelectedProficiency("");
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    dispatch(
+      setemployeDetails({
+        ...employeDetails,
+        [name]: type === "checkbox" ? checked : value,
+      })
+    );
+  };
+
+  const handleMultiSelectChange = (field: string, selectedOptions: any) => {
+    dispatch(
+      setemployeDetails({ ...employeDetails, [field]: selectedOptions })
+    );
+  };
+
   const handleRadioChange = (selected: any) => {
     setSelectedProficiency(selected);
   };
   const token = useSelector((state: any) => state.auth.token);
+
   const handleSubmit = async () => {
-    const data = {
-      key_skills: skillsList,
-      total_years_of_experience: selectedExperience?.value,
-      education_level: selectedEducationLevel?.value,
-      job_titles_of_interest: positionsOfInterest,
-    };
+    const formData = new FormData();
+    formData.append("key_skills", JSON.stringify(skillsList));
+    // skillsList.forEach((skill: any, index: any) => {
+    //   formData.append(`key_skills[${index}][name]`, skill.name || "");
+    //   formData.append(
+    //     `key_skills[${index}][profiency]`,
+    //     skill.profiency || ""
+    //   );
+    // });
+    formData.append(
+      "total_years_of_experience",
+      employeDetails?.total_years_of_experience?.value || ""
+    );
+    formData.append(
+      "education_level",
+      employeDetails?.education_level?.value || ""
+    );
+    formData.append(
+      "job_titles_of_interest",
+      employeDetails?.job_titles_of_interest
+    );
+
     try {
-      await axios.patch("https://salarysafe.ai/api/v1/candidates/me", data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.patch(
+        "https://salarysafe.ai/api/v1/candidates/me",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       navigate("/profile/about-salary");
     } catch (error) {
       console.error("Error updating candidate details:", error);
     }
   };
+
+  useEffect(() => {
+    setSkillsList(employeDetails?.key_skills || []);
+  }, [employeDetails?.key_skills]);
   useEffect(() => {
     dispatch(
       setemployeDetails({
         ...employeDetails,
         key_skills: skillsList,
-        total_years_of_experience: selectedExperience?.value,
-        education_level: selectedEducationLevel?.value,
-        job_titles_of_interest: positionsOfInterest,
       })
     );
-  }, [
-    skillsList,
-    selectedExperience,
-    selectedEducationLevel,
-    positionsOfInterest,
-  ]);
+  }, [skillsList]);
+
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       <Button
@@ -110,16 +146,18 @@ const ProfileCreation = () => {
               <Input
                 label="Job Titles/Positions of Interest:"
                 placeholder="Enter job title here"
-                name="positionsOfInterest"
-                value={positionsOfInterest}
-                onChange={(e) => setPositionsOfInterest(e.target.value)}
+                name="job_titles_of_interest"
+                value={employeDetails?.job_titles_of_interest}
+                onChange={handleChange}
               />
               <MultiSelectComponent
                 isMulti={false}
                 label="Total Years of Experience:"
                 options={experienceOptions}
-                value={selectedExperience}
-                onChange={(selected) => setSelectedExperience(selected)}
+                value={employeDetails.total_years_of_experience}
+                onChange={(selected) =>
+                  handleMultiSelectChange("total_years_of_experience", selected)
+                }
               />
             </div>
 
@@ -127,8 +165,10 @@ const ProfileCreation = () => {
               isMulti={false}
               label="Education Level:"
               options={educationLevelOptions}
-              value={selectedEducationLevel}
-              onChange={(selected) => setSelectedEducationLevel(selected)}
+              value={employeDetails.education_level}
+              onChange={(selected) =>
+                handleMultiSelectChange("education_level", selected)
+              }
             />
           </div>
 
@@ -148,7 +188,7 @@ const ProfileCreation = () => {
 
               {skill && (
                 <div className="w-full flex gap-2 m-2">
-                  {value.map((item, index) => (
+                  {value?.map((item, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <input
                         type="radio"
@@ -176,7 +216,7 @@ const ProfileCreation = () => {
 
             <div className="w-full">
               <ul className="flex flex-wrap gap-4">
-                {displayedSkills.map((item: any, index: any) => (
+                {displayedSkills?.map((item: any, index: any) => (
                   <li
                     key={index}
                     className="bg-gradient-to-r from-blue-100 to-purple-400 text-white rounded-lg p-2 shadow-lg hover:scale-105 transition-transform duration-200 ease-in-out"
@@ -185,12 +225,12 @@ const ProfileCreation = () => {
                       {item.name}
                     </div>
                     <div className="text-[12px] text-black">
-                      Proficiency: {item.profiency}
+                      Proficiency: {item.proficiency}
                     </div>
                   </li>
                 ))}
               </ul>
-              {skillsList.length > 5 && !showAll && (
+              {skillsList?.length > 5 && !showAll && (
                 <button
                   onClick={() => setShowAll(true)}
                   className="mt-4 text-blue rounded-full bg-gradient-to-r from-white to-red-300 hover:from-pink-600 hover:to-red-600 py-2 px-4 transition-all duration-300"
@@ -198,7 +238,7 @@ const ProfileCreation = () => {
                   Show all
                 </button>
               )}
-              {skillsList.length > 5 && showAll && (
+              {skillsList?.length > 5 && showAll && (
                 <button
                   onClick={() => setShowAll(false)}
                   className="mt-4 text-blue rounded-full bg-gradient-to-r from-white to-red-300 hover:from-pink-600 hover:to-red-600 py-2 px-4 transition-all duration-300"

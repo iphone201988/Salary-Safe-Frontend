@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "./Button/Button";
 import Input from "./Input/Input";
 import { validationSchema } from "../../validation";
@@ -14,28 +14,18 @@ import { useSelector } from "react-redux";
 export const Register = () => {
   const navigate = useNavigate();
   const { employeDetails } = useSelector((state: any) => state.user);
-
-  const [formData, setFormData] = useState<any>({
-    full_name: "",
-    email: "",
-    phone_number: "",
-    password: "",
-    current_job_title: "",
-    linkedin_profile_url: "",
-    terms_accepted: false,
-  });
-
+  
   const [errors, setErrors] = useState<any>({});
   const [touched, setTouched] = useState<any>({});
   const dispatch = useDispatch();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    dispatch(setemployeDetails({...employeDetails,[name]: type === "checkbox" ? checked : value}))
-    // setFormData((prevData: any) => ({
-    //   ...prevData,
-    //   [name]: type === "checkbox" ? checked : value,
-    // }));
-
+    dispatch(
+      setemployeDetails({
+        ...employeDetails,
+        [name]: type === "checkbox" ? checked : value,
+      })
+    );
     if (touched[name]) {
       validateField(name, value);
     }
@@ -47,7 +37,7 @@ export const Register = () => {
       ...prevTouched,
       [name]: true,
     }));
-    validateField(name, formData[name]);
+    validateField(name, employeDetails[name]);
   };
 
   const validateField = (name: string, value: string) => {
@@ -67,9 +57,9 @@ export const Register = () => {
 
   const validateForm = () => {
     const formErrors: any = {};
-    Object.keys(formData).forEach((field) => {
+    Object.keys(employeDetails).forEach((field) => {
       try {
-        validationSchema.validateSyncAt(field, formData);
+        validationSchema.validateSyncAt(field, employeDetails);
       } catch (error: any) {
         formErrors[field] = error.message;
       }
@@ -81,17 +71,17 @@ export const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-      current_job_title: formData.current_job_title,
-      linkedin_profile_url: formData.linkedin_profile_url,
-      terms_accepted: formData.terms_accepted,
+      full_name: employeDetails?.full_name,
+      email: employeDetails?.email,
+      phone_number: employeDetails?.phone_number,
+      password: employeDetails.password,
+      current_job_title: employeDetails.current_job_title,
+      linkedin_profile_url: employeDetails.linkedin_profile_url,
+      terms_accepted: employeDetails.terms_accepted,
     };
 
     if (validateForm()) {
-      if (formData.terms_accepted) {
+      if (employeDetails.terms_accepted) {
         try {
           const response = await axios.post(candidateRegister, data, {
             headers: {
@@ -107,33 +97,17 @@ export const Register = () => {
           }
         } catch (err) {
           toast.error("Registration failed. Please try again.");
+        } finally {
+          dispatch(
+            setemployeDetails({
+              ...employeDetails,
+              password: "",
+            })
+          );
         }
       }
     }
   };
-
-  // useEffect(() => {
-  //   dispatch(
-  //     setemployeDetails({
-  //       ...employeDetails,
-  //       full_name: formData.name,
-  //       email: formData.email,
-  //       phone_number: formData.phone,
-  //       password: formData.password,
-  //       current_job_title: formData.current_job_title,
-  //       linkedin_profile_url: formData.linkedin_profile_url,
-  //       terms_accepted: formData.terms_accepted,
-  //     })
-  //   );
-  // }, [
-  //   formData.name,
-  //   formData.email,
-  //   formData.phone,
-  //   formData.password,
-  //   formData.current_job_title,
-  //   formData.linkedin_profile_url,
-  //   formData.terms_accepted,
-  // ]);
 
   return (
     <div className="w-[750px] px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
