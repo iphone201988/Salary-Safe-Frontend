@@ -56,6 +56,7 @@ import { RegisterCompany } from "../pages/Employer-Register/RegisterCompany";
 import GoalsPreference from "../pages/Profile-Setup/Goals-Preferences/Goals";
 import Customization from "../pages/Profile-Setup/Dashboard-customization/Customization";
 import Details from "../pages/Profile-Setup/Company-Addtional-Detail/Details";
+import DashboardProfileSetting from "../components/Dashboard/DashboardProfileSetting";
 
 const router = createBrowserRouter([
   {
@@ -236,8 +237,12 @@ const router = createBrowserRouter([
       },
       {
         path: "settings",
-        element: <ProtectedCompanyRoute element={<DashboardSettings />} />,
+        element: <ProtectedCompanyRoute element={<DashboardProfileSetting />} />,
       },
+      // {
+      //   path: "settings",
+      //   element: <ProtectedCompanyRoute element={<DashboardSettings />} />,
+      // },
     ],
   },
   {

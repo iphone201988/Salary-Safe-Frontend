@@ -72,11 +72,11 @@ export const options = [
   ];
 
   export const MarketAndRoleAlertsOptions = [
-    { value: "enableRealTimeAlerts", label: "Enable Real-Time Market Alerts" },
+    { value: true, label: "Enable Real-Time Market Alerts" },
   ];
 
   export const CustomReportsOptions = [
-    { value: "enableCustomReports", label: "Enable Custom Reporting" },
+    { value: true, label: "Enable Custom Reporting" },
   ];
 
   export const AutomatedUpdatesOptions = [

@@ -212,7 +212,6 @@ const ABoutSalary = () => {
             text="Back"
             type="button"
             color="green"
-            textColor="white"
             size="md"
             className="mt-4 text-center bg-[#ef4444]"
             onClick={() => navigate("/profile/add-skill")}
@@ -222,7 +221,6 @@ const ABoutSalary = () => {
             text="Submit"
             type="button"
             color="green"
-            textColor="black"
             size="md"
             onClick={handleSubmit}
             className="mt-4 text-center bg-[#fcd34d]"

@@ -219,7 +219,6 @@ const AdditionalDetail = () => {
             text="Submit"
             type="button"
             color="green"
-            textColor="black"
             size="md"
             className="mt-4 text-center bg-[#fcd34d]"
           />

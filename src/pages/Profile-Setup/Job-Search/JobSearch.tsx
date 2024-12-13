@@ -212,7 +212,6 @@ const JobSearch = () => {
             text="Back"
             type="button"
             color="green"
-            textColor="white"
             size="md"
             className="mt-4 text-center bg-[#ef4444]"
             onClick={() => navigate("/profile/about-salary")}
@@ -222,7 +221,6 @@ const JobSearch = () => {
             text="Submit"
             type="button"
             color="green"
-            textColor="black"
             size="md"
             className="mt-4 text-center bg-[#fcd34d]"
           />

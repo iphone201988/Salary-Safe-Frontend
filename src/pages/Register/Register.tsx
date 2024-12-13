@@ -171,6 +171,15 @@ export const Register = () => {
             onBlur={handleBlur}
             errorMessage={errors.phone_number}
           />
+          <Input
+            label="Location"
+            placeholder="Mohali,india"
+            value={employeDetails?.location}
+            name="location"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            errorMessage={errors.location}
+          />
 
           <Input
             label="Password"

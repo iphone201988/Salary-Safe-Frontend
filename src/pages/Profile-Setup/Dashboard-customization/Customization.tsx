@@ -12,9 +12,46 @@ import {
   Role_Specific,
   SalaryBenchmarkingOptions,
 } from "../../Employer/Auth/SignUp/options";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setemployeerDetails } from "../../../Redux/reducer/userData";
+import axios from "axios";
 
 const Customization = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { employeerDetails } = useSelector((state: any) => state.user);
+  const token = useSelector((state: any) => state.auth.token);
+
+  const handleMultiSelectChange = (field: string, selectedOptions: any) => {
+    dispatch(
+      setemployeerDetails({ ...employeerDetails, [field]: selectedOptions })
+    );
+  };
+  const handleSubmit = async() => {
+    const formData = new FormData();
+    formData.append("dashboard_metrics",employeerDetails?.dashboard_metrics?.value || "");
+    formData.append("role_specific_customization",employeerDetails?.role_specific_customization?.value || "");
+    formData.append("salary_benchmarking_preference",employeerDetails?.salary_benchmarking_preference?.value || "");
+    formData.append("candidate_feedback_analysis",employeerDetails?.candidate_feedback_analysis?.value || "");
+    formData.append("candidate_viewing_preferences",employeerDetails?.candidate_viewing_preferences?.value || "");
+    formData.append("enable_real_time_market_alerts",employeerDetails?.enable_real_time_market_alerts?.value || false);
+    formData.append("offer_optimization",employeerDetails?.offer_optimization?.value || "");
+    formData.append("enable_custom_reporting",employeerDetails?.enable_custom_reporting?.value || ""); 
+    formData.append("automated_updates",employeerDetails?.automated_updates?.value || "");
+
+    await axios.patch("https://salarysafe.ai/api/v1/clients/me", formData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(response =>{
+      console.log(response);
+      navigate("/profile/company-additional-detail")
+      }).catch(err =>{
+      console.log(err);
+    });
+  };
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       <Button
@@ -36,7 +73,7 @@ const Customization = () => {
           />
         </div>
         <div className="mb-2 mt-0 text-xl font-bold leading-tight text-black text-center lg:text-left">
-          Dashboard Customization
+          Dashboard Customization And Job Posting Preferences
         </div>
 
         <div className="flex gap-4">
@@ -46,6 +83,11 @@ const Customization = () => {
               label="Select Key Metrics and Widgets:"
               options={Key_Metrics}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("dashboard_metrics", selected)
+              }
+              value={employeerDetails?.dashboard_metrics}
+
             />
 
             <MultiSelectComponent
@@ -53,12 +95,20 @@ const Customization = () => {
               label="Role-Specific Customization:"
               options={Role_Specific}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("role_specific_customization", selected)
+              }
+              value={employeerDetails?.role_specific_customization}
             />
             <MultiSelectComponent
               isMulti={false}
               label="Salary Benchmarking Preferences:"
               options={SalaryBenchmarkingOptions}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("salary_benchmarking_preference", selected)
+              }
+              value={employeerDetails?.salary_benchmarking_preference}
             />
 
             <MultiSelectComponent
@@ -66,6 +116,10 @@ const Customization = () => {
               label="Candidate Feedback Insights:"
               options={CandidateFeedbackInsightsOptions}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("candidate_feedback_analysis", selected)
+              }
+              value={employeerDetails?.candidate_feedback_analysis}
             />
 
             <MultiSelectComponent
@@ -73,6 +127,10 @@ const Customization = () => {
               label="Candidate Viewing Preferences:"
               options={pool}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("candidate_viewing_preferences", selected)
+              }
+              value={employeerDetails?.candidate_viewing_preferences}
             />
           </div>
 
@@ -82,6 +140,10 @@ const Customization = () => {
               label="Offer Optimization:"
               options={offer}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("offer_optimization", selected)
+              }
+              value={employeerDetails?.offer_optimization}
             />
 
             <MultiSelectComponent
@@ -89,12 +151,20 @@ const Customization = () => {
               label="Market and Role Alerts:"
               options={MarketAndRoleAlertsOptions}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("enable_real_time_market_alerts", selected)
+              }
+              value={employeerDetails?.enable_real_time_market_alerts}
             />
             <MultiSelectComponent
               isMulti={false}
               label="Custom Reports:"
               options={CustomReportsOptions}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("enable_custom_reporting", selected)
+              }
+              value={employeerDetails?.enable_custom_reporting}
             />
 
             <MultiSelectComponent
@@ -102,6 +172,10 @@ const Customization = () => {
               label="Automated Updates to Candidates:"
               options={AutomatedUpdatesOptions}
               width="w-[300px]"
+              onChange={(selected) =>
+                handleMultiSelectChange("automated_updates", selected)
+              }
+              value={employeerDetails?.automated_updates}
             />
           </div>
         </div>
@@ -110,7 +184,6 @@ const Customization = () => {
             text="Back"
             type="button"
             color="green"
-            textColor="white"
             size="md"
             className="mt-4 text-center bg-[#ef4444]"
             onClick={() => navigate("/profile/hiring-goal")}
@@ -119,9 +192,9 @@ const Customization = () => {
             text="Submit"
             type="button"
             color="green"
-            textColor="black"
             size="md"
             className="mt-4 text-center bg-[#fcd34d]"
+            onClick={handleSubmit}
           />
         </div>
       </div>

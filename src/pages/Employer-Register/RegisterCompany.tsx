@@ -6,9 +6,10 @@ import MultiSelectComponent from "../Profile-Setup/MultiSelect/Multi";
 import { setemployeerDetails } from "../../Redux/reducer/userData";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { companyRegister, employeerRegister } from "../../API/apis";
+import { employeerRegister } from "../../API/apis";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { login } from "../../Redux/reducer/authSlice";
 
 export const RegisterCompany = () => {
   const navigate = useNavigate();
@@ -57,7 +58,11 @@ export const RegisterCompany = () => {
           });
           if (response.status === 200) {
             toast.success("Registration successful!");
-            navigate("/login-company");
+            dispatch(
+              login({ token: response?.data?.access_token, role: "employeer" })
+            );
+            navigate("/profile/company-additional-detail");
+            // navigate("/login-company");
           }
         } catch (err) {
           toast.error("Registration failed. Please try again.");
@@ -150,8 +155,9 @@ export const RegisterCompany = () => {
           value={employeerDetails?.email}
           onChange={handleChange}
            />
-          <Input label="Phone" placeholder="+91 12356789"
+          <Input label="Phone" placeholder="+91 12356789"name="contact_phone_number"
           value={employeerDetails?.contact_phone_number}
+          onChange={handleChange}
            />
           <Input label="Password" placeholder="******" type="password" 
           name="password"
@@ -193,6 +199,7 @@ export const RegisterCompany = () => {
           textColor="white"
           size="md"
           className="mt-4 text-center bg-[#050708]"
+          disabled={!employeerDetails?.terms_accepted}
         />
       </div>
     </div>

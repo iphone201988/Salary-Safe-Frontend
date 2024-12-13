@@ -254,7 +254,6 @@ const ProfileCreation = () => {
           type="button"
           onClick={handleSubmit}
           color="green"
-          textColor="white"
           size="md"
           className="mt-4 text-center bg-[green]"
         />

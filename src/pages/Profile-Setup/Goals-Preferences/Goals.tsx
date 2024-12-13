@@ -8,9 +8,57 @@ import {
 import Button from "../../Register/Button/Button";
 // import Input from "../../Register/Input/Input";
 import MultiSelectComponent from "../MultiSelect/Multi";
+import { useDispatch } from "react-redux";
+import { setemployeerDetails } from "../../../Redux/reducer/userData";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const GoalsPreference = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { employeerDetails } = useSelector((state: any) => state.user);
+  const token = useSelector((state: any) => state.auth.token);
+
+
+  const handleMultiSelectChange = (field: string, selectedOptions: any) => {
+    dispatch(
+      setemployeerDetails({ ...employeerDetails, [field]: selectedOptions })
+    );
+  };
+  const handleSubmit = async() => {
+    const formData = new FormData();
+    formData.append(`job_types`,JSON.stringify(
+      employeerDetails?.job_types?.map((data: any) => {
+        return data?.value;
+      })
+    ));
+    formData.append(`roles_of_interest`,JSON.stringify(
+      employeerDetails?.roles_of_interest?.map((data: any) => {
+        return data?.value;
+      })
+    ));
+    formData.append(`preferred_job_locations`,JSON.stringify(
+      employeerDetails?.preferred_job_locations?.map((data: any) => {
+        return data?.value;
+      })
+    ));
+    formData.append(`primary_hiring_goals`,JSON.stringify(
+      employeerDetails?.primary_hiring_goals?.map((data: any) => {
+        return data?.value;
+      })
+    ));
+    await axios.patch("https://salarysafe.ai/api/v1/clients/me", formData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(response =>{
+      console.log(response);
+      navigate("/profile/dashboard-customization");
+    }).catch(err =>{
+      console.log(err);
+    });
+  };
   return (
     <div className="w-[550px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       <Button
@@ -37,32 +85,49 @@ const GoalsPreference = () => {
 
         <div className="flex gap-4">
           <div>
-            <div className="w-[300px]">
+            <div className="w-[500px]">
               {/* <Input
                 label="Job Titles/Positions of Interest:"
                 placeholder="enter job title here"
               /> */}
               <MultiSelectComponent
-                isMulti={false}
+                isMulti={true}
                 label="Primary Hiring Goals"
                 options={hiringGoalsOptions}
-              />
+                onChange={(selected) =>
+                  handleMultiSelectChange("primary_hiring_goals", selected)
+                }
+                value={employeerDetails.primary_hiring_goals}
 
-              <MultiSelectComponent
-                isMulti={false}
-                label="Preferred Job Locations"
-                options={preferedJobLocationOption}
               />
+                <MultiSelectComponent
+                  isMulti={true}
+                  label="Preferred Job Locations"
+                  options={preferedJobLocationOption}
+                  onChange={(selected) =>
+                    handleMultiSelectChange("preferred_job_locations", selected)
+                  }
+                  value={employeerDetails.preferred_job_locations}
+                />
+
 
               <MultiSelectComponent
                 isMulti={true}
                 label="Roles/Positions of Interest"
                 options={rolesPostionOptions}
+                onChange={(selected) =>
+                  handleMultiSelectChange("roles_of_interest", selected)
+                }
+                value={employeerDetails.roles_of_interest}
               />
               <MultiSelectComponent
-                isMulti={false}
+                isMulti={true}
                 label="Job Type"
                 options={JobTypeOptions}
+                onChange={(selected) =>
+                  handleMultiSelectChange("job_types", selected)
+                }
+                value={employeerDetails.job_types}
               />
             </div>
           </div>
@@ -74,6 +139,7 @@ const GoalsPreference = () => {
           textColor="white"
           size="md"
           className="mt-4 text-center bg-[green]"
+          onClick={handleSubmit}
         />
       </div>
     </div>

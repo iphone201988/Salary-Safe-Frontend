@@ -8,6 +8,7 @@ interface ButtonProps {
   textColor?: string;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  disabled?: boolean; 
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   textColor = 'white',
   size = 'md',
   className = '',
+  disabled = false,  // default is false
 }) => {
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-xs',
@@ -29,7 +31,8 @@ const Button: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={onClick}
-      className={`text-${textColor} bg-[${color}] hover:bg-[${color}]/80 focus:ring-4 focus:outline-none focus:ring-[${color}]/50 font-medium rounded-lg ${sizeClasses[size]} text-center inline-flex items-center dark:hover:bg-[${color}]/40 dark:focus:ring-gray-600 ${className}`}
+      className={`text-${textColor} ${disabled?`bg-gray-500`:`bg-[${color}]`} hover:bg-[${color}]/80 focus:ring-4 focus:outline-none focus:ring-[${color}]/50 font-medium rounded-lg ${sizeClasses[size]} text-center inline-flex items-center dark:hover:bg-[${color}]/40 dark:focus:ring-gray-600 ${className}`}
+      disabled ={disabled}
     >
       {text}
     </button>

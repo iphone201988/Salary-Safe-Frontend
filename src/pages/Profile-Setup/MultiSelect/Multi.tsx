@@ -2,7 +2,7 @@ import React from "react";
 import Select, { OnChangeValue } from "react-select";
 
 interface OptionType {
-  value?: string | number;
+  value?: string | number |boolean;
   label?: string;
 }
 
