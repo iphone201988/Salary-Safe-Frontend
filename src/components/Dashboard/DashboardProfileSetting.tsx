@@ -1,6 +1,7 @@
 // Import necessary modules and libraries
 import React, { useState } from "react";
 import "tailwindcss/tailwind.css";
+import ProfileInfo from "./DashboardProfileSettings/ProfileInfo";
 
 type TeamMember = {
   name: string;
@@ -99,31 +100,12 @@ const DashboardProfileSetting: React.FC = () => {
         {/* Profile Section */}
         <div className="flex flex-col gap-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">Profile</h2>
-            {/* showing  img  name location indusry emal phone number */}
-            <div className="flex gap-x-4">
-              <img
-                className="h-12 w-12 rounded-full object-cover"
-                src="https://via.placeholder.com/150"
-                alt="Profile Pic"
-              />
-              <div className="flex flex-col gap-y-2">
-                <h3 className="text-lg font-bold">{profileData.company_name}</h3>
-                <p className="text-sm text-gray-500">{profileData.headquarters_location}</p>
-                <p className="text-sm text-gray-500">{profileData.email}</p>
-                <p className="text-sm text-gray-500">{profileData.contact_phone_number}</p>
-                <div className="flex gap-x-2 items-center">
-                  <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px
-                  rounded-md"
-                  onClick={() => handleEditClick("profile")}
-                  >
-                    Edit
-                  </button>
-                </div>
-
-              </div>
-            </div>
+            <ProfileInfo
+              companyName={profileData.company_name}
+              location={profileData.headquarters_location}
+              email={profileData.email}
+              phone={profileData.contact_phone_number}
+            />
           </div>
         </div>
       </div>
