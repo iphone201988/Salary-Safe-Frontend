@@ -1,5 +1,8 @@
 import { Range } from "react-range";
-import { jobtypesOptions } from "../../pages/Employer/Auth/SignUp/options";
+import {
+  jobtypesOptions,
+  scheduleOptions,
+} from "../../pages/Employer/Auth/SignUp/options";
 type Job = {
   title?: string;
   description?: string;
@@ -39,7 +42,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
   setModelopen,
   title,
 }) => {
-  console.log("data?.salaryRange:::",data)
+  console.log("data?.salaryRange:::", data);
   const jobTypes = [
     { value: "fulltime", label: "Full-time" },
     { value: "parttime", label: "Part-time" },
@@ -123,7 +126,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
               className="border p-2 w-full rounded"
             >
               <option value="">Select Schedule Type</option>
-              {jobtypesOptions.map((data, index) => (
+              {scheduleOptions.map((data, index) => (
                 <option key={index} value={data.value}>
                   {data.label}
                 </option>
@@ -197,9 +200,9 @@ const JobsModal: React.FC<JobsModalProps> = ({
             <div className="flex items-center gap-4">
               <span>${data?.salaryRange[0]}</span>
               <Range
-                  values={[...data?.salaryRange!]
-                    .map((val) => Number(val)) // Ensure all values are numbers
-                    .sort((a, b) => a - b)} // Sort in ascending order
+                values={[...data?.salaryRange!]
+                  .map((val) => Number(val)) // Ensure all values are numbers
+                  .sort((a, b) => a - b)} // Sort in ascending order
                 step={5000}
                 min={30000}
                 max={200000}

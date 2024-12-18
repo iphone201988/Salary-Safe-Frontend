@@ -95,12 +95,11 @@ const JobListings = () => {
         requirements: jobDetails.requirements,
         job_type: jobDetails.job_type,
         workplace_type: jobDetails.workplace_type,
+        schedule: jobDetails.schedule,
         status: jobDetails.status,
         vacancy: jobDetails.vacancy,
         views: jobDetails.views,
       };
-
-      return;
       await apiCall("post", createJobs, data);
       fetchJobs();
       setJobDetails({
@@ -131,9 +130,10 @@ const JobListings = () => {
         requirements: rowData?.requirements,
         job_type: rowData?.job_type,
         workplace_type: rowData?.workplace_type,
-        status: rowData.status,
-        vacancy: rowData.vacancy,
-        views: rowData.views,
+        schedule: rowData?.schedule,
+        status: rowData?.status,
+        vacancy: rowData?.vacancy,
+        views: rowData?.views,
       };
       await apiCall("patch", ` ${createJobs}${rowData?.id}`, data);
       fetchJobs();

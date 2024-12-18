@@ -14,6 +14,14 @@ export const options = [
     { value: "other", label: "Other" },
   ];
 
+  export const scheduleOptions = [
+    { value: "day_shift", label: "Day Shift" },
+    { value: "morning_shift", label: "Morning Shift" },
+    { value: "evening_shift", label: "Evening Shift" },
+    { value: "night_shift", label: "Night Shift" },
+    { value: "rotational_shift", label: "Rotational Shift" },
+  ];
+
 
   export const pool = [
     { value: "1", label: "Experience and Skill Sets" },

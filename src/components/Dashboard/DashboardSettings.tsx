@@ -77,7 +77,7 @@ const DashboardSettings: React.FC = () => {
       : false,
     salaryBenchmarking: employeerDetails?.salary_benchmarking_preference
       ? getMultiSelectValues(
-        SalaryBenchmarkingOptions,
+          SalaryBenchmarkingOptions,
           employeerDetails.salary_benchmarking_preference
         )
       : "",

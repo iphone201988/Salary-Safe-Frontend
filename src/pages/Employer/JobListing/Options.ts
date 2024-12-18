@@ -19,6 +19,7 @@ interface Column<T> {
     isNegotiable?: boolean;
     job_type?: string;
     status?: string;
+    schedule?: string;
     views?: number;
     vacancy?: number;
     workplace_type?: string;
@@ -38,6 +39,7 @@ interface Column<T> {
     isNegotiable: boolean;
     id?: string;
     status?: string;
+    schedule?: string;
     views?: number;
     vacancy?: number;
     salary_min?: string;
