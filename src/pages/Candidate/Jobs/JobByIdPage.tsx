@@ -4,6 +4,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import Loader from "../../../components/Loader/Loader";
 import { applyJob, getJobsByIdToCandiDate } from "../../../API/apis";
+import { getOptionLabel } from "../../../components/Select/options";
+import { scheduleOptions } from "../../Employer/Auth/SignUp/options";
 
 interface Job {
   id: string;
@@ -24,8 +26,11 @@ interface Job {
     industry: string;
     company_size: string;
     headquarters_location: string;
-    logo?: string;
+    avatar?: string;
   };
+  vacancy?: number;
+  schedule?: string;
+  required_skills:string[]
   created_at: string |any;
 }
 
@@ -113,17 +118,18 @@ const JobByIdPage: React.FC = () => {
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         {/* Header Section */}
         <div className="flex items-center p-6 border-b border-gray-200">
-          {job?.client_details.logo && (
+          {job?.client_details.avatar && (
             <img
-              src={job.client_details.logo||"s"}
+              src={job.client_details.avatar||"s"}
               alt={`${job.client_details.company_name} Logo`}
               className="w-16 h-16 rounded-full mr-4"
             />
           )}
           <div>
             <h1 className="text-2xl font-bold">{job?.title}</h1>
-            <p className="text-gray-600">{job?.client_details.company_name}</p>
-            <p className="text-gray-500">{job?.location}</p>
+            <p className="text-gray-900 text-lg">{job?.client_details.company_name}</p>
+            <p className="text-gray-900">{job?.location}</p>
+            <p className="text-gray-900">Requirement {job?.vacancy}</p>
           </div>
         </div>
 
@@ -140,20 +146,34 @@ const JobByIdPage: React.FC = () => {
           </ul>
 
           <h2 className="text-lg font-semibold mb-4">Job Information</h2>
-          <p className="text-gray-700">
-            <span className="font-semibold">Type:</span> {job?.job_type}
+          <p className="text-gray-700 space-x-2">
+            <span className="font-semibold">Type:</span >  <span className="capitalize ">{job?.job_type}</span>
           </p>
-          <p className="text-gray-700">
+          <p className="text-gray-700 space-x-2">
             <span className="font-semibold">Workplace:</span>{" "}
-            {job?.workplace_type}
+            <span className="capitalize ">{job?.workplace_type}</span>
           </p>
-          <p className="text-gray-700">
-            <span className="font-semibold">Salary:</span>{" "}
-            {job?.salary_min} - {job?.salary_max}
+          <p className="text-gray-700 space-x-2">
+            <span className="font-semibold">Shift and schedule</span>{" "}
+            <span className="capitalize bg-gray-200 text-gray-700 rounded-full
+                px-2 py-1 mr-2">{getOptionLabel(scheduleOptions ,job?.schedule)}</span>
           </p>
-          <p className="text-gray-700">
+          <p className="text-gray-700 space-x-2">
+            <span className="font-semibold">Pay:</span>{" "}
+            <span>${job?.salary_min} - ${job?.salary_max} a year</span>
+          </p>
+          {job?.required_skills.length &&(
+            <div className="text-gray-700 space-x-2">
+              <span className="font-semibold">Required Skills:</span>{" "}
+              {job?.required_skills.map((skill:string)=>{
+                return <span key={skill} className="bg-gray-200 text-gray-700 rounded-full
+                px-2 py-1 mr-2">{skill}</span>
+              })}
+              </div>
+          )}
+          <p className="text-gray-700 space-x-2">
             <span className="font-semibold">Posted on:</span>{" "}
-            {new Date(job?.created_at).toLocaleDateString()}
+            <span> {new Date(job?.created_at).toLocaleDateString()}</span>
           </p>
         </div>
 

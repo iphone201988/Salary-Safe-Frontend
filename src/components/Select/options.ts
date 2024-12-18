@@ -17,3 +17,7 @@ export const workplaceTypeOptions = [
     const option = options.find(opt => opt.value === value);
     return option?.text; // Returns the text or undefined if not found
   };
+  export const getOptionLabel = (options: { value: string; label: string }[], value: string |undefined): string | undefined => {
+    const option = options.find(opt => opt.value === value);
+    return option?.label; // Returns the text or undefined if not found
+  };

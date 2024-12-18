@@ -1,9 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-// import { useRedirection } from "../../../../Context/RedirectContext";
-// import { applyJob } from "../../../../Redux/ApplyJobSlice";
-// import toast from "react-hot-toast";
-// import { useDispatch, useSelector } from "react-redux";
+
 interface Job {
   id: string;
   title: string;
@@ -27,80 +24,91 @@ interface Job {
   created_at: string; // ISO date string
 }
 
-
 interface GridJobCardProps {
   job: Job;
 }
+
 const GridJobCard: React.FC<GridJobCardProps> = ({ job }) => {
-  // const { redirectToApplyPage } = useRedirection();
-  const navigator = useNavigate()
-
-  // const dispatch = useDispatch();
-  // const appliedJob = useSelector((state) => state.appliedJob.appliedJob);
-
-  // const handleCardClick = () => {
-  //   redirectToApplyPage();
-
-  //   if (!appliedJob) {
-  //     dispatch(applyJob(job.id)); // Using `id` field
-  //   } else {
-  //     toast.error("You have already applied to this job");
-  //   }
-  // };
+  const navigator = useNavigate();
 
   return (
     <div
-    onClick={()=>navigator(`/candidate/dashboard/job-list/${job?.id}`)}
-      className="p-3 bg-white h-[280px] max-lg:w-[343px] max-lg:justify-center max-lg:items-center w-[277px] cursor-pointer border-2 border-gray-400 mt-10 font-extrabold shadow border-solid dark:bg-[#ffffff] dark:border-[#ffffff]"
+      onClick={() => navigator(`/candidate/dashboard/job-list/${job?.id}`)}
+      className="p-5 bg-white h-[350px] w-[300px] max-lg:w-[95%] cursor-pointer border border-gray-300 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:shadow-xl dark:bg-gray-800 dark:border-gray-700"
     >
-      {/* Job Header */}
-      <div className="flex justify-between">
+      {/* Header Section */}
+      <div className="flex justify-between items-center">
         <img
           src={"https://via.placeholder.com/44"} // Placeholder for company logo
           alt={job?.client_details?.company_name || "Company Logo"}
-          className="h-[44px] w-[44px] rounded-full"
+          className="h-12 w-12 rounded-full object-cover border border-gray-200 dark:border-gray-600"
         />
-
-        <div>
-          <button
-            type="button"
-            className="text-[#56cdad] bg-[#effaf7] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-[#effaf7] dark:hover:bg-[#effaf7] dark:focus:ring-blue-800"
-          >
+        <div className="flex flex-wrap gap-2">
+          <span className=" capitalize text-xs text-blue-600 bg-blue-100 py-1 px-3 rounded-full">
             {job?.job_type || "Job Type"}
-          </button>
-          <button
-            type="button"
-            className="text-[#56cdad] bg-[#effaf7] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-[#effaf7] dark:hover:bg-[#effaf7] dark:focus:ring-blue-800"
-          >
-            {job?.workplace_type || "Job Type"}
-          </button>
+          </span>
+          <span className="capitalize text-xs text-green-600 bg-green-100 py-1 px-3 rounded-full">
+            {job?.workplace_type || "Workplace Type"}
+          </span>
         </div>
       </div>
 
       {/* Job Title */}
-      <h5 className="mb-2 text-[20px] font-semibold tracking-tight text-gray-900 dark:text-[#25324b]">
+      <h4 className="mt-3 text-lg font-bold text-gray-900 dark:text-gray-100">
         {job?.title || "Job Title"}
-      </h5>
+      </h4>
 
       {/* Company and Location */}
-      <div className="flex font-normal">
-        <div className="mr-3 text-gray-400">{job?.client_details?.company_name || "N/A"}</div>
-        <div className="text-gray-400">{job?.location || "Location not specified"}</div>
+      <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <span>{job?.client_details?.company_name || "Unknown Company"}</span>
+        <div className="flex items-center space-x-1">
+          <svg
+            className="w-4 h-4 text-gray-400"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 2a6 6 0 016 6c0 4.25-6 10-6 10S4 12.25 4 8a6 6 0 016-6zm0 8a2 2 0 100-4 2 2 0 000 4z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span>{job?.location || "Location not specified"}</span>
+        </div>
       </div>
 
       {/* Salary */}
-      <div className="mt-2 text-gray-500">
-        <span>
-          Salary: ${job?.salary_min || "N/A"} - ${job?.salary_max || "N/A"}
-        </span>
+      <div className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+        <div className="flex items-center space-x-1">
+          <svg
+            className="w-4 h-4 text-gray-400"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path d="M10 3a7 7 0 100 14 7 7 0 000-14zm-.75 4a.75.75 0 011.5 0v2.5h1.25a.75.75 0 110 1.5H10.75a.75.75 0 01-.75-.75V7zm-2 0a.75.75 0 011.5 0v4.25a.75.75 0 11-1.5 0V7z" />
+          </svg>
+          <span>
+            ₹{job?.salary_min || "N/A"} - ₹{job?.salary_max || "N/A"}
+          </span>
+        </div>
       </div>
 
-      {/* Job Description */}
-      <p className="mt-3 text-gray-500 line-clamp-3">{job?.description || "No description available."}</p>
+      {/* Description */}
+      <p className="mt-3 text-sm text-gray-500 line-clamp-3 dark:text-gray-400">
+        {job?.description || "No description available."}
+      </p>
 
-      {/* Job Status */}
-      <div className="text-gray-500 mt-2">
-        <span className={`font-bold ${job?.status === "active" ? "text-green-600" : "text-red-600"}`}>
+      {/* Status */}
+      <div className="mt-4">
+        <span
+          className={`text-xs font-semibold ${
+            job?.status === "active"
+              ? "text-green-600 bg-green-100"
+              : "text-red-600 bg-red-100"
+          } py-1 px-3 rounded-full`}
+        >
           {job?.status === "active" ? "Hiring" : "Closed"}
         </span>
       </div>
