@@ -9,11 +9,17 @@ import { CompanyProfileType } from "../../../types";
 // import { getMultiSelectValues } from "../../../utils/helper";
 import MultiSelectComponent from "../../MultiSelect/MultiSelect";
 
-const HiringGoals = ({ formData, setFormData, errors , edit }: CompanyProfileType) => {
+const HiringGoals = ({
+  formData,
+  setFormData,
+  errors,
+  edit,
+}: CompanyProfileType) => {
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
+    console.log("selectedOptions:::", selectedOptions); 
     setFormData({ ...formData, [field]: selectedOptions });
   };
-  console.log("hello2145241",formData.keyMetrics)
+  console.log("hello2145241", formData.keyMetrics);
   return (
     <>
       <fieldset className="border border-black p-4 rounded-md">
@@ -24,9 +30,9 @@ const HiringGoals = ({ formData, setFormData, errors , edit }: CompanyProfileTyp
             isMulti={true}
             label="Primary Hiring Goals"
             options={options}
-            onChange={(selected:any) =>
-              handleMultiSelectChange("primaryHiringGoals", selected.value)
-            }
+            onChange={(selected: any) => {
+              handleMultiSelectChange("primaryHiringGoals", selected);
+            }}
             value={formData.primaryHiringGoals}
             error={errors.primaryHiringGoals}
             isDisabled={edit}

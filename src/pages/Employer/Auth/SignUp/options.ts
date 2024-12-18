@@ -5,11 +5,13 @@ export const options = [
   ];
 
   export const jobtypesOptions = [
-    { value: "Full-Time", label: "Full-Time" },
-    { value: "Part-Time", label: "Part-Time" },
-    { value: "Contract", label: "Contract" },
-    { value: "Internship", label: "Internship" },
-    { value: "Freelance", label: "Freelance" },
+    { value: "fulltime", label: "Full-Time" },
+    { value: "parttime", label: "Part-Time" },
+    { value: "contract", label: "Contract" },
+    { value: "internship", label: "Internship" },
+    { value: "temporary", label: "Temporary" },
+    { value: "volunteer", label: "Volunteer" },
+    { value: "other", label: "Other" },
   ];
 
 
@@ -41,8 +43,9 @@ export const options = [
   ];
 
   export const Preferred_Job_Locations = [
-    { value: "1", label: "Remote" },
-    { value: "2", label: "On-site" },
+    { value: "remote", label: "Remote" },
+    { value: "onsite", label: "On-site" },
+    { value: "hybrid", label: "Hybrid" },
   ];
 
   export const Positions_of_Interest = [{ value: "1", label: "Software Engineer" }];

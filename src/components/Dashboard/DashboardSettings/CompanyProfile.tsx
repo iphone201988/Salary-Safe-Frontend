@@ -198,7 +198,7 @@ const CompanyProfile = ({
         </div>
       </div>
       {/* Industry Select */}
-      <div className="w-full">
+      {/* <div className="w-full">
         <label className="block text-gray-700">Industry</label>
         <select
           name="industry"
@@ -216,7 +216,7 @@ const CompanyProfile = ({
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
     </fieldset>
   );
 };
