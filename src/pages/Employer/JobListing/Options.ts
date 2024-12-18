@@ -18,6 +18,10 @@ interface Column<T> {
     salaryRanges?: [number, number];
     isNegotiable?: boolean;
     job_type?: string;
+    status?: string;
+    schedule?: string;
+    views?: number;
+    vacancy?: number;
     workplace_type?: string;
     job_type_?: string;
     workplace_type_?: string;
@@ -34,6 +38,10 @@ interface Column<T> {
     salaryRange: [number, number];
     isNegotiable: boolean;
     id?: string;
+    status?: string;
+    schedule?: string;
+    views?: number;
+    vacancy?: number;
     salary_min?: string;
     salary_max?: string;
     created_at?: string;

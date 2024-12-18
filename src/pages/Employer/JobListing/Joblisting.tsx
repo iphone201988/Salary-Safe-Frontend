@@ -8,13 +8,16 @@ import useApiCall from "../../../API/function"; // Adjust path
 import { columnJobType, columnsName, Job } from "./Options";
 import DeleteConformModel from "../../../components/Modal/DeleteConformModel";
 import ViewModel from "../../../components/Modal/ViewModel";
-import { getOptionText, jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
+import {
+  getOptionText,
+  jobTypeOptions,
+  workplaceTypeOptions,
+} from "../../../components/Select/options";
 import { Link } from "react-router-dom";
-
 
 const JobListings = () => {
   const { apiCall, loading, error } = useApiCall();
-console.log(error)
+
   const [jobDetails, setJobDetails] = useState<Job>({
     title: "",
     description: "",
@@ -35,11 +38,10 @@ console.log(error)
   const [isDelete, setIsDelete] = useState(false);
   const token = useSelector((state: any) => state.auth.token);
 
- 
-  const handleDelete = (data:any) => {
-    console.log('Job deleted',data);
+  const handleDelete = (data: any) => {
+    console.log("Job deleted", data);
     setIsDelete(false);
-    deleteJob(data?.id)
+    deleteJob(data?.id);
   };
 
   const handleCancel = () => {
@@ -93,6 +95,10 @@ console.log(error)
         requirements: jobDetails.requirements,
         job_type: jobDetails.job_type,
         workplace_type: jobDetails.workplace_type,
+        schedule: jobDetails.schedule,
+        status: jobDetails.status,
+        vacancy: jobDetails.vacancy,
+        views: jobDetails.views,
       };
       await apiCall("post", createJobs, data);
       fetchJobs();
@@ -124,6 +130,10 @@ console.log(error)
         requirements: rowData?.requirements,
         job_type: rowData?.job_type,
         workplace_type: rowData?.workplace_type,
+        schedule: rowData?.schedule,
+        status: rowData?.status,
+        vacancy: rowData?.vacancy,
+        views: rowData?.views,
       };
       await apiCall("patch", ` ${createJobs}${rowData?.id}`, data);
       fetchJobs();
@@ -156,15 +166,14 @@ console.log(error)
     ...job,
     salaryRange: [job.salary_min, job.salary_max],
     salaryRanges: `$${job.salary_min} - $${job.salary_max}`,
-    desc: truncateDescription(job?.description,8),
-    require:  truncateDescription(job?.requirements,8),
+    desc: truncateDescription(job?.description, 8),
+    require: truncateDescription(job?.requirements, 8),
     created_at: job?.created_at?.slice(0, 10),
     job_type_: getOptionText(jobTypeOptions, job.job_type),
     workplace_type_: getOptionText(workplaceTypeOptions, job.workplace_type),
-   
   }));
   // console.log("mappedJobs",mappedJobs)
-console.log("IsModalEditOpen",isModalEditOpen)
+  console.log("IsModalEditOpen", isModalEditOpen);
   return (
     <div className="container mx-auto ">
       {loading && (
@@ -172,35 +181,37 @@ console.log("IsModalEditOpen",isModalEditOpen)
           <Loader />
         </div>
       )}
-        <nav className="bg-gray-200 py-3 px-6">
-        <Link to="/employeer/dashboard" className="text-blue-600 hover:underline">
+      <nav className="bg-gray-200 py-3 px-6">
+        <Link
+          to="/employeer/dashboard"
+          className="text-blue-600 hover:underline"
+        >
           Dashboard
         </Link>{" "}
-        /{" "}
-        <span>Job Listings</span>
+        / <span>Job Listings</span>
       </nav>
       <div className="p-4">
-      <div className="flex justify-between items-center mb-10">
-        <h3 className="text-2xl font-semibold">Job Listings</h3>
-        {/* Create Job Button */}
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg"
-        >
-          Create Job
-        </button>
-      </div>
-      <StickyHeadTable
-        columns={columnsName}
-        rows={mappedJobs}
-        showActionButtons={true}
-        setIsUpdate={setIsModalEditOpen}
-        setIsView={setIsModalView}
-        setIsDelete={setIsDelete}
-        setRowData={setRowData}
-        deleteJob={deleteJob}
-        tableHeight={580}
-      />
+        <div className="flex justify-between items-center mb-10">
+          <h3 className="text-2xl font-semibold">Job Listings</h3>
+          {/* Create Job Button */}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg"
+          >
+            Create Job
+          </button>
+        </div>
+        <StickyHeadTable
+          columns={columnsName}
+          rows={mappedJobs}
+          showActionButtons={true}
+          setIsUpdate={setIsModalEditOpen}
+          setIsView={setIsModalView}
+          setIsDelete={setIsDelete}
+          setRowData={setRowData}
+          deleteJob={deleteJob}
+          tableHeight={580}
+        />
       </div>
 
       {/* Modal for Job Creation */}
@@ -225,12 +236,13 @@ console.log("IsModalEditOpen",isModalEditOpen)
         />
       )}
       {isModalView && (
-        <ViewModel
-          data={rowData!}
-          setModelopen={setIsModalView}
-        />
+        <ViewModel data={rowData!} setModelopen={setIsModalView} />
       )}
-      {isDelete && (<DeleteConformModel onCancel={handleCancel} onConfirm={() => handleDelete(rowData)}  />
+      {isDelete && (
+        <DeleteConformModel
+          onCancel={handleCancel}
+          onConfirm={() => handleDelete(rowData)}
+        />
       )}
     </div>
   );

@@ -36,6 +36,7 @@ export interface EmployeerDetails {
   referral_code: string;
   terms_accepted: boolean;
   id: string;
+  avatar: any;
 }
 
 export interface SignUpFormData {
@@ -62,6 +63,7 @@ export interface SignUpFormData {
   candidateFeedback: any | string;
   referralHow: string | any;
   referralCode: string | any;
+  avatar?: any;
 }
 
 export interface SignUpFormErrors {
@@ -187,7 +189,7 @@ export type CompanyProfileType = {
 };
 export type CandidateProfileType = {
   formData: candidateDetails;
-  errors : candidateDetails;
+  errors: candidateDetails;
   setFormData: React.Dispatch<React.SetStateAction<any>>;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   edit?: boolean;
@@ -231,7 +233,6 @@ export interface candidateDetails {
   referral_code?: string;
   terms_accepted?: boolean;
   id?: string;
-  profileImage?:any|null
-  notificationPreferences?:any|string[]
+  profileImage?: any | null;
+  notificationPreferences?: any | string[];
 }
-    

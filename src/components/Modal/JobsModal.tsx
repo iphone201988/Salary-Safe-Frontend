@@ -1,4 +1,8 @@
 import { Range } from "react-range";
+import {
+  jobtypesOptions,
+  scheduleOptions,
+} from "../../pages/Employer/Auth/SignUp/options";
 type Job = {
   title?: string;
   description?: string;
@@ -10,20 +14,26 @@ type Job = {
   salaryRange: [number, number];
   isNegotiable?: boolean;
   id?: string;
+  schedule: string;
+  vacancy: number;
+  views: number;
+  status: string;
   salary_min?: string;
   salary_max?: string;
   created_at?: string;
 };
 interface JobsModalProps {
-    handleSubmitJob: (e: React.FormEvent<HTMLFormElement>) => void;
-    data: Job; // Using your `Job` type
-    handleChange: (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-    ) => void;
-    handleSalaryChange: (values: number[]) => void;// Tuple for salary range
-    setModelopen: (isOpen: boolean) => void;
-    title: string;
-  }
+  handleSubmitJob: (e: React.FormEvent<HTMLFormElement>) => void;
+  data: Job; // Using your `Job` type
+  handleChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
+  handleSalaryChange: (values: number[]) => void; // Tuple for salary range
+  setModelopen: (isOpen: boolean) => void;
+  title: string;
+}
 const JobsModal: React.FC<JobsModalProps> = ({
   handleSubmitJob,
   data,
@@ -31,8 +41,8 @@ const JobsModal: React.FC<JobsModalProps> = ({
   handleSalaryChange,
   setModelopen,
   title,
-
 }) => {
+  console.log("data?.salaryRange:::", data);
   const jobTypes = [
     { value: "fulltime", label: "Full-time" },
     { value: "parttime", label: "Part-time" },
@@ -108,6 +118,61 @@ const JobsModal: React.FC<JobsModalProps> = ({
             </select>
           </div>
           <div className="mb-4">
+            <label className="block mb-1">Schedule</label>
+            <select
+              name="schedule"
+              onChange={handleChange}
+              value={data?.schedule}
+              className="border p-2 w-full rounded"
+            >
+              <option value="">Select Schedule Type</option>
+              {scheduleOptions.map((data, index) => (
+                <option key={index} value={data.value}>
+                  {data.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1">Vacancy</label>
+            <input
+              type="number"
+              name="vacancy"
+              value={data?.vacancy}
+              onChange={handleChange}
+              required
+              placeholder="e.g. 1"
+              className="w-full border border-gray-300 rounded-lg p-2"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-1">Status</label>
+            <select
+              name="status"
+              onChange={handleChange}
+              value={data?.status}
+              className="border p-2 w-full rounded"
+            >
+              <option value="active">Active</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-1">Views</label>
+            <input
+              type="number"
+              name="views"
+              value={data?.views}
+              onChange={handleChange}
+              required
+              placeholder="e.g. 1"
+              className="w-full border border-gray-300 rounded-lg p-2"
+            />
+          </div>
+
+          <div className="mb-4">
             <label className="block mb-1">Requirements</label>
             <textarea
               name="requirements"
@@ -135,7 +200,9 @@ const JobsModal: React.FC<JobsModalProps> = ({
             <div className="flex items-center gap-4">
               <span>${data?.salaryRange[0]}</span>
               <Range
-                values={data?.salaryRange!}
+                values={[...data?.salaryRange!]
+                  .map((val) => Number(val)) // Ensure all values are numbers
+                  .sort((a, b) => a - b)} // Sort in ascending order
                 step={5000}
                 min={30000}
                 max={200000}

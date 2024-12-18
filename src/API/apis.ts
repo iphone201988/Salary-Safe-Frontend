@@ -5,6 +5,7 @@ const url =
 
 export const userRegister = url + "/users/signup";
 export const clientUpdate = url + "/clients/me";
+export const candidateUpdate = url + "/candidates/me";
 export const getcandidatesProfile = url + "/candidates/me";
 export const userLogin = url + "/login";
 export const userSocialLogin = url + "/login/social";

@@ -10,17 +10,33 @@ import {
 import { CompanyProfileType } from "../../../types";
 import MultiSelectComponent from "../../MultiSelect/MultiSelect";
 
-const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileType) => {
+const OtherFields = ({
+  formData,
+  errors,
+  setFormData,
+  edit,
+}: CompanyProfileType) => {
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
     setFormData({ ...formData, [field]: selectedOptions });
+    console.log("selectedOptions::::", selectedOptions);
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    console.log("data:::::::::", name, value, type, checked);
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
   return (
     <>
       <fieldset className="border border-black p-4 rounded-md">
         <legend>Job Posting Preferences</legend>
 
-        <div className="flex w-full space-x-2">
-          <MultiSelectComponent
+        <div className="flex flex-col w-full space-y-5">
+          {/* <MultiSelectComponent
             isMulti={false}
             label="Role-Specific Customization"
             options={Role_Specific}
@@ -30,7 +46,7 @@ const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileTyp
             value={formData.roleCustomization}
             error={errors.roleCustomization}
             isDisabled={edit}
-          />
+          /> */}
 
           <MultiSelectComponent
             isMulti={false}
@@ -43,6 +59,17 @@ const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileTyp
             error={errors.salaryBenchmarking}
             isDisabled={edit}
           />
+
+          <div className="flex w-full items-center space-x-2">
+            <input
+              type="checkbox"
+              name="roleCustomization"
+              checked={formData.roleCustomization}
+              onChange={handleChange}
+              disabled={edit}
+            />
+            <label className="text-gray-600">Role-Specific Customization</label>
+          </div>
         </div>
       </fieldset>
 
@@ -67,8 +94,8 @@ const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileTyp
       <fieldset className="border border-black p-4 rounded-md">
         <legend>Reporting and Performance Tracking </legend>
 
-        <div className="flex w-full space-x-2">
-          <MultiSelectComponent
+        <div className="flex flex-col w-full space-y-5">
+          {/* <MultiSelectComponent
             isMulti={false}
             label="Market and Role Alerts"
             options={MarketAndRoleAlertsOptions}
@@ -78,9 +105,9 @@ const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileTyp
             value={formData.marketRoleAlerts}
             error={errors.marketRoleAlerts}
             isDisabled={edit}
-          />
+          /> */}
 
-          <MultiSelectComponent
+          {/* <MultiSelectComponent
             isMulti={false}
             label="Custom Reports"
             options={CustomReportsOptions}
@@ -90,7 +117,29 @@ const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileTyp
             value={formData.customReports}
             error={errors.customReports}
             isDisabled={edit}
-          />
+          /> */}
+
+          <div className="flex w-full items-center space-x-2">
+            <input
+              type="checkbox"
+              name="customReports"
+              checked={formData.customReports}
+              onChange={handleChange}
+              disabled={edit}
+            />
+            <label className="text-gray-600">Custom Reports</label>
+          </div>
+
+          <div className="flex w-full items-center space-x-2">
+            <input
+              type="checkbox"
+              name="marketRoleAlerts"
+              checked={formData.marketRoleAlerts}
+              onChange={handleChange}
+              disabled={edit}
+            />
+            <label className="text-gray-600">Market and Role Alerts</label>
+          </div>
         </div>
       </fieldset>
 
@@ -98,14 +147,14 @@ const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileTyp
         <legend>Communication and Candidate Engagement </legend>
 
         <div className="flex w-full space-x-2">
-          <MultiSelectComponent
+          {/* <MultiSelectComponent
             isMulti={false}
             label="Automated Updates to Candidates"
             options={AutomatedUpdatesOptions}
             onChange={(selected) =>
               handleMultiSelectChange("automatedUpdates", selected)
             }
-            value={formData.automatedUpdates}
+            value={"enableAutomatedUpdates"}
             error={errors.automatedUpdates}
             isDisabled={edit}
           />
@@ -120,7 +169,31 @@ const OtherFields = ({ formData, errors, setFormData , edit }: CompanyProfileTyp
             value={formData.candidateFeedback}
             error={errors.candidateFeedback}
             isDisabled={edit}
-          />
+          /> */}
+
+          <div className="flex w-full items-center space-x-2">
+            <input
+              type="checkbox"
+              name="automatedUpdates"
+              checked={formData.automatedUpdates}
+              onChange={handleChange}
+              disabled={edit}
+            />
+            <label className="text-gray-600">
+              Automated Updates to Candidates
+            </label>
+          </div>
+
+          <div className="flex w-full items-center space-x-2">
+            <input
+              type="checkbox"
+              name="candidateFeedback"
+              checked={formData.candidateFeedback}
+              onChange={handleChange}
+              disabled={edit}
+            />
+            <label className="text-gray-600">Candidate Feedback Insights</label>
+          </div>
         </div>
       </fieldset>
     </>

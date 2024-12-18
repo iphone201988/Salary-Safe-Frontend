@@ -236,14 +236,14 @@ const router = createBrowserRouter([
         path: "analytics",
         element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
       },
-      {
-        path: "settings",
-        element: <ProtectedCompanyRoute element={<DashboardProfileSetting />} />,
-      },
       // {
       //   path: "settings",
-      //   element: <ProtectedCompanyRoute element={<DashboardSettings />} />,
+      //   element: <ProtectedCompanyRoute element={<DashboardProfileSetting />} />,
       // },
+      {
+        path: "settings",
+        element: <ProtectedCompanyRoute element={<DashboardSettings />} />,
+      },
     ],
   },
   {
