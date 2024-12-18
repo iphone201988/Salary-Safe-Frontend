@@ -16,7 +16,7 @@ import {
 import { Link } from "react-router-dom";
 
 const JobListings = () => {
-  const { apiCall, loading, error } = useApiCall();
+  const { apiCall, loading } = useApiCall();
 
   const [jobDetails, setJobDetails] = useState<Job>({
     title: "",

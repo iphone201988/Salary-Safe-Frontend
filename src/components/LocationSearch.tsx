@@ -10,7 +10,7 @@ interface Location {
 
 interface LocationSearchProps {
   placeholder?: string;
-  apiEndpoint?: string;
+  apiEndpoint?: string|any;
   onSelectionChange?: (selectedLocations: Location[]) => void;
   selectMode: "single" | "multiple"; // New prop for select mode
 }
@@ -75,12 +75,16 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       if (!selectedLocations.some((selected) => selected.id === location.id)) {
         const updatedSelectedLocations = [...selectedLocations, location];
         setSelectedLocations(updatedSelectedLocations);
-        onSelectionChange(updatedSelectedLocations); // Notify parent
+        if(onSelectionChange){
+          onSelectionChange(updatedSelectedLocations); // Notify parent
+        }
       }
     } else {
       // For single select, replace selected location
       setSelectedLocations([location]);
-      onSelectionChange([location]); // Notify parent
+      if(onSelectionChange){
+        onSelectionChange([location]); // Notify parent
+      }
     }
     setInputValue(""); // Clear input after selection
     setOptions([]); // Close dropdown
@@ -92,7 +96,9 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       (location) => location.id !== locationId
     );
     setSelectedLocations(updatedSelectedLocations);
-    onSelectionChange(updatedSelectedLocations); // Notify parent
+    if(onSelectionChange){
+      onSelectionChange(updatedSelectedLocations); // Notify parent
+    }
   };
 
   return (

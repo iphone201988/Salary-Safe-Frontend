@@ -1,6 +1,6 @@
 import { Range } from "react-range";
 import {
-  jobtypesOptions,
+  // jobtypesOptions,
   scheduleOptions,
 } from "../../pages/Employer/Auth/SignUp/options";
 type Job = {
@@ -24,7 +24,7 @@ type Job = {
 };
 interface JobsModalProps {
   handleSubmitJob: (e: React.FormEvent<HTMLFormElement>) => void;
-  data: Job; // Using your `Job` type
+  data?: Job | any; // Using your `Job` type
   handleChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -209,10 +209,14 @@ const JobsModal: React.FC<JobsModalProps> = ({
                 onChange={handleSalaryChange}
                 renderTrack={({ props, children }) => {
                   const [min, max] = [30000, 200000];
-                  const rangeStart =
-                    ((data?.salaryRange[0] - min) / (max - min)) * 100;
-                  const rangeEnd =
-                    ((data?.salaryRange[1] - min) / (max - min)) * 100;
+                  let rangeStart;
+                  let rangeEnd;
+                  if(data?.salaryRange){
+                    rangeStart =
+                     ((data?.salaryRange[0] - min) / (max - min)) * 100;
+                    rangeEnd =
+                     ((data?.salaryRange[1] - min) / (max - min)) * 100;
+                  }
 
                   return (
                     <div

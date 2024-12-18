@@ -55,7 +55,7 @@ const Details = () => {
   };
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
-      <Button
+      {/* <Button
         text="Skip"
         type="button"
         color="green"
@@ -63,7 +63,7 @@ const Details = () => {
         size="md"
         className="mt-4 text-center bg-black absolute right-3 top-0"
         onClick={() => navigate("/employeer/dashboard")}
-      />
+      /> */}
 
       <div className="w-full flex flex-col justify-center items-center">
         <div className="flex flex-col justify-center items-center h-full mb-6 lg:mb-0 rounded-lg">

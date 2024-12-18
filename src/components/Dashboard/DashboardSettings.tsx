@@ -9,24 +9,24 @@ import HiringGoals from "./DashboardSettings/HiringGoals";
 import OtherFields from "./DashboardSettings/OtherFields";
 import Avatar from "../../assets/avatar.jpg";
 import {
-  AutomatedUpdatesOptions,
-  CandidateFeedbackInsightsOptions,
-  CustomReportsOptions,
+  // AutomatedUpdatesOptions,
+  // CandidateFeedbackInsightsOptions,
+  // CustomReportsOptions,
   jobtypesOptions,
   Key_Metrics,
-  MarketAndRoleAlertsOptions,
+  // MarketAndRoleAlertsOptions,
   options,
   pool,
   Positions_of_Interest,
   Preferred_Job_Locations,
-  Role_Specific,
+  // Role_Specific,
   SalaryBenchmarkingOptions,
 } from "../../pages/Employer/Auth/SignUp/options";
 import { getMultiSelectValues } from "../../utils/helper";
 import { FaUserEdit } from "react-icons/fa";
 import { RiFileEditLine } from "react-icons/ri";
 import useApiCall from "../../API/function";
-import { candidateUpdate, clientUpdate } from "../../API/apis";
+import { /* candidateUpdate, */ clientUpdate } from "../../API/apis";
 
 const DashboardSettings: React.FC = () => {
   const { employeerDetails } = useSelector((state: RootState) => state.user);
@@ -107,14 +107,7 @@ const DashboardSettings: React.FC = () => {
     avatar: employeerDetails?.avatar ? employeerDetails?.avatar : null,
   });
 
-  console.log(
-    "ddddddddddd:",
-    getMultiSelectValues(
-      Key_Metrics,
-      employeerDetails.salary_benchmarking_preference
-    )
-  );
-  const { apiCall, loading, error } = useApiCall();
+  const { apiCall } = useApiCall();
 
   const [errors, _setErrors] = useState<SignUpFormErrors>({});
   const [profileImage, setProfileImage] = useState(null);
@@ -243,7 +236,7 @@ const DashboardSettings: React.FC = () => {
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
               const file = e.target.files[0];
-              const url = URL.createObjectURL(file);
+              const url:any = URL.createObjectURL(file);
               setProfileImage(url);
               setFormData({ ...formData, avatar: file });
             }

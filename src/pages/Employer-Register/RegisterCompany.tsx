@@ -61,7 +61,7 @@ export const RegisterCompany = () => {
             dispatch(
               login({ token: response?.data?.access_token, role: "employeer" })
             );
-            navigate("/profile/company-additional-detail");
+            navigate("/profile/hiring-goal");
             // navigate("/login-company");
           }
         } catch (err) {

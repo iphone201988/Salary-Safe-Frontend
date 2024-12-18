@@ -41,7 +41,7 @@ type DashboardProfileSettingData = {
 };
 
 const DashboardProfileSetting: React.FC = () => {
-  const [profileData, setProfileData] = useState<DashboardProfileSettingData>({
+  const [profileData, _setProfileData] = useState<DashboardProfileSettingData>({
     email: "adidas@gmail.com",
     company_name: "Pardeep",
     avatar: null,
@@ -77,15 +77,15 @@ const DashboardProfileSetting: React.FC = () => {
     id: "fda2a06b-e5fa-46a7-b1c0-b5ce5152c265",
   });
 
-  const [editSection, setEditSection] = useState<string | null>(null);
+  const [_editSection, _setEditSection] = useState<string | null>(null);
 
-  const handleEditClick = (section: string) => {
-    setEditSection(section);
-  };
+  // const handleEditClick = (section: string) => {
+  //   setEditSection(section);
+  // };
 
-  const handleSaveClick = ()  => {
-    setEditSection(null);
-  };
+  // const handleSaveClick = ()  => {
+  //   setEditSection(null);
+  // };
 
   return (
     <div>

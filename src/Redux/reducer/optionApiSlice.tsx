@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { /* candidateDetails , */ EmployeerDetails } from "../../types";
+// import { /* candidateDetails , */ EmployeerDetails } from "../../types";
 
 interface OptionsState {
   skillOption?: string[];
