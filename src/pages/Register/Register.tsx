@@ -10,26 +10,51 @@ import { useDispatch } from "react-redux";
 import { login } from "../../Redux/reducer/authSlice";
 import { setemployeDetails } from "../../Redux/reducer/userData";
 import { useSelector } from "react-redux";
+import Select from "../../components/Select/Select";
+import SearchSelect from "../Selctor";
+import LocationSearch from "../../components/LocationSearch";
 
+interface Location {
+  id: string;
+  city: string;
+  country: string;
+  location_multiplier: number;
+}
 export const Register = () => {
   const navigate = useNavigate();
   const { employeDetails } = useSelector((state: any) => state.user);
   
   const [errors, setErrors] = useState<any>({});
   const [touched, setTouched] = useState<any>({});
+  const [locations, setLocations] = useState<string[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
+
   const dispatch = useDispatch();
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    dispatch(
-      setemployeDetails({
-        ...employeDetails,
-        [name]: type === "checkbox" ? checked : value,
-      })
-    );
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+  
+    // Narrowing down to HTMLInputElement for accessing `checked`
+    if (e.target instanceof HTMLInputElement && e.target.type === "checkbox") {
+      dispatch(
+        setemployeDetails({
+          ...employeDetails,
+          [name]: e.target.checked,
+        })
+      );
+    } else {
+      dispatch(
+        setemployeDetails({
+          ...employeDetails,
+          [name]: value,
+        })
+      );
+    }
+  
     if (touched[name]) {
       validateField(name, value);
     }
   };
+  
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
@@ -65,7 +90,7 @@ export const Register = () => {
       }
     });
     setErrors(formErrors);
-    return Object.keys(formErrors).length === 0;
+    return Object.keys(formErrors).length === 0;  
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -171,6 +196,34 @@ export const Register = () => {
             onBlur={handleBlur}
             errorMessage={errors.phone_number}
           />
+          {/* <Select name="location"  value={employeDetails?.location} onChange={handleChange} options={}/> */}
+          {/* Location Selector */}
+          <div className="w-[300px] p-1">
+          <h1 className="text-xl font-bold ">Location Search</h1>
+      <LocationSearch
+        placeholder="Search locations..."
+        apiEndpoint="https://salarysafe.ai/api/v1/jobs/locations/search"
+        onSelectionChange={(locations) => setSelectedLocations(locations)}
+        selectMode="multiple"
+      />
+      {/* <div className="mt-4">
+        <h2 className="font-semibold">Selected Locations:</h2>
+        <ul>
+          {selectedLocations.map((location) => (
+            <li key={location.id}>
+              {`${location.city}, ${location.country}`} (Multiplier:{" "}
+              {location.location_multiplier})
+            </li>
+          ))}
+        </ul>
+          </div> */}
+          </div>
+      {/* <SearchSelect
+        placeholder="Search locations..."
+        apiEndpoint="https://salarysafe.ai/api/v1/jobs/skills/search"
+        onSelectionChange={(selectedOptions) => setLocations(selectedOptions)}
+      />
+      <p className="mt-2">Selected Locations: {locations.join(", ")}</p> */}
           <Input
             label="Location"
             placeholder="Mohali,india"

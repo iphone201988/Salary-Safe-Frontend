@@ -57,6 +57,7 @@ import GoalsPreference from "../pages/Profile-Setup/Goals-Preferences/Goals";
 import Customization from "../pages/Profile-Setup/Dashboard-customization/Customization";
 import Details from "../pages/Profile-Setup/Company-Addtional-Detail/Details";
 import DashboardProfileSetting from "../components/Dashboard/DashboardProfileSetting";
+import SearchSelect from "../pages/Selctor";
 
 const router = createBrowserRouter([
   {
