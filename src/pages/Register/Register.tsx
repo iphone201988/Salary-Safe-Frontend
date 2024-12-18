@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button/Button";
 import Input from "./Input/Input";
 import { validationSchema } from "../../validation";
@@ -10,8 +10,6 @@ import { useDispatch } from "react-redux";
 import { login } from "../../Redux/reducer/authSlice";
 import { setemployeDetails } from "../../Redux/reducer/userData";
 import { useSelector } from "react-redux";
-import Select from "../../components/Select/Select";
-import SearchSelect from "../Selctor";
 import LocationSearch from "../../components/LocationSearch";
 
 interface Location {
@@ -23,17 +21,18 @@ interface Location {
 export const Register = () => {
   const navigate = useNavigate();
   const { employeDetails } = useSelector((state: any) => state.user);
-  
+
   const [errors, setErrors] = useState<any>({});
   const [touched, setTouched] = useState<any>({});
-  const [locations, setLocations] = useState<string[]>([]);
+  // const [locations, setLocations] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
 
   const dispatch = useDispatch();
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-  
-    // Narrowing down to HTMLInputElement for accessing `checked`
+
     if (e.target instanceof HTMLInputElement && e.target.type === "checkbox") {
       dispatch(
         setemployeDetails({
@@ -49,12 +48,11 @@ export const Register = () => {
         })
       );
     }
-  
+
     if (touched[name]) {
       validateField(name, value);
     }
   };
-  
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
@@ -90,7 +88,7 @@ export const Register = () => {
       }
     });
     setErrors(formErrors);
-    return Object.keys(formErrors).length === 0;  
+    return Object.keys(formErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -134,6 +132,20 @@ export const Register = () => {
     }
   };
 
+  useEffect(() => {
+    if (selectedLocations) {
+      dispatch(
+        setemployeDetails({
+          ...employeDetails,
+          location_multiplier:selectedLocations[0]?.location_multiplier,
+          location: `${selectedLocations[0]?.city === undefined ? "":selectedLocations[0]?.city} ${selectedLocations[0] ? ",":" "} ${selectedLocations[0]?.country === undefined ? "":selectedLocations[0]?.country}`,
+        })
+      );
+    }
+  }, [selectedLocations]);
+ 
+  console.log("Error :::::",errors);
+  
   return (
     <div className="w-[750px] px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       <div className="w-full lg:w-[300px] flex flex-col justify-center items-center h-full mb-6 lg:mb-0 lg:mr-4 p-4 rounded-lg">
@@ -196,43 +208,26 @@ export const Register = () => {
             onBlur={handleBlur}
             errorMessage={errors.phone_number}
           />
-          {/* <Select name="location"  value={employeDetails?.location} onChange={handleChange} options={}/> */}
-          {/* Location Selector */}
           <div className="w-[300px] p-1">
-          <h1 className="text-xl font-bold ">Location Search</h1>
-      <LocationSearch
-        placeholder="Search locations..."
-        apiEndpoint="https://salarysafe.ai/api/v1/jobs/locations/search"
-        onSelectionChange={(locations) => setSelectedLocations(locations)}
-        selectMode="multiple"
-      />
-      {/* <div className="mt-4">
-        <h2 className="font-semibold">Selected Locations:</h2>
-        <ul>
-          {selectedLocations.map((location) => (
-            <li key={location.id}>
-              {`${location.city}, ${location.country}`} (Multiplier:{" "}
-              {location.location_multiplier})
-            </li>
-          ))}
-        </ul>
-          </div> */}
+            <div className="text-[12px] mt-1 font-semibold">Location</div>
+            <LocationSearch
+              placeholder="Search locations..."
+              apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
+              onSelectionChange={(locations) => setSelectedLocations(locations)}
+              selectMode="single"
+            />
           </div>
-      {/* <SearchSelect
-        placeholder="Search locations..."
-        apiEndpoint="https://salarysafe.ai/api/v1/jobs/skills/search"
-        onSelectionChange={(selectedOptions) => setLocations(selectedOptions)}
-      />
-      <p className="mt-2">Selected Locations: {locations.join(", ")}</p> */}
-          <Input
-            label="Location"
+
+          {/* <Input
+            label=""
             placeholder="Mohali,india"
             value={employeDetails?.location}
             name="location"
             onChange={handleChange}
             onBlur={handleBlur}
             errorMessage={errors.location}
-          />
+            required={false}
+          /> */}
 
           <Input
             label="Password"

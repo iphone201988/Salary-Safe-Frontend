@@ -12,7 +12,8 @@ export const validationSchema = Yup.object({
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
   current_job_title: Yup.string().required("Job Title is required"),
-  location: Yup.string().required("Job Location is required"),
+  location: Yup.string().optional(),
+  location_multiplier: Yup.string().optional(),
   linkedin_profile_url: Yup.string()
     .url("Invalid LinkedIn URL")
     .required("LinkedIn URL is required"),

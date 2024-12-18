@@ -3,19 +3,23 @@ import Button from "../../Register/Button/Button";
 import Input from "../../Register/Input/Input";
 import MultiSelectComponent from "../MultiSelect/Multi";
 import {
-  industriesOfInterestOptional,
   jobTypePreferencesOptions,
   professionalDevelopmentAreasOptions,
 } from "../../Candidate/Auth/Employee/SignUp/options";
 import { useSelector, useDispatch } from "react-redux";
 import { setemployeDetails } from "../../../Redux/reducer/userData";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const JobSearch = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { employeDetails } = useSelector((state: any) => state.user);
   const token = useSelector((state: any) => state.auth.token);
+  // const [options, setOptions] = useState<any>([]);
+  const [industry, setIndustry] = useState<any>([]);
+  const [options, setOptions] = useState<Location[]>([]);
+  const [selectedIndustry, setSelectedIndustry] = useState<any>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -42,12 +46,14 @@ const JobSearch = () => {
     //   }
     // );
 
-  
-    formData.append(`industries_of_interest`,JSON.stringify(
-      employeDetails?.industries_of_interest?.map((data: any) => {
-        return data?.value;
-      })
-    ));
+    formData.append(
+      `industries_of_interest`,
+      JSON.stringify(
+        employeDetails?.industries_of_interest?.map((data: any) => {
+          return data?.value;
+        })
+      )
+    );
 
     // employeDetails?.job_type_preferences?.forEach(
     //   (data: any, index: number) => {
@@ -55,11 +61,14 @@ const JobSearch = () => {
     //   }
     // );
 
-    formData.append(`job_type_preferences`,JSON.stringify(
-      employeDetails?.job_type_preferences?.map((data: any) => {
-        return data?.value;
-      })
-    ));
+    formData.append(
+      `job_type_preferences`,
+      JSON.stringify(
+        employeDetails?.job_type_preferences?.map((data: any) => {
+          return data?.value;
+        })
+      )
+    );
 
     // employeDetails?.professional_development_areas?.forEach(
     //   (data: any, index: number) => {
@@ -70,11 +79,14 @@ const JobSearch = () => {
     //   }
     // );
 
-    formData.append(`professional_development_areas`,JSON.stringify(
-      employeDetails?.professional_development_areas?.map((data: any) => {
-        return data?.value;
-      })
-    ));
+    formData.append(
+      `professional_development_areas`,
+      JSON.stringify(
+        employeDetails?.professional_development_areas?.map((data: any) => {
+          return data?.value;
+        })
+      )
+    );
 
     formData.append(
       "actively_looking_for_new_job",
@@ -105,6 +117,53 @@ const JobSearch = () => {
       console.error("Error updating candidate details:", error);
     }
   };
+
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setIndustry(query);
+    try {
+      const response = await axios.get(
+        "https://salarysafe.ai/api/v1/utils/industries/search",
+        {
+          params: { query: query },
+          headers: {
+            "X-API-KEY":
+              "47f38e90f9994df85c962cc384e728b137bcd722db2a96c79b94a6723606bf9d",
+          },
+        }
+      );
+      setOptions(response.data);
+    } catch (error) {
+      console.error("Error searching for skills:", error);
+    }
+  };
+
+  console.log("options::::::", options);
+
+  const handleRemoveLocation = (industry: any) => {
+    setSelectedIndustry(
+      selectedIndustry.filter((item: any) => item !== industry)
+    );
+  };
+
+  useEffect(() => {
+    if (industry === "") {
+      setOptions([]);
+    }
+  }, [industry]);
+
+  useEffect(() => {
+    console.log('selectedIndustry before dispatch:', selectedIndustry);
+    if (selectedIndustry.length) {
+      dispatch(
+        setemployeDetails({
+          ...employeDetails,
+          industries_of_interest: selectedIndustry,
+        })
+      );
+    }
+  }, [selectedIndustry]);
+
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       <Button
@@ -131,7 +190,7 @@ const JobSearch = () => {
 
         <div className="flex gap-4">
           <div className="w-full">
-            <MultiSelectComponent
+            {/* <MultiSelectComponent
               isMulti={true}
               label="Industries of Interest:"
               options={industriesOfInterestOptional}
@@ -139,7 +198,52 @@ const JobSearch = () => {
               onChange={(selected) =>
                 handleMultiSelectChange("industries_of_interest", selected)
               }
-            />
+            /> */}
+            <div className="location-search bg-white ">
+              <div className="text-[12px] mt-1 font-semibold">
+                Industry of interest :
+              </div>
+              <div className="selected-locations flex flex-wrap gap-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="search industry"
+                  value={industry}
+                  onChange={handleSearch}
+                  className="border w-full rounded-[8px] outline-none border-gray-600 text-[14px] px-2 py-1"
+                />
+                {selectedIndustry.map((location: any) => (
+                  <div
+                    key={location.id}
+                    className="flex items-center text-black px-2 py-1 rounded"
+                  >
+                    {location}
+                    <button
+                      onClick={() => handleRemoveLocation(location)}
+                      className="ml-2 text-red-500"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div
+                className={`w-full ${
+                  options.length === 0 ? "hidden" : "h-[60px]"
+                } overflow-y-auto`}
+              >
+                {options.map((data: any) => (
+                  <li
+                    onClick={() =>
+                      setSelectedIndustry([...selectedIndustry, data.industry])
+                    }
+                    key={data.id}
+                    className="p-2 cursor-pointer list-none hover:bg-gray-200"
+                  >
+                    {data.industry}
+                  </li>
+                ))}
+              </div>
+            </div>
             <MultiSelectComponent
               isMulti={true}
               label="Job Type Preferences:"

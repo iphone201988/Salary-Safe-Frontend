@@ -83,7 +83,7 @@ const DashboardProfileSetting: React.FC = () => {
     setEditSection(section);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = ()  => {
     setEditSection(null);
   };
 

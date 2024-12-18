@@ -9,9 +9,9 @@ interface Location {
 }
 
 interface LocationSearchProps {
-  placeholder: string;
-  apiEndpoint: string;
-  onSelectionChange: (selectedLocations: Location[]) => void;
+  placeholder?: string;
+  apiEndpoint?: string;
+  onSelectionChange?: (selectedLocations: Location[]) => void;
   selectMode: "single" | "multiple"; // New prop for select mode
 }
 
@@ -23,7 +23,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
 }) => {
   const [options, setOptions] = useState<Location[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<Location[]>(
-    selectMode === "multiple" ? [] : [] // Initialize based on selectMode
+    selectMode === "multiple" ? [] : []
   );
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,7 +37,6 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     };
   };
 
-  // Fetch locations from API
   const fetchOptions = async (query: string) => {
     if (!query) {
       setOptions([]);
@@ -47,8 +46,11 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     try {
       const response = await axios.get(apiEndpoint, {
         params: { query },
+        headers: {
+          "X-API-KEY" : "47f38e90f9994df85c962cc384e728b137bcd722db2a96c79b94a6723606bf9d",
+        },
       });
-      setOptions(response.data); // Assuming response.data is an array of Location objects
+      setOptions(response.data);
     } catch (error) {
       console.error("Error fetching locations:", error);
     } finally {
@@ -96,10 +98,17 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
   return (
     <div className="location-search bg-white ">
       <div className="selected-locations flex flex-wrap gap-2 mb-2">
+         <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder={placeholder}
+        className="border w-full rounded-[8px] outline-none border-gray-600 text-[14px] px-2 py-1"
+      />
         {selectedLocations.map((location) => (
           <div
             key={location.id}
-            className="flex items-center bg-green-200 text-green-800 px-2 py-1 rounded"
+            className="flex items-center text-black px-2 py-1 rounded"
           >
             {`${location.city}, ${location.country}`}
             <button
@@ -111,13 +120,6 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        placeholder={placeholder}
-        className="border p-2 w-full"
-      />
       {loading && <div className="mt-2">Loading...</div>}
       {options.length > 0 && (
         <ul className="border mt-2 max-h-48 overflow-y-auto bg-white">
