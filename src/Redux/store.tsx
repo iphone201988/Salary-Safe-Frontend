@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import userData from "../Redux/reducer/userData";
 import authReducer from "../Redux/reducer/authSlice";
 import jobReducer from "../Redux/reducer/jobSlice";
+import optionsAPiReducer from "../Redux/reducer/optionApiSlice";
 import selectOptionReducer from "../Redux/reducer/selectOption";
 import { PersistConfig } from "redux-persist";
 
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   selectOption: selectOptionReducer,
   JobDetails: jobReducer,
+  optionApi: optionsAPiReducer,
 
 });
 

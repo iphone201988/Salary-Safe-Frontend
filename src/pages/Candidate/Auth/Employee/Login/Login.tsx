@@ -15,6 +15,7 @@ import Loader from "../../../../../components/Loader/Loader";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import { useDispatch } from "react-redux";
 import { GrFormView, GrFormViewHide } from "react-icons/gr";
+import { setIndustryOption, setlocationOption, setskillOption } from "../../../../../Redux/reducer/optionApiSlice";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
@@ -64,6 +65,21 @@ const EmployeeLogin = () => {
   //     console.log(error);
   //   }
   // };
+  
+  const fetchOptions = async (url: string, token: string, setter: Function) => {
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        setter(response.data);
+      }
+    } catch (err) {
+      console.error(`Error fetching data from ${url}:`, err);
+    }
+  };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -93,6 +109,20 @@ const EmployeeLogin = () => {
         password: "",
       });
       setLoading(false);
+      const token = response?.data?.access_token;
+
+    // Fetch options in parallel
+    await Promise.all([
+      fetchOptions("https://salarysafe.ai/api/v1/jobs/skills/search", token, (data:any) =>
+        dispatch(setskillOption(data))
+      ),
+      fetchOptions("https://salarysafe.ai/api/v1/jobs/locations/search", token, (data:any) =>
+        dispatch(setlocationOption(data))
+      ),
+      fetchOptions("https://salarysafe.ai/api/v1/jobs/industries/search", token, (data:any) =>
+        dispatch(setIndustryOption(data))
+      ),
+    ]);
       navigate("/candidate/dashboard");
     } catch (error: any) {
       setLoading(false);
@@ -107,6 +137,7 @@ const EmployeeLogin = () => {
     } finally {
       setLoading(false);
       setIsSubmitting(false);
+      
     }
   };
 console.log("loading",loading)
