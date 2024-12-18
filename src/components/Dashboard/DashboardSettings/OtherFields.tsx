@@ -147,14 +147,14 @@ const OtherFields = ({
         <legend>Communication and Candidate Engagement </legend>
 
         <div className="flex w-full space-x-2">
-          <MultiSelectComponent
+          {/* <MultiSelectComponent
             isMulti={false}
             label="Automated Updates to Candidates"
             options={AutomatedUpdatesOptions}
             onChange={(selected) =>
               handleMultiSelectChange("automatedUpdates", selected)
             }
-            value={formData.automatedUpdates}
+            value={"enableAutomatedUpdates"}
             error={errors.automatedUpdates}
             isDisabled={edit}
           />
@@ -169,7 +169,31 @@ const OtherFields = ({
             value={formData.candidateFeedback}
             error={errors.candidateFeedback}
             isDisabled={edit}
-          />
+          /> */}
+
+          <div className="flex w-full items-center space-x-2">
+            <input
+              type="checkbox"
+              name="automatedUpdates"
+              checked={formData.automatedUpdates}
+              onChange={handleChange}
+              disabled={edit}
+            />
+            <label className="text-gray-600">
+              Automated Updates to Candidates
+            </label>
+          </div>
+
+          <div className="flex w-full items-center space-x-2">
+            <input
+              type="checkbox"
+              name="candidateFeedback"
+              checked={formData.candidateFeedback}
+              onChange={handleChange}
+              disabled={edit}
+            />
+            <label className="text-gray-600">Candidate Feedback Insights</label>
+          </div>
         </div>
       </fieldset>
     </>

@@ -20,6 +20,7 @@ import {
   Positions_of_Interest,
   Preferred_Job_Locations,
   Role_Specific,
+  SalaryBenchmarkingOptions,
 } from "../../pages/Employer/Auth/SignUp/options";
 import { getMultiSelectValues } from "../../utils/helper";
 import { FaUserEdit } from "react-icons/fa";
@@ -74,7 +75,12 @@ const DashboardSettings: React.FC = () => {
     roleCustomization: employeerDetails?.role_specific_customization
       ? true
       : false,
-    salaryBenchmarking: "",
+    salaryBenchmarking: employeerDetails?.salary_benchmarking_preference
+      ? getMultiSelectValues(
+        SalaryBenchmarkingOptions,
+          employeerDetails.salary_benchmarking_preference
+        )
+      : "",
     candidateViewingPreferences: employeerDetails?.candidate_viewing_preferences
       ? getMultiSelectValues(
           pool,
@@ -86,20 +92,28 @@ const DashboardSettings: React.FC = () => {
       ? true
       : false,
     customReports: employeerDetails?.enable_custom_reporting ? true : false,
-    automatedUpdates: employeerDetails?.automated_updates
-      ? employeerDetails.automated_updates === true
-        ? AutomatedUpdatesOptions[0]
-        : ""
-      : "",
-    candidateFeedback: employeerDetails?.candidate_feedback_analysis
-      ? employeerDetails.candidate_feedback_analysis === true
-        ? CandidateFeedbackInsightsOptions[0]
-        : ""
-      : "",
+    automatedUpdates:
+      employeerDetails?.automated_updates &&
+      employeerDetails?.automated_updates != "undefined"
+        ? true
+        : false,
+    candidateFeedback:
+      employeerDetails?.candidate_feedback_analysis &&
+      employeerDetails?.candidate_feedback_analysis != "undefined"
+        ? true
+        : false,
     referralHow: "",
     referralCode: "",
     avatar: employeerDetails?.avatar ? employeerDetails?.avatar : null,
   });
+
+  console.log(
+    "ddddddddddd:",
+    getMultiSelectValues(
+      Key_Metrics,
+      employeerDetails.salary_benchmarking_preference
+    )
+  );
   const { apiCall, loading, error } = useApiCall();
 
   const [errors, _setErrors] = useState<SignUpFormErrors>({});
@@ -117,34 +131,6 @@ const DashboardSettings: React.FC = () => {
     e.preventDefault();
     console.log("formData::::", formData);
     try {
-      const data: any = {
-        company_name: formData.companyName,
-        headquarters_location: formData.companyLocation,
-        company_size: formData.companySize,
-        email: formData.email,
-        contact_phone_number: formData.phone,
-        industry: formData.industry,
-        primary_contact_person: formData.PrimaryContact,
-        primary_hiring_goals: formData.primaryHiringGoals,
-        preferred_job_locations: formData.preferredJobLocations,
-        roles_of_interest: formData.rolesPositions,
-        job_types: formData.jobTypes,
-        dashboard_metrics: formData.keyMetrics,
-        role_specific_customization: formData.roleCustomization,
-        salary_benchmarking_preference: formData.salaryBenchmarking,
-        candidate_viewing_preferences: formData.candidateViewingPreferences,
-        offer_optimization: formData.offerOptimization,
-        enable_real_time_market_alerts: formData.marketRoleAlerts,
-        enable_custom_reporting: formData.customReports,
-        automated_updates: formData.automatedUpdates,
-        candidate_feedback_analysis: formData.candidateFeedback,
-        referral_source: formData.referralHow,
-        referral_code: formData.referralCode,
-        avatar: formData.avatar,
-      };
-
-      console.log("data::::", data);
-
       const formDataInstance = new FormData();
       // Add each field individually
       formDataInstance.append("company_name", formData.companyName);
@@ -185,20 +171,19 @@ const DashboardSettings: React.FC = () => {
         JSON.stringify(formData.jobTypes.map((jobType: any) => jobType.value))
       );
 
-     
       // Handle other fields
-      formDataInstance.append("dashboard_metrics", formData.keyMetrics);
+      formDataInstance.append("dashboard_metrics", formData.keyMetrics.value);
       formDataInstance.append(
         "role_specific_customization",
         formData.roleCustomization
       );
       formDataInstance.append(
         "salary_benchmarking_preference",
-        formData.salaryBenchmarking
+        formData.salaryBenchmarking.value
       );
       formDataInstance.append(
         "candidate_viewing_preferences",
-        formData.candidateViewingPreferences
+        formData.candidateViewingPreferences.value
       );
       formDataInstance.append("offer_optimization", formData.offerOptimization);
       formDataInstance.append(

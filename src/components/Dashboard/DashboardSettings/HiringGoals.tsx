@@ -19,7 +19,7 @@ const HiringGoals = ({
     console.log("selectedOptions:::", selectedOptions); 
     setFormData({ ...formData, [field]: selectedOptions });
   };
-  console.log("hello2145241", formData.keyMetrics);
+  // console.log("hello2145241", formData.keyMetrics);
   return (
     <>
       <fieldset className="border border-black p-4 rounded-md">
