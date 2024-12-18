@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "tailwindcss/tailwind.css";
 import ProfileInfo from "./DashboardProfileSettings/ProfileInfo";
+import PrimaryDetails from "./DashboardProfileSettings/PrimaryDetails";
 
 type TeamMember = {
   name: string;
@@ -105,6 +106,15 @@ const DashboardProfileSetting: React.FC = () => {
               location={profileData.headquarters_location}
               email={profileData.email}
               phone={profileData.contact_phone_number}
+              size={profileData.company_size}
+            />
+          </div>
+          <div className="flex justify-between items-center">
+            <PrimaryDetails
+             hiringGoal={profileData.primary_hiring_goals}
+             preferedjobLocation={profileData.preferred_job_locations}
+             rolesOfInterest={profileData.roles_of_interest}
+             JobTypes={profileData.job_types}
             />
           </div>
         </div>
