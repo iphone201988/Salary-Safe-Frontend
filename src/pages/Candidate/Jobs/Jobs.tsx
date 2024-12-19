@@ -8,7 +8,11 @@ import { getJobsToCandiDate, getSearchJobsToCandiDate } from "../../../API/apis"
 import AllJobs from "../../../components/EmployeeDashboard/Jobs/AllJobs";
 import Select from "../../../components/Select/Select";
 import { jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { clearUserData } from "../../../Redux/reducer/userData";
+import { logout } from "../../../Redux/reducer/authSlice";
 interface SearchJob {
   job_title: string;
   job_type: string;
@@ -52,8 +56,10 @@ const JobMatchingPage: React.FC = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const token = useSelector((state: any) => state.auth.token);
   const [loading, setLoading] = useState(false);
+  const [tokenExpire, setTokenExpire] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  //get data from api
+  const navigate = useNavigate();
+  const dispatch = useDispatch();  //get data from api
   function getData(): Promise<any> {
     setLoading(true);
     setError(null);
@@ -70,6 +76,14 @@ const JobMatchingPage: React.FC = () => {
       })
       .catch(error => {
         setLoading(false);
+        console.log("error.response",error.response)
+        if(error.response?.status ===401){
+          console.log("error.response.status",error.response.status)
+          dispatch(clearUserData());
+          dispatch(logout());
+          navigate("/login-employee");
+          toast.error(error.response.data.message)
+        }
         // setJobs(dummyJobs);
         setError(error.response?.data?.message || error.message); // Capture error message
       });
@@ -198,14 +212,11 @@ const JobMatchingPage: React.FC = () => {
   ) => {
     setSearchJob({ ...searchJob, [e.target.name]: e.target.value });
   };
-  // if (loading) {
-  //   return <Loader/>;
-  // }
 
-  if (error) {
+  if (error){
     return <div className="p-4 text-center text-red-500">{error}</div>;
+
   }
-  
   return (
     <div className="min-h-screen flex flex-col bg-white ">
       <nav className="bg-gray-200 py-3 px-6">

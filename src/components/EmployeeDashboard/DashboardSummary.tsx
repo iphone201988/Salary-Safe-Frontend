@@ -9,6 +9,11 @@ import { candidateDashboard, getJobsToCandiDate } from "../../API/apis";
 import { useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
 import JobCard from "./JobCard";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { clearUserData } from "../../Redux/reducer/userData";
+import { logout } from "../../Redux/reducer/authSlice";
 interface Job {
   id: string;
   title: string;
@@ -20,7 +25,9 @@ interface Job {
 }
 const DashboardSummary: React.FC = () => {
   const token = useSelector((state: any) => state.auth.token);
-  const [visibleJobs, setVisibleJobs] = useState(6);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+    const [visibleJobs, setVisibleJobs] = useState(6);
   const [dashboardData, setDashboardData] = useState({
     jobCount: 0,
     top_companies: [],
@@ -48,7 +55,14 @@ const DashboardSummary: React.FC = () => {
       } else {
         setError("Failed to fetch dashboard data.");
       }
-    } catch (err) {
+    } catch (err:any) {
+      console.log("error candidateDashboard",err);
+      if(err.response.status ===401){
+        dispatch(clearUserData());
+        dispatch(logout());
+        navigate("/login-employee");
+        toast.error(err.response.data.message);
+      }
       setError("Error occurred while fetching data.");
     } finally {
       setLoading(false);
@@ -84,9 +98,11 @@ const DashboardSummary: React.FC = () => {
     return <Loader />;
   }
 
+
   if (error) {
     return <div>Error: {error}</div>;
   }
+
   // console.log("dashboardData", dashboardData);
 
   const handleShowMore = () => {

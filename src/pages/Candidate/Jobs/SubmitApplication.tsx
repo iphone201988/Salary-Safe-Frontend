@@ -6,7 +6,11 @@ import { useSelector } from "react-redux";
 import Loader from "../../../components/Loader/Loader";
 import { submittedApplication } from "../../../API/apis";
 import { getOptionText, jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { clearUserData } from "../../../Redux/reducer/userData";
+import { logout } from "../../../Redux/reducer/authSlice";
 
 
 interface Application {
@@ -28,6 +32,8 @@ const SubmittedApplicationsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [_error, setError] = useState<any>("");
   const token = useSelector((state: any) => state.auth.token);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function getData(): Promise<any> {
     setLoading(true);
@@ -60,6 +66,13 @@ const SubmittedApplicationsPage: React.FC = () => {
         setApplications([]);
       }
     } catch (error: any) {
+      console.log("error submittedApplication",error);
+      if(error.response.status ===401){
+        dispatch(clearUserData());
+        dispatch(logout());
+        navigate("/login-employee");
+      toast.error(error.response.data.message);
+        }
       setError(error.response?.data?.message || error.message);
       setLoading(false);
     } finally {
