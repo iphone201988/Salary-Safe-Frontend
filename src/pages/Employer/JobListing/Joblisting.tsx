@@ -98,7 +98,7 @@ const JobListings = () => {
         schedule: jobDetails.schedule,
         status: jobDetails.status,
         vacancy: jobDetails.vacancy,
-        views: jobDetails.views,
+        // views: jobDetails.views,
       };
       await apiCall("post", createJobs, data);
       fetchJobs();
@@ -133,7 +133,7 @@ const JobListings = () => {
         schedule: rowData?.schedule,
         status: rowData?.status,
         vacancy: rowData?.vacancy,
-        views: rowData?.views,
+        // views: rowData?.views,
       };
       await apiCall("patch", ` ${createJobs}${rowData?.id}`, data);
       fetchJobs();

@@ -16,7 +16,6 @@ type Job = {
   id?: string;
   schedule: string;
   vacancy: number;
-  views: number;
   status: string;
   salary_min?: string;
   salary_max?: string;
@@ -42,7 +41,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
   setModelopen,
   title,
 }) => {
-  console.log("data?.salaryRange:::", data);
+  // console.log("data?.salaryRange:::", data);
   const jobTypes = [
     { value: "fulltime", label: "Full-time" },
     { value: "parttime", label: "Part-time" },
@@ -159,7 +158,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
             </select>
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block mb-1">Views</label>
             <input
               type="number"
@@ -170,7 +169,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
               placeholder="e.g. 1"
               className="w-full border border-gray-300 rounded-lg p-2"
             />
-          </div>
+          </div> */}
 
           <div className="mb-4">
             <label className="block mb-1">Requirements</label>
@@ -201,8 +200,8 @@ const JobsModal: React.FC<JobsModalProps> = ({
               <span>${data?.salaryRange[0]}</span>
               <Range
                 values={[...data?.salaryRange!]
-                  .map((val) => Number(val)) // Ensure all values are numbers
-                  .sort((a, b) => a - b)} // Sort in ascending order
+                  .map((val) => Number(val))
+                  .sort((a, b) => a - b)}
                 step={5000}
                 min={30000}
                 max={200000}
@@ -211,11 +210,11 @@ const JobsModal: React.FC<JobsModalProps> = ({
                   const [min, max] = [30000, 200000];
                   let rangeStart;
                   let rangeEnd;
-                  if(data?.salaryRange){
+                  if (data?.salaryRange) {
                     rangeStart =
-                     ((data?.salaryRange[0] - min) / (max - min)) * 100;
+                      ((data?.salaryRange[0] - min) / (max - min)) * 100;
                     rangeEnd =
-                     ((data?.salaryRange[1] - min) / (max - min)) * 100;
+                      ((data?.salaryRange[1] - min) / (max - min)) * 100;
                   }
 
                   return (

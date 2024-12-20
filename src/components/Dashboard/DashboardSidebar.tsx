@@ -106,7 +106,7 @@ const DashboardSidebar: React.FC = () => {
               <span>Job Listing</span>
             </Link>
           )}
-          {role === "employeer" && (
+          {/* {role === "employeer" && (
             <Link
               to={`/${role}/dashboard/internal-uploads`}
               className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
@@ -114,8 +114,8 @@ const DashboardSidebar: React.FC = () => {
               <FaUpload />
               <span>Salary Upload</span>
             </Link>
-          )}
-          {role === "employeer" && (
+          )} */}
+          {/* {role === "employeer" && (
             <Link
               to={`/${role}/dashboard/candidate-pool`}
               className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
@@ -123,8 +123,8 @@ const DashboardSidebar: React.FC = () => {
               <FaUsers />
               <span>Candidate Pool</span>
             </Link>
-          )}
-          {role === "employeer" && (
+          )} */}
+          {/* {role === "employeer" && (
             <Link
               to={`/${role}/dashboard/salary-analysis`}
               className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
@@ -132,8 +132,8 @@ const DashboardSidebar: React.FC = () => {
               <FaChartBar />
               <span>Salary Analysis</span>
             </Link>
-          )}
-          {role === "employeer" && (
+          )} */}
+          {/* {role === "employeer" && (
             <Link
               to={`/${role}/dashboard/reporting-insights-hub`}
               className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
@@ -141,23 +141,23 @@ const DashboardSidebar: React.FC = () => {
               <FaInfoCircle />
               <span>Reporting InsightsHub</span>
             </Link>
-          )}
+          )} */}
 
-          <Link
+          {/* <Link
             to={`/${role}/dashboard/reports`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaFileAlt />
             <span>Salary Reports</span>
-          </Link>
+          </Link> */}
 
-          <Link
+          {/* <Link
             to={`/${role}/dashboard/analytics`}
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
             <FaChartLine />
             <span>Analytics</span>
-          </Link>
+          </Link> */}
 
           <Link
             to={`/${role}/dashboard/settings`}

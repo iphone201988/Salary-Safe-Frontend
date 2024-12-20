@@ -1,14 +1,24 @@
-
-
-const CandidateDetailModal = ({ data, setModal }: { data: any; setModal: (state: boolean) => void }) => {
-  console.log("data",data)
+const CandidateDetailModal = ({
+  data,
+  setModal,
+}: {
+  data: any;
+  setModal: (state: boolean) => void;
+}) => {
   const { candidate_details, job_details, status, salary_expectation } = data;
+  console.log(
+    "data::::::::",
+    data,
+    candidate_details.total_years_of_experience
+  );
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 p-6">
+      <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 p-6 h-[95%] overflow-auto">
         <div className="flex justify-between items-center border-b pb-4 mb-4">
-          <h2 className="text-2xl font-semibold text-gray-800">Candidate Details</h2>
+          <h2 className="text-2xl font-bold text-gray-800 text-center w-full">
+            Candidate Details
+          </h2>
           <button
             className="text-gray-600 hover:text-gray-800 text-2xl"
             onClick={() => setModal(false)}
@@ -20,7 +30,9 @@ const CandidateDetailModal = ({ data, setModal }: { data: any; setModal: (state:
         <div className="space-y-6">
           {/* Candidate Information */}
           <div>
-            <h3 className="text-xl font-medium text-gray-800">Candidate Information</h3>
+            <h3 className="text-xl font-bold text-gray-800">
+              Candidate Information
+            </h3>
             <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <p>
                 <strong>Name:</strong> {candidate_details.full_name}
@@ -41,7 +53,8 @@ const CandidateDetailModal = ({ data, setModal }: { data: any; setModal: (state:
                 <strong>Location:</strong> {candidate_details.location}
               </p>
               <p>
-                <strong>Current Job Title:</strong> {candidate_details.current_job_title}
+                <strong>Current Job Title:</strong>{" "}
+                {candidate_details.current_job_title}
               </p>
               <p>
                 <strong>LinkedIn:</strong>{" "}
@@ -55,7 +68,10 @@ const CandidateDetailModal = ({ data, setModal }: { data: any; setModal: (state:
                 </a>
               </p>
               <p>
-                <strong>Total Experience:</strong> {candidate_details.total_years_of_experience}{" "}
+                <strong>Total Experience:</strong>{" "}
+                {candidate_details.total_years_of_experience
+                  ? candidate_details.total_years_of_experience
+                  : 0}{" "}
                 years
               </p>
               <p>
@@ -66,8 +82,10 @@ const CandidateDetailModal = ({ data, setModal }: { data: any; setModal: (state:
 
           {/* Job Details */}
           <div>
-            <h3 className="text-xl font-medium text-gray-800">Job Applied For</h3>
-            <div className="mt-2">
+            <h3 className="text-xl font-medium text-gray-800">
+              Job Applied For:
+            </h3>
+            <div className="mt-2 space-y-3">
               <p>
                 <strong>Title:</strong> {job_details.title}
               </p>
@@ -78,18 +96,20 @@ const CandidateDetailModal = ({ data, setModal }: { data: any; setModal: (state:
                 <strong>Description:</strong> {job_details.description}
               </p>
               <p>
-                <strong>Salary Range:</strong> {job_details.salary_min} - {job_details.salary_max}
+                <strong>Salary Range:</strong> {job_details.salary_min} -{" "}
+                {job_details.salary_max}
               </p>
               <p>
                 <strong>Requirements:</strong> {job_details.requirements}
               </p>
               <p>
-                <strong>Type:</strong> {job_details.job_type}
+                <strong>Type:</strong>
+                <span className="capitalize"> {job_details.job_type}</span>
               </p>
               <p>
                 <strong>Status:</strong>{" "}
                 <span
-                  className={`${
+                  className={`capitalize ${
                     job_details.status === "active"
                       ? "text-green-500"
                       : "text-red-500"
@@ -103,11 +123,13 @@ const CandidateDetailModal = ({ data, setModal }: { data: any; setModal: (state:
 
           {/* Application Status */}
           <div>
-            <h3 className="text-xl font-medium text-gray-800">Application Details</h3>
+            <h3 className="text-xl font-medium text-gray-800">
+              Application Details:
+            </h3>
             <p>
               <strong>Status:</strong>{" "}
               <span
-                className={`${
+                className={`capitalize ${
                   status === "pending"
                     ? "text-yellow-500"
                     : status === "approved"

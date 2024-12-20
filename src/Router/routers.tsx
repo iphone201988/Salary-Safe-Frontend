@@ -17,7 +17,7 @@ import RequestDemoPage from "../pages/Public-Page/RequestDemo/RequestDemoPage";
 import Dashboard from "../pages/Employer/Dashboard/Dashboard";
 import CandidateDashboard from "../pages/Candidate/Dashboard/Dashboard";
 import DashboardSummary from "../components/Dashboard/DashboardSummary";
-import DashboardCharts from "../components/Dashboard/DashboardCharts";
+// import DashboardCharts from "../components/Dashboard/DashboardCharts";
 import DashboardSettings from "../components/Dashboard/DashboardSettings";
 import EmployeeDashboardSummary from "../components/EmployeeDashboard/DashboardSummary";
 import EmployeeDashboardSettings from "../components/EmployeeDashboard/DashboardSettings";
@@ -33,10 +33,10 @@ import ProtectedCandidateRoute from "./ProtectedCandidateRoute";
 import JobSalaryAdjustments from "../pages/Candidate/Jobs/JobSalaryAdjustments";
 import SupportFeedback from "../pages/Public-Page/Feedback/SupportFeedback";
 import JobListings from "../pages/Employer/JobListing/Joblisting";
-import InternalSalaryUpload from "../pages/Employer/Internal-upload/InternalUpload";
-import CandidatePoolDashboard from "../pages/Employer/CandidatePool/CandidatePool";
-import SalaryAnalysis from "../pages/Employer/Salary-Analysis/SalaryAnalysis";
-import ReportingInsightsHub from "../pages/Employer/Reporting-InsightsHub/ReportingInsightsHub";
+// import InternalSalaryUpload from "../pages/Employer/Internal-upload/InternalUpload";
+// import CandidatePoolDashboard from "../pages/Employer/CandidatePool/CandidatePool";
+// import SalaryAnalysis from "../pages/Employer/Salary-Analysis/SalaryAnalysis";
+// import ReportingInsightsHub from "../pages/Employer/Reporting-InsightsHub/ReportingInsightsHub";
 import JobMatchingPage from "../pages/Candidate/Jobs/Jobs";
 import SubmittedApplicationsPage from "../pages/Candidate/Jobs/SubmitApplication";
 import SelectAuth from "../components/Common/SelectAuth";
@@ -204,10 +204,10 @@ const router = createBrowserRouter([
         path: "employeer",
         element: <ProtectedCompanyRoute element={<Dashboard />} />,
       },
-      {
-        path: "reports",
-        element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
-      },
+      // {
+      //   path: "reports",
+      //   element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
+      // },
       {
         path: "job-listing",
         element: <ProtectedCompanyRoute element={<JobListings />} />,
@@ -216,26 +216,26 @@ const router = createBrowserRouter([
         path: "job-listing/:id",
         element: <ProtectedCompanyRoute element={<ApplicationByJobIdPage />} />,
       },
-      {
-        path: "internal-uploads",
-        element: <ProtectedCompanyRoute element={<InternalSalaryUpload />} />,
-      },
-      {
-        path: "candidate-pool",
-        element: <ProtectedCompanyRoute element={<CandidatePoolDashboard />} />,
-      },
-      {
-        path: "salary-analysis",
-        element: <ProtectedCompanyRoute element={<SalaryAnalysis />} />,
-      },
-      {
-        path: "reporting-insights-hub",
-        element: <ProtectedCompanyRoute element={<ReportingInsightsHub />} />,
-      },
-      {
-        path: "analytics",
-        element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
-      },
+      // {
+      //   path: "internal-uploads",
+      //   element: <ProtectedCompanyRoute element={<InternalSalaryUpload />} />,
+      // },
+      // {
+      //   path: "candidate-pool",
+      //   element: <ProtectedCompanyRoute element={<CandidatePoolDashboard />} />,
+      // },
+      // {
+      //   path: "salary-analysis",
+      //   element: <ProtectedCompanyRoute element={<SalaryAnalysis />} />,
+      // },
+      // {
+      //   path: "reporting-insights-hub",
+      //   element: <ProtectedCompanyRoute element={<ReportingInsightsHub />} />,
+      // },
+      // {
+      //   path: "analytics",
+      //   element: <ProtectedCompanyRoute element={<DashboardCharts />} />,
+      // },
       // {
       //   path: "settings",
       //   element: <ProtectedCompanyRoute element={<DashboardProfileSetting />} />,

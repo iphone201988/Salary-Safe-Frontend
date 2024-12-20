@@ -27,6 +27,8 @@ import { FaUserEdit } from "react-icons/fa";
 import { RiFileEditLine } from "react-icons/ri";
 import useApiCall from "../../API/function";
 import { /* candidateUpdate, */ clientUpdate } from "../../API/apis";
+import { setemployeerDetails } from "../../Redux/reducer/userData";
+import { useDispatch } from "react-redux";
 
 const DashboardSettings: React.FC = () => {
   const { employeerDetails } = useSelector((state: RootState) => state.user);
@@ -106,6 +108,8 @@ const DashboardSettings: React.FC = () => {
     referralCode: "",
     avatar: employeerDetails?.avatar ? employeerDetails?.avatar : null,
   });
+
+  const dispatch = useDispatch();
 
   const { apiCall } = useApiCall();
 
@@ -198,8 +202,18 @@ const DashboardSettings: React.FC = () => {
       // Handle file uploads
       if (profileImage) formDataInstance.append("avatar", formData.avatar);
 
-      await apiCall("patch", `${clientUpdate}`, formDataInstance);
-      // window.location.reload();
+      const response = await apiCall(
+        "patch",
+        `${clientUpdate}`,
+        formDataInstance
+      );
+
+      if (response) {
+        dispatch(setemployeerDetails(response));
+      }
+
+      console.log("response:::::", response);
+      window.location.reload();
     } catch (error) {}
   };
 
@@ -236,7 +250,7 @@ const DashboardSettings: React.FC = () => {
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
               const file = e.target.files[0];
-              const url:any = URL.createObjectURL(file);
+              const url: any = URL.createObjectURL(file);
               setProfileImage(url);
               setFormData({ ...formData, avatar: file });
             }

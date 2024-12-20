@@ -39,8 +39,8 @@ interface candidateDetails {
   referral_code?: string;
   terms_accepted?: boolean;
   id?: string;
-  profileImage?:any|null
-  notificationPreferences?:any|string[]
+  profileImage?: any | null;
+  notificationPreferences?: any | string[];
 }
 interface UserState {
   employeerDetails?: EmployeerDetails;
@@ -61,7 +61,7 @@ const userDataSlice = createSlice({
       state.employeerDetails = undefined;
     },
     setemployeerDetails: (state, action: PayloadAction<EmployeerDetails>) => {
-      state.employeerDetails = action.payload;
+      state.employeerDetails = { ...state.employeerDetails, ...action.payload };
     },
     setemployeDetails: (state, action: PayloadAction<candidateDetails>) => {
       state.employeDetails = action.payload;
