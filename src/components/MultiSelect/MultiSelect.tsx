@@ -27,7 +27,7 @@ const MultiSelectComponent: React.FC<MultiSelectComponentProps> = ({
   // view=false,
   isDisabled
 }) => {
-  console.log("on change",value);
+  // console.log("on change",value);
   return (
     <>
       <div className="w-full flex flex-col space-y-1">

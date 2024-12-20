@@ -169,18 +169,27 @@ const DashboardSettings: React.FC = () => {
       );
 
       // Handle other fields
-      formDataInstance.append("dashboard_metrics", formData.keyMetrics.value);
+      formDataInstance.append(
+        "dashboard_metrics",
+        Array.isArray(formData.keyMetrics)
+          ? formData.keyMetrics[0].value
+          : formData.keyMetrics.value
+      );
       formDataInstance.append(
         "role_specific_customization",
         formData.roleCustomization
       );
       formDataInstance.append(
         "salary_benchmarking_preference",
-        formData.salaryBenchmarking.value
+        Array.isArray(formData.salaryBenchmarking)
+          ? formData.salaryBenchmarking[0].value
+          : formData.salaryBenchmarking.value
       );
       formDataInstance.append(
         "candidate_viewing_preferences",
-        formData.candidateViewingPreferences.value
+        Array.isArray(formData.candidateViewingPreferences)
+          ? formData.candidateViewingPreferences[0].value
+          : formData.candidateViewingPreferences.value
       );
       formDataInstance.append("offer_optimization", formData.offerOptimization);
       formDataInstance.append(
@@ -213,7 +222,7 @@ const DashboardSettings: React.FC = () => {
       }
 
       console.log("response:::::", response);
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {}
   };
 
