@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaChartPie,
-  FaFileAlt,
-  FaChartLine,
+  // FaFileAlt,
+  // FaChartLine,
   FaCog,
   FaLock,
   FaUserCircle,
   FaBars,
   FaBriefcase,
-  FaUpload,
-  FaUsers,
-  FaChartBar,
-  FaInfoCircle,
+  // FaUpload,
+  // FaUsers,
+  // FaChartBar,
+  // FaInfoCircle,
 } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import axios from "axios";

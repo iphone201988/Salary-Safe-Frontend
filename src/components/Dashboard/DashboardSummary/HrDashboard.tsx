@@ -5,8 +5,9 @@ import BarChart from "../../Charts/BarChart";
 import PieChart from "../../Charts/PieChart";
 import LineChart from "../../Charts/LineChart";
 import CardShowDashboard from "./CardShowDashboard";
-import HistoryOfRoles from "./HistoryRoles";
+// import HistoryOfRoles from "./HistoryRoles";
 import HorizontalBarChart from "../../Charts/HorizontalBarChart";
+import Loader from "../../Loader/Loader";
 interface CandidateDashboardData {
   candidate_views: CandidateView[];
   role_performance: RolePerformance[];
@@ -89,15 +90,15 @@ const HrDashboard: React.FC = () => {
     fetchDashboardData();
   }, []);
 
-  if (loading)
-    return (
-      <div className="text-center text-lg font-semibold p-6">Loading...</div>
-    );
+
   if (error)
     return <div className="text-center text-red-500 text-lg p-6">{error}</div>;
 
   return (
     <div className="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen">
+      {loading&&(
+        <Loader/>
+      )}
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-gray-200">
         Employer Dashboard
       </h1>

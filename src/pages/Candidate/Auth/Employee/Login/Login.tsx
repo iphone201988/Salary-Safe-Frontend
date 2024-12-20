@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import InputField from "../../../../../components/InputField/InputField";
 import {
   employeeLoginSchema,
@@ -16,6 +16,7 @@ import { login } from "../../../../../Redux/reducer/authSlice";
 import { useDispatch } from "react-redux";
 import { GrFormView, GrFormViewHide } from "react-icons/gr";
 import { setIndustryOption, setlocationOption, setskillOption } from "../../../../../Redux/reducer/optionApiSlice";
+import { generateToken } from "../../../../../../firebase";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
@@ -140,6 +141,9 @@ const EmployeeLogin = () => {
       
     }
   };
+  useEffect(()=>{
+    generateToken();
+  },[]);
 console.log("loading",loading)
   return (
     <div className="flex justify-center items-center min-h-screen">

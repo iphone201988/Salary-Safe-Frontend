@@ -1,5 +1,5 @@
 // export default CompanyLogin;
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import InputField from "../../../../components/InputField/InputField";
 import { companyLoginSchema, validateForm } from "../../../../Schema/Schemas";
 import Button from "../../../../components/Button/Button";
@@ -13,6 +13,7 @@ import Loader from "../../../../components/Loader/Loader";
 import { useDispatch } from "react-redux";
 // import { setUserData } from "../../../../Redux/reducer/userData";
 import { login } from "../../../../Redux/reducer/authSlice";
+import { generateToken } from "../../../../../firebase"
 
 const CompanyLogin = () => {
   const [formData, setFormData] = useState({
@@ -124,7 +125,9 @@ const CompanyLogin = () => {
       setIsSubmitting(false);
     }
   };
-
+  useEffect(()=>{
+    generateToken();
+  },[]);
   return (
     <div className="flex justify-center items-center min-h-screen">
       {loading && <Loader />}

@@ -4,8 +4,10 @@ import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./Redux/store.tsx";
+import useNotification from "./hooks/useNotification.ts";
 
 const App = () => {
+  useNotification();
   return (
     <>
       <Provider store={store}>
