@@ -1,136 +1,252 @@
-import React from "react";
-// import EmployeesChart from "./EmployeesChart";
-import SalaryChart from "./SalaryChart";
-import EmployeeContractType from "./EmployeeContractType";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import BarChart from "../../Charts/BarChart";
+import PieChart from "../../Charts/PieChart";
+import LineChart from "../../Charts/LineChart";
 import CardShowDashboard from "./CardShowDashboard";
-import PieChart from "./PieChart";
-// import HiredVsLeftChart from "./HiredVsLeftChart";
-import CandidateTable from "./CandidateRecommdation";
 import HistoryOfRoles from "./HistoryRoles";
-interface CandidateRecommendation {
-  name: string;
-  range: string;
-  recommendation: string;
+import HorizontalBarChart from "../../Charts/HorizontalBarChart";
+interface CandidateDashboardData {
+  candidate_views: CandidateView[];
+  role_performance: RolePerformance[];
+  salary_competitiveness: SalaryCompetitiveness[];
+  budget_impact: BudgetImpact[];
+  application_conversion_rate: ApplicationConversionRate[];
+  top_performing_roles: TopPerformingRole[];
+  engagement_data: EngagementData;
+  job_trends: JobTrend[];
 }
-const candidateData: CandidateRecommendation[] = [
-  { name: "John Doe", range: "$50,000 - $60,000", recommendation: "$55,000" },
-  { name: "Jane Smith", range: "$70,000 - $80,000", recommendation: "$75,000" },
-  {
-    name: "Alice Johnson",
-    range: "$90,000 - $100,000",
-    recommendation: "$95,000",
-  },
-];
+
+interface CandidateView {
+  title: string;
+  views: number;
+}
+
+interface RolePerformance {
+  role: string;
+  applications: number;
+}
+
+interface SalaryCompetitiveness {
+  title: string;
+  competitiveness: string; // Assuming competitiveness is a percentage in string format
+}
+
+interface BudgetImpact {
+  title: string;
+  avg_salary: string;
+}
+
+interface ApplicationConversionRate {
+  title: string;
+  conversion_rate: number;
+}
+
+interface TopPerformingRole {
+  role: string;
+  applications: number;
+}
+
+interface EngagementData {
+  total_views: number;
+  total_applications: number;
+  avg_salary_expectation: string;
+  total_jobs_posted: number;
+}
+
+interface JobTrend {
+  month: string;
+  job_count: number;
+}
+
 const HrDashboard: React.FC = () => {
+  const [clientDashboard, setClientDashboard] =
+    useState<CandidateDashboardData>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const token = useSelector((state: any) => state.auth.token);
+
+  async function fetchDashboardData() {
+    try {
+      const response = await axios.get(
+        "https://salarysafe.ai/api/v1/clients/dashboard/metrics",
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setClientDashboard(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to fetch dashboard data.");
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  if (loading)
+    return (
+      <div className="text-center text-lg font-semibold p-6">Loading...</div>
+    );
+  if (error)
+    return <div className="text-center text-red-500 text-lg p-6">{error}</div>;
+
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold text-center mb-4">
+    <div className="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen">
+      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-gray-200">
         Employer Dashboard
       </h1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-        <CardShowDashboard title="Job Title" data="Developer" />
-        <CardShowDashboard title="Employment Type" data="Full-Time" />
-        <CardShowDashboard
-          title="Date"
-          data={new Date().toISOString().split("T")[0]}
-        />
-        <CardShowDashboard title="Location and currency" data="Mohali,punjab" />
-        <CardShowDashboard title="Your Salary Range" data="$500000" />
-      </div>
-      <div className="grid lg:grid-cols-2 gap-4">
-        <PieChart
-          labels={["Man", "Women"]}
-          dataValues={[6000000, 4000000]}
-          title={"Actual Salaries (Average by gender)"}
-        />
-         <EmployeeContractType
-          labels={[
-            "Health Insurance",
-            "Paid Time Off",
-            "Stock Options",
-            "Retirement Plan",
-            "Pick Drop taxi",
-          ]}
-          datasets={[
-            {
-              label: "Non-salary Benefits",
-              data: [10, 10, 10, 10, 10],
-              backgroundColor: [
-                "#4CAF50",
-                "#FF9800",
-                "#2196F3",
-                "#2224f5",
-                "#1186l3",
-              ],
-            },
-          ]}
-          title="Non-salary Benefits"
-        />
-        <SalaryChart
-          labels={["Jan", "Feb", "Mar", "Apr", "May", "Jun"]}
-          datasets={[
-            {
-              label: "Man Salary (in thousands)",
-              data: [300, 320, 330, 340, 360, 380],
-              fill: false,
-              borderColor: "rgba(75, 192, 192, 1)",
-              tension: 0.1,
-            },
-            {
-              label: "Women Salary (in thousands)",
-              data: [200, 205, 230, 230, 260, 380],
-              fill: false,
-              borderColor: "rgba(275, 192, 192, 1)",
-              tension: 0.1,
-            },
-          ]}
-          title="Market Salary Range"
-        />
-       
-        {/* <EmployeesChart />
-        <HiredVsLeftChart /> */}
+
+      {/* Overview Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {clientDashboard?.engagement_data && (
+          <>
+            <CardShowDashboard
+              title="Total Jobs Posted"
+              data={clientDashboard.engagement_data.total_jobs_posted}
+            />
+            <CardShowDashboard
+              title="Total Applications"
+              data={clientDashboard.engagement_data.total_applications}
+            />
+            <CardShowDashboard
+              title="Total Job Views"
+              data={clientDashboard.engagement_data.total_views}
+            />
+            <CardShowDashboard
+              title="Average Salary Expectation"
+              data={`$${
+                clientDashboard.engagement_data.avg_salary_expectation.split(
+                  "."
+                )[0]
+              }`}
+            />
+          </>
+        )}
       </div>
 
-      <div className="p-6 rounded-lg shadow-md mt-10 border bg-white">
-        <h2 className="text-xl font-semibold mb-4 text-center">
-          Candidate Recommendations
-        </h2>
-        <div className="overflow-x-auto border ">
-          <CandidateTable data={candidateData} />
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-4 shadow rounded-lg">
+          <BarChart
+            labels={
+              clientDashboard?.candidate_views.map((view) => view.title) || []
+            }
+            datasets={[
+              {
+                label: "Candidate Views",
+                data:
+                  clientDashboard?.candidate_views.map((view) => view.views) ||
+                  [],
+                backgroundColor: "rgba(75, 192, 192, 0.6)",
+              },
+            ]}
+            title="Candidate Views"
+          />
+        </div>
+        <div className="bg-white dark:bg-gray-800 p-4 shadow rounded-lg">
+          <PieChart
+            labels={
+              clientDashboard?.role_performance.map((role) => role.role) || []
+            }
+            dataValues={
+              clientDashboard?.role_performance.map(
+                (role) => role.applications
+              ) || []
+            }
+            backgroundColors={["#FF6384", "#36A2EB", "#FFCE56"]}
+            title="Role Performance (Applications)"
+          />
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 border mt-10">
-        <SalaryChart
-          labels={["2017-2018", "2018-2019", "2019-2020", "2020-2021", "2021-2022", "2022-2023","2023-2024"]}
-          datasets={[
-            {
-              label: " Node js(People Using)",
-              data: [300, 320, 330, 340, 360, 380, 500],
-              fill: false,
-              borderColor: "rgba(75, 192, 192, 1)",
-              tension: 0.1,
-            },
-            {
-              label: "Python(People Using)",
-              data: [200, 205, 230, 235, 260, 380,400],
-              fill: false,
-              borderColor: "rgba(275, 192, 192, 1)",
-              tension: 0.1,
-            },
-            {
-              label: "Java(People Using)",
-              data: [100, 200, 230, 250, 300, 350, 380],
-              fill: false,
-              borderColor: "rgba(275, 192, 275, 1)",
-              tension: 0.1,
-            },
-          ]}
-          title="Trends and Analysis"
-        />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 p-4 shadow rounded-lg">
+          <LineChart
+            labels={
+              clientDashboard?.application_conversion_rate.map(
+                (item) => item.title
+              ) || []
+            }
+            datasets={[
+              {
+                label: "Conversion Rate (%)",
+                data:
+                  clientDashboard?.application_conversion_rate.map(
+                    (item) => item.conversion_rate
+                  ) || [],
+                borderColor: "rgba(54, 162, 235, 1)",
+              },
+            ]}
+            title="Application Conversion Rate"
+          />
+        </div>
+        <div className="bg-white dark:bg-gray-800 p-4 shadow rounded-lg">
+          <LineChart
+            labels={
+              clientDashboard?.job_trends.map((trend) => trend.month) || []
+            }
+            datasets={[
+              {
+                label: "Jobs Posted",
+                data:
+                  clientDashboard?.job_trends.map((trend) => trend.job_count) ||
+                  [],
+                borderColor: "rgba(75, 192, 192, 1)",
+              },
+            ]}
+            title="Job Trends Over Time"
+          />
+        </div>
       </div>
-    <div className="mt-10">
-      <HistoryOfRoles/>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 p-4 shadow rounded-lg">
+          <HorizontalBarChart
+            labels={
+              clientDashboard?.top_performing_roles.map((role) => role.role) ||
+              []
+            }
+            datasets={[
+              {
+                label: "Applications",
+                data:
+                  clientDashboard?.top_performing_roles.map(
+                    (role) => role.applications
+                  ) || [],
+                backgroundColor: "rgba(153, 102, 255, 0.6)",
+              },
+            ]}
+            title="Top Performing Roles"
+          />
+        </div>
+        <div className="bg-white dark:bg-gray-800 p-4 shadow rounded-lg">
+          <LineChart
+            labels={
+              clientDashboard?.salary_competitiveness.map((trend) => trend.title) || []
+            }
+            datasets={[
+              {
+                label: "Competitive(%)",
+                data:
+                  clientDashboard?.salary_competitiveness.map((trend) => Number(trend.competitiveness)) ||
+                  [],
+                borderColor: "rgba(5, 19, 192, 1)",
+              },
+            ]}
+            title="Salary Competitiveness"
+          />
       </div>
+      </div>
+
+      {/* History Section */}
+      {/* <div className="bg-white dark:bg-gray-800 p-6 shadow rounded-lg">
+        <HistoryOfRoles />
+      </div> */}
     </div>
   );
 };

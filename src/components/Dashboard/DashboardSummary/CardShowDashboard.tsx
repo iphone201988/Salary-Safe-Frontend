@@ -3,7 +3,7 @@ import { FaArrowUp, FaArrowDown } from 'react-icons/fa';  // Import icons
 
 interface TotalSalaryProps {
   title: string;
-  data: string;
+  data: string | number;
   percentage?: string | undefined;
 }
 
@@ -12,8 +12,8 @@ const CardShowDashboard: React.FC<TotalSalaryProps> = ({ title, data, percentage
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-center">
-      <h2 className="text-lg font-medium">{title}</h2>
-      <p className="text-2xl font-[800]">{data}</p>
+      <h2 className="text-lg font-[800]">{title}</h2>
+      <p className="text-2xl font-[500]">{data}</p>
 
       {percentage && (
         <span className="text-sm text-gray-500">

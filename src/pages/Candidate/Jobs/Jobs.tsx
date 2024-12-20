@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { clearUserData } from "../../../Redux/reducer/userData";
 import { logout } from "../../../Redux/reducer/authSlice";
 interface SearchJob {
-  job_title: string;
+  title: string;
   job_type: string;
   company_name: string;
   workplace_type: string;
@@ -46,7 +46,7 @@ interface Job {
 
 const JobMatchingPage: React.FC = () => {
   const [searchJob, setSearchJob] = useState<SearchJob>({
-    job_title: '',
+    title: '',
     job_type: '',
     company_name: '',
     workplace_type: '',
@@ -56,7 +56,6 @@ const JobMatchingPage: React.FC = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const token = useSelector((state: any) => state.auth.token);
   const [loading, setLoading] = useState(false);
-  const [tokenExpire, setTokenExpire] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();  //get data from api
@@ -232,8 +231,8 @@ const JobMatchingPage: React.FC = () => {
           <input
             type="text"
             placeholder="Job Title"
-            name="job_title"
-            value={searchJob?.job_title}
+            name="title"
+            value={searchJob?.title}
             onChange={handleSearchChange}
             className="border rounded p-2 col-span-1"
           />
