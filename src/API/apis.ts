@@ -1,5 +1,5 @@
 const url =
-  import.meta.env.VITE_BACKEND_URL ||"https://salarysafe.onrender.com/api/v1";
+  import.meta.env.VITE_BACKEND_URL || "https://salarysafe.onrender.com/api/v1";
 
 // Company Onboarding
 
@@ -19,15 +19,17 @@ export const candidateRegister = url + "/candidates/register";
 export const candidateLogin = url + "/candidates/login";
 export const getClientJobs = url + "/jobs/me";
 export const createJobs = url + "/jobs/";
-export const companyDetails = url + "/clients/me"
-export const getSearchJobsToCandiDate = url + "/jobs/filters/search"
-export const getJobsToCandiDate = url + "/jobs/me/matches"
-export const getJobsByIdToCandiDate = url + "/jobs"
-export const applyJob = url + "/jobs/id/apply"
-export const submittedApplication = url + "/jobs/applications/me"
-export const submittedApplicationById = url + "/jobs/applications"
-export const candidateDashboard = url + "/jobs/filters/insights"
-export const getAllCandidateApplyOnJob = url + "/jobs/:job_id/applications"
+export const companyDetails = url + "/clients/me";
+export const getSearchJobsToCandiDate = url + "/jobs/filters/search";
+export const getJobsToCandiDate = url + "/jobs/me/matches";
+export const getJobsByIdToCandiDate = url + "/jobs";
+export const applyJob = url + "/jobs/id/apply";
+export const submittedApplication = url + "/jobs/applications/me";
+export const submittedApplicationById = url + "/jobs/applications";
+export const candidateDashboard = url + "/jobs/filters/insights";
+export const getAllCandidateApplyOnJob = url + "/jobs/:job_id/applications";
+export const getSalaryRecommendations =
+  url + "/jobs/:job_id/salary-recommendation";
 
 //Employeer register
 export const employeerRegister = url + "/clients/register";

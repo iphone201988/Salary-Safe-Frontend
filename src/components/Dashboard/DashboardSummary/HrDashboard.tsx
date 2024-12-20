@@ -228,20 +228,23 @@ const HrDashboard: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 p-4 shadow rounded-lg">
           <LineChart
             labels={
-              clientDashboard?.salary_competitiveness.map((trend) => trend.title) || []
+              clientDashboard?.salary_competitiveness.map(
+                (trend) => trend.title
+              ) || []
             }
             datasets={[
               {
                 label: "Competitive(%)",
                 data:
-                  clientDashboard?.salary_competitiveness.map((trend) => Number(trend.competitiveness)) ||
-                  [],
+                  clientDashboard?.salary_competitiveness.map((trend) =>
+                    Number(trend.competitiveness)
+                  ) || [],
                 borderColor: "rgba(5, 19, 192, 1)",
               },
             ]}
             title="Salary Competitiveness"
           />
-      </div>
+        </div>
       </div>
 
       {/* History Section */}
