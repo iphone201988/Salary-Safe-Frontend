@@ -213,7 +213,7 @@ const DashboardSettings: React.FC = () => {
       }
 
       console.log("response:::::", response);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {}
   };
 

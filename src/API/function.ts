@@ -38,7 +38,7 @@ const useApiCall = () => {
         toast.error(err.response.data.message);
       }
       setError(err.message || "An error occurred");
-      throw err;
+      // throw err;
     } finally {
       setLoading(false);
     }
