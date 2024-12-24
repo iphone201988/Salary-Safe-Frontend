@@ -8,13 +8,15 @@ import Button from "../../Register/Button/Button";
 import Input from "../../Register/Input/Input";
 import MultiSelectComponent from "../MultiSelect/Multi";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setemployeDetails } from "../../../Redux/reducer/userData";
+import * as Yup from 'yup';
+import { useState } from "react";
 
 const ABoutSalary = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [errors, setErrors] = useState<any>({});
 
   const token = useSelector((state: any) => state.auth.token);
   const { employeDetails } = useSelector((state: any) => state.user);
@@ -29,6 +31,25 @@ const ABoutSalary = () => {
     );
   };
 
+  const salaryValidationSchema = Yup.object({
+    general_salary_range: Yup.string().required("Salary Range is required"),
+    minimum_acceptable_salary: Yup.number().required("Minimum acceptable salary is required"),
+    preferred_benefits: Yup.array().min(1, "At least one preferred benefit is required").required("Preferred benefits are required"),
+    view_salary_expectations: Yup.string().required("Salary expectation is required"),
+  //   open_to_performance_based_compensation: Yup.boolean()
+  //   .required("Please indicate whether you're open to performance-based compensation."),
+  
+  // willing_to_negociate: Yup.boolean()
+  //   .required("Please specify if you're willing to negotiate terms."),
+  
+  // hide_profile_from_current_employer: Yup.boolean()
+  //   .required("Indicate if you'd like to hide your profile from your current employer."),
+  
+  preferred_salary_type: Yup.string()
+    .required("Please select your preferred salary type.")
+    .oneOf(["Hourly", "Monthly"], "Invalid salary type. Choose from 'Hourly', 'Monthly'.")
+  });
+
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
     dispatch(
       setemployeDetails({ ...employeDetails, [field]: selectedOptions })
@@ -36,49 +57,32 @@ const ABoutSalary = () => {
   };
 
   const handleSubmit = async () => {
-    
-    const formData = new FormData();
-    formData.append(
-      "general_salary_range",
-      employeDetails?.general_salary_range || ""
-    );
-    formData.append(
-      "minimum_acceptable_salary",
-      employeDetails?.minimum_acceptable_salary || ""
-    );
-
-    // employeDetails?.preferred_benefits?.forEach((benefit: any, index: number) => {
-    //   formData.append(`preferred_benefits[${index}]`, benefit?.value || "");
-    // });
-
-    formData.append(`preferred_benefits`,JSON.stringify(
-      employeDetails?.preferred_benefits?.map((data: any) => {
-        return data?.value;
-      })
-    ));
-
-    formData.append(
-      "view_salary_expectations",
-      employeDetails?.view_salary_expectations?.value || ""
-    );
-    formData.append(
-      "open_to_performance_based_compensation",
-      employeDetails?.open_to_performance_based_compensation || ""
-    );
-    formData.append(
-      "willing_to_negociate",
-      employeDetails?.willing_to_negociate || ""
-    );
-    formData.append(
-      "hide_profile_from_current_employer",
-      employeDetails?.hide_profile_from_current_employer || ""
-    );
-    formData.append(
-      "preferred_salary_type",
-      employeDetails?.preferred_salary_type?.value || ""
-    );
-
     try {
+      await salaryValidationSchema.validate({
+        general_salary_range: employeDetails?.general_salary_range,
+        minimum_acceptable_salary: employeDetails?.minimum_acceptable_salary,
+        preferred_benefits: employeDetails?.preferred_benefits?.map((data: any) => data?.value) || [],
+        // view_salary_expectations: employeDetails?.view_salary_expectations?.value || "",
+        // open_to_performance_based_compensation: employeDetails?.open_to_performance_based_compensation || false,
+        // willing_to_negociate: employeDetails?.willing_to_negociate || false,
+        // hide_profile_from_current_employer: employeDetails?.hide_profile_from_current_employer || false,
+        preferred_salary_type: employeDetails?.preferred_salary_type?.value || "",
+      }, { abortEarly: false });
+
+      // Create formData to send to the backend
+      const formData = new FormData();
+      formData.append("general_salary_range", employeDetails?.general_salary_range || "");
+      formData.append("minimum_acceptable_salary", employeDetails?.minimum_acceptable_salary || "");
+      formData.append("preferred_benefits", JSON.stringify(
+        employeDetails?.preferred_benefits?.map((data: any) => data?.value) || []
+      ));
+      formData.append("view_salary_expectations", employeDetails?.view_salary_expectations?.value || "");
+      formData.append("open_to_performance_based_compensation", employeDetails?.open_to_performance_based_compensation || false);
+      formData.append("willing_to_negociate", employeDetails?.willing_to_negociate || false);
+      formData.append("hide_profile_from_current_employer", employeDetails?.hide_profile_from_current_employer || false);
+      formData.append("preferred_salary_type", employeDetails?.preferred_salary_type?.value || "");
+
+      // Submit the form data using axios
       await axios.patch(
         "https://salarysafe.ai/api/v1/candidates/me",
         formData,
@@ -89,14 +93,27 @@ const ABoutSalary = () => {
           },
         }
       );
+
+      // Navigate to the next page upon success
       navigate("/profile/job-search");
-    } catch (error) {
-      console.error("Error updating candidate details:", error);
+    } catch (error:any) {
+      if (error instanceof Yup.ValidationError) {
+              const newErrors: any = {};
+              error.inner.forEach((err: any) => {
+                newErrors[err.path] = err.message;
+              });
+              setErrors(newErrors);
+              console.log("error",error);
+            } else {
+              console.error("Error submitting form:", error);
+        }
     }
   };
+
+  console.log("errors",errors);
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
-      <Button
+      {/* <Button
         text="Skip"
         type="button"
         color="green"
@@ -104,7 +121,7 @@ const ABoutSalary = () => {
         size="md"
         className="mt-4 text-center bg-black absolute right-3 top-0"
         onClick={() => navigate("/profile/job-search")}
-      />
+      /> */}
 
       <div className="w-full lg:w-[350px] flex flex-col justify-center items-center">
         <div className="flex flex-col justify-center items-center h-full mb-6 lg:mb-0 rounded-lg">

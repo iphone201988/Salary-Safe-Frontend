@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setemployeDetails } from "../../../Redux/reducer/userData";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import * as Yup from "yup";
+import { validateForm } from "../../../Schema/Schemas";
 
 const JobSearch = () => {
   const navigate = useNavigate();
@@ -20,6 +22,23 @@ const JobSearch = () => {
   const [industry, setIndustry] = useState<any>([]);
   const [options, setOptions] = useState<Location[]>([]);
   const [selectedIndustry, setSelectedIndustry] = useState<any>([]);
+  const [errors, setErrors] = useState<any>({});
+
+  const jobSearchValidationSchema = Yup.object({
+    industries_of_interest: Yup.string().required(
+      "Job Titles of Interest is required"
+    ),
+    role_specific_salary_adjustments: Yup.string().required(
+      "Role Specific Salary Adjustments is required"
+    ),
+    career_goals: Yup.string().required("Career goal is required"),
+    professional_development_areas: Yup.array()
+      .min(1, "At least one professional development area is required")
+      .required("Professional Development Areas are required"),
+    job_type_preferences: Yup.array()
+      .min(1, "At least one job type preference is required")
+      .required("Job Type Preferences are required"),
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -38,6 +57,21 @@ const JobSearch = () => {
   };
 
   const handleSubmit = async () => {
+    const formattedErrors = await validateForm(jobSearchValidationSchema, {
+      industries_of_interest: employeDetails?.industries_of_interest,
+      role_specific_salary_adjustments:
+        employeDetails?.role_specific_salary_adjustments,
+      career_goals: employeDetails?.career_goals,
+      professional_development_areas:
+        employeDetails?.professional_development_areas,
+      job_type_preferences: employeDetails?.job_type_preferences,
+    });
+    console.log(formattedErrors);
+    if (formattedErrors) {
+      setErrors(formattedErrors);
+      return;
+    }
+
     const formData = new FormData();
 
     // employeDetails?.industries_of_interest?.forEach(
@@ -114,7 +148,17 @@ const JobSearch = () => {
       );
       navigate("/profile/additional-detail");
     } catch (error) {
-      console.error("Error updating candidate details:", error);
+      console.log("error::::", error);
+      if (error instanceof Yup.ValidationError) {
+        const newErrors: any = {};
+        error.inner.forEach((err: any) => {
+          newErrors[err.path] = err.message;
+        });
+        setErrors(newErrors);
+        console.log("error", error);
+      } else {
+        console.error("Error submitting form:", error);
+      }
     }
   };
 
@@ -153,7 +197,7 @@ const JobSearch = () => {
   }, [industry]);
 
   useEffect(() => {
-    console.log('selectedIndustry before dispatch:', selectedIndustry);
+    console.log("selectedIndustry before dispatch:", selectedIndustry);
     if (selectedIndustry.length) {
       dispatch(
         setemployeDetails({
@@ -166,7 +210,8 @@ const JobSearch = () => {
 
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
-      <Button
+      
+      {/* <Button
         text="Skip"
         type="button"
         color="green"
@@ -174,7 +219,7 @@ const JobSearch = () => {
         size="md"
         className="mt-4 text-center bg-black absolute right-3 top-0"
         onClick={() => navigate("/profile/additional-detail")}
-      />
+      /> */}
 
       <div className="w-full flex flex-col justify-center items-center">
         <div className="flex flex-col justify-center items-center h-full mb-6 lg:mb-0 rounded-lg">
@@ -206,11 +251,16 @@ const JobSearch = () => {
               <div className="selected-locations flex flex-wrap gap-2 mb-2">
                 <input
                   type="text"
-                  placeholder="search industry"
+                  placeholder="Search Industry"
                   value={industry}
                   onChange={handleSearch}
                   className="border w-full rounded-[8px] outline-none border-gray-600 text-[14px] px-2 py-1"
                 />
+                {errors.industries_of_interest && (
+                  <span className=" text-red-600 text-sm font-bold">
+                    {errors.industries_of_interest}
+                  </span>
+                )}
                 {selectedIndustry.map((location: any) => (
                   <div
                     key={location.id}
@@ -252,6 +302,7 @@ const JobSearch = () => {
               onChange={(selected) =>
                 handleMultiSelectChange("job_type_preferences", selected)
               }
+              error={errors?.job_type_preferences}
             />
             <div className="flex items-center space-x-2 mt-2">
               <input
@@ -284,10 +335,11 @@ const JobSearch = () => {
             <Input
               label="Career Goals:"
               name="career_goals"
-              placeholder="enter career goal here"
+              placeholder="Enter career goal here"
               type="text"
               value={employeDetails?.career_goals}
               onChange={handleChange}
+              errorMessage={errors?.career_goals}
             />
 
             <MultiSelectComponent
@@ -301,6 +353,7 @@ const JobSearch = () => {
                   selected
                 )
               }
+              error={errors?.professional_development_areas}
             />
             <Input
               label="Role-Specific Salary Adjustments"
@@ -308,6 +361,7 @@ const JobSearch = () => {
               placeholder="Enter Role-Specific Salary Adjustments"
               value={employeDetails?.role_specific_salary_adjustments}
               onChange={handleChange}
+              errorMessage={errors?.role_specific_salary_adjustments}
             />
           </div>
         </div>

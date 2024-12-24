@@ -61,7 +61,7 @@
 
 // export default Input;
 
-import { useState, ChangeEvent, FocusEvent } from "react";
+import { ChangeEvent, FocusEvent } from "react";
 
 interface InputProps {
   label?: string;
@@ -81,16 +81,15 @@ const Input = ({
   placeholder = "",
   name,
   required = true,
-  errorMessage = "",
+  errorMessage,
   value,
   onChange,
   onBlur, // Allow onBlur to be passed in for custom handling
 }: InputProps) => {
-  const [isTouched, setIsTouched] = useState(false);
+  // const [isTouched, setIsTouched] = useState(false);
 
-  // Handle blur event
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-    setIsTouched(true);
+    // setIsTouched(true);
     if (onBlur) onBlur(e); // Call the passed onBlur handler (if any)
   };
 
@@ -116,8 +115,8 @@ const Input = ({
           placeholder={placeholder}
         />
       </div>
-      {isTouched && errorMessage && (
-        <div className="text-red-600 font-[500] text-[14px] mt-1">
+      {errorMessage && (
+        <div className="text-red-600 text-[14px] mt-1 font-bold">
           {errorMessage}
         </div>
       )}

@@ -1,5 +1,18 @@
 // import { CandidateProfileType } from "../../../types";
+import { useEffect, useState } from "react";
 import InputField from "../../InputField/InputField";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setemployeDetails } from "../../../Redux/reducer/userData";
+// import axios from "axios";
+import LocationSearch from "../../LocationSearch";
+
+interface Location {
+  id: string;
+  city: string;
+  country: string;
+  location_multiplier: number;
+}
 
 const CandidateProfile = ({
   formData,
@@ -8,6 +21,24 @@ const CandidateProfile = ({
   handleChange,
   edit
 }: any) => {
+  const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
+  const dispatch = useDispatch();
+  const { employeDetails } = useSelector((state: any) => state.user);
+
+
+    useEffect(() => {
+      if (selectedLocations) {
+        dispatch(
+          setemployeDetails({
+            ...employeDetails,
+            location_multiplier:selectedLocations[0]?.location_multiplier,
+            location: `${selectedLocations[0]?.city === undefined ? "":selectedLocations[0]?.city} ${selectedLocations[0] ? ",":" "} ${selectedLocations[0]?.country === undefined ? "":selectedLocations[0]?.country}`,
+          })
+        );
+      }
+    }, [selectedLocations]);
+  
+
   return (
     <fieldset className="border border-black p-4 rounded-md">
       <legend>Personal Information</legend>
@@ -34,7 +65,6 @@ const CandidateProfile = ({
               onChange={handleChange}
               error={errors.phone_number}
               view ={edit}
-
             />
           </div>
         </div>
@@ -52,16 +82,16 @@ const CandidateProfile = ({
             />
           </div>
           <div className="w-full">
-            <InputField
-              label="Location"
-              name="location"
-              placeholder="City, State/Region, Country"
-              value={formData.location}
-              onChange={handleChange}
-              error={errors.location}
-              view ={edit}
-
+            <div className="w-full p-1">
+            <div className="mt-1 font-[400] text-[16px]">Location :</div>
+            <LocationSearch
+              placeholder="Search locations..."
+              apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
+              onSelectionChange={(locations) => setSelectedLocations(locations)}
+              selectMode="single"
+              edit={edit}
             />
+          </div>
           </div>
         </div>
         <div className="flex w-full space-x-2">

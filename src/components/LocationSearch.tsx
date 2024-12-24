@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { RootState } from "../Redux/store";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 interface Location {
   id: string;
@@ -10,9 +13,10 @@ interface Location {
 
 interface LocationSearchProps {
   placeholder?: string;
-  apiEndpoint?: string|any;
+  apiEndpoint?: string | any;
   onSelectionChange?: (selectedLocations: Location[]) => void;
   selectMode: "single" | "multiple"; // New prop for select mode
+  edit?: boolean;
 }
 
 const LocationSearch: React.FC<LocationSearchProps> = ({
@@ -20,10 +24,23 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
   apiEndpoint,
   onSelectionChange,
   selectMode,
+  edit = false,
 }) => {
+  const { employeDetails } = useSelector((state: RootState) => state.user);
   const [options, setOptions] = useState<Location[]>([]);
-  const [selectedLocations, setSelectedLocations] = useState<Location[]>(
-    selectMode === "multiple" ? [] : []
+  const location = useLocation();
+  const isLoginPage = location.pathname.includes("signup-employee");
+
+  let city;
+  let country;
+  if(!isLoginPage){
+     [city, country] = employeDetails?.location !== "" && employeDetails?.location?.split(",").map((item) => item.trim());
+  }
+  
+  const formattedArray: any = [{ city: city, country: country }];
+
+  const [selectedLocations, setSelectedLocations] = useState<any[]>(
+    selectMode === "multiple" ? [] : isLoginPage ? []: formattedArray
   );
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -47,7 +64,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       const response = await axios.get(apiEndpoint, {
         params: { query },
         headers: {
-          "X-API-KEY" : "47f38e90f9994df85c962cc384e728b137bcd722db2a96c79b94a6723606bf9d",
+          "X-API-KEY":
+            "47f38e90f9994df85c962cc384e728b137bcd722db2a96c79b94a6723606bf9d",
         },
       });
       setOptions(response.data);
@@ -75,14 +93,14 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       if (!selectedLocations.some((selected) => selected.id === location.id)) {
         const updatedSelectedLocations = [...selectedLocations, location];
         setSelectedLocations(updatedSelectedLocations);
-        if(onSelectionChange){
+        if (onSelectionChange) {
           onSelectionChange(updatedSelectedLocations); // Notify parent
         }
       }
     } else {
       // For single select, replace selected location
       setSelectedLocations([location]);
-      if(onSelectionChange){
+      if (onSelectionChange) {
         onSelectionChange([location]); // Notify parent
       }
     }
@@ -96,33 +114,37 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
       (location) => location.id !== locationId
     );
     setSelectedLocations(updatedSelectedLocations);
-    if(onSelectionChange){
+    if (onSelectionChange) {
       onSelectionChange(updatedSelectedLocations); // Notify parent
     }
   };
 
   return (
-    <div className="location-search bg-white ">
-      <div className="selected-locations flex flex-wrap gap-2 mb-2">
-         <input
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        placeholder={placeholder}
-        className="border w-full rounded-[8px] outline-none border-gray-600 text-[14px] px-2 py-1"
-      />
+    <div className="location-search bg-white w-full">
+      <div className="selected-locations flex w-full flex-wrap gap-2 mb-2">
+        {edit == false && (
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            className="border w-full rounded-[8px] outline-none border-gray-600 text-[14px] px-2 py-1"
+          />
+        )}
         {selectedLocations.map((location) => (
           <div
             key={location.id}
-            className="flex items-center text-black px-2 py-1 rounded"
+            className="flex items-center bg-gray-300 text-black px-2 py-1 rounded"
           >
             {`${location.city}, ${location.country}`}
-            <button
-              onClick={() => handleRemoveLocation(location.id)}
-              className="ml-2 text-red-500"
-            >
-              &times;
-            </button>
+            {edit == false && (
+              <button
+                onClick={() => handleRemoveLocation(location.id)}
+                className="ml-2 text-red-500"
+              >
+                &times;
+              </button>
+            )}
           </div>
         ))}
       </div>

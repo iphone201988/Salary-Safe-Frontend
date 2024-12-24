@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from '../Redux/store';
 
@@ -11,9 +11,9 @@ const ProtectedAuthRoute = ({ element }: { element: JSX.Element }) => {
   }
 
   if (role === "candidate") {
-    return <Navigate to="/candidate/dashboard" replace />;
+    // return <Navigate to="/candidate/dashboard" replace />;
   } else {
-    return <Navigate to="/employeer/dashboard" replace />;
+    // return <Navigate to="/employeer/dashboard" replace />;
   }
 };
 

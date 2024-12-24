@@ -184,6 +184,7 @@ export const validateForm = async (
   data: any
 ) => {
   try {
+    console.log("data::::::::",data)
     await schema.validate(data, {
       abortEarly: false,
     });

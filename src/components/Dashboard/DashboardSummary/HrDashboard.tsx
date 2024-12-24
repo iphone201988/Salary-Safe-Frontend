@@ -109,23 +109,23 @@ const HrDashboard: React.FC = () => {
           <>
             <CardShowDashboard
               title="Total Jobs Posted"
-              data={clientDashboard.engagement_data.total_jobs_posted}
+              data={clientDashboard?.engagement_data?.total_jobs_posted}
             />
             <CardShowDashboard
               title="Total Applications"
-              data={clientDashboard.engagement_data.total_applications}
+              data={clientDashboard?.engagement_data?.total_applications}
             />
             <CardShowDashboard
               title="Total Job Views"
-              data={clientDashboard.engagement_data.total_views}
+              data={clientDashboard?.engagement_data?.total_views}
             />
             <CardShowDashboard
               title="Average Salary Expectation"
               data={`$${
-                clientDashboard.engagement_data.avg_salary_expectation.split(
-                  "."
-                )[0]
-              }`}
+                typeof clientDashboard?.engagement_data?.avg_salary_expectation === "string"
+                  ? clientDashboard?.engagement_data?.avg_salary_expectation.split(".")[0]
+                  : " N/A"
+              }`}              
             />
           </>
         )}

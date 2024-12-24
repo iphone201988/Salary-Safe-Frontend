@@ -211,9 +211,7 @@ const DashboardSettings: React.FC = () => {
       if (response) {
         dispatch(setemployeerDetails(response));
       }
-
-      console.log("response:::::", response);
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {}
   };
 

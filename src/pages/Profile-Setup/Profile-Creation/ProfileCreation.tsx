@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  educationLevelOptions,
-  experienceOptions,
-} from "../../Candidate/Auth/Employee/SignUp/options";
+import { educationLevelOptions, experienceOptions } from "../../Candidate/Auth/Employee/SignUp/options";
 import Button from "../../Register/Button/Button";
 import Input from "../../Register/Input/Input";
 import MultiSelectComponent from "../MultiSelect/Multi";
@@ -11,6 +8,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setemployeDetails } from "../../../Redux/reducer/userData";
 import { RxCross2 } from "react-icons/rx";
+import * as Yup from 'yup';
 
 const ProfileCreation = () => {
   const navigate = useNavigate();
@@ -20,13 +18,19 @@ const ProfileCreation = () => {
   const [selectedSkill, setSelectedSkill] = useState("");
   const [selectedProficiency, setSelectedProficiency] = useState<any>("");
   const [options, setOptions] = useState<any>([]);
-  const [skillsList, setSkillsList] = useState<
-    { name: string; proficiency: string }[]
-  >(employeDetails?.key_skills);
+  const [skillsList, setSkillsList] = useState<{ name: string; proficiency: string }[]>(employeDetails?.key_skills || []);
   const [showAll, setShowAll] = useState(false);
+  const [errors, setErrors] = useState<any>({}); 
   const displayedSkills = showAll ? skillsList : skillsList?.slice(0, 5);
   const value = ["1", "2", "3", "4", "5"];
   const token = useSelector((state: any) => state.auth.token);
+
+  const skillValidationSchema = Yup.object({
+    job_titles_of_interest: Yup.string().required("Job Titles of Interest is required"),
+    total_years_of_experience: Yup.string().required("Total Years of Experience is required"),
+    education_level: Yup.string().required("Education Level is required"),
+    key_skills: Yup.array().min(1, "At least one skill is required").required("Key skills are required")
+  });
 
   useEffect(() => {
     setSkillsList(employeDetails?.key_skills || []);
@@ -83,22 +87,30 @@ const ProfileCreation = () => {
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("key_skills", JSON.stringify(skillsList));
-    formData.append(
-      "total_years_of_experience",
-      employeDetails?.total_years_of_experience?.value || ""
-    );
-    formData.append(
-      "education_level",
-      employeDetails?.education_level?.value || ""
-    );
-    formData.append(
-      "job_titles_of_interest",
-      employeDetails?.job_titles_of_interest || ""
-    );
-
     try {
+      await skillValidationSchema.validate({
+        job_titles_of_interest: employeDetails?.job_titles_of_interest,
+        total_years_of_experience: employeDetails?.total_years_of_experience?.value || "",
+        education_level: employeDetails?.education_level?.value || "",
+        key_skills: skillsList,
+      }, { abortEarly: false });
+
+
+      const formData = new FormData();
+      formData.append("key_skills", JSON.stringify(skillsList));
+      formData.append(
+        "total_years_of_experience",
+        employeDetails?.total_years_of_experience?.value || ""
+      );
+      formData.append(
+        "education_level",
+        employeDetails?.education_level?.value || ""
+      );
+      formData.append(
+        "job_titles_of_interest",
+        employeDetails?.job_titles_of_interest || ""
+      );
+
       await axios.patch(
         "https://salarysafe.ai/api/v1/candidates/me",
         formData,
@@ -111,9 +123,21 @@ const ProfileCreation = () => {
       );
       navigate("/profile/about-salary");
     } catch (error) {
-      console.error("Error updating candidate details:", error);
+      if (error instanceof Yup.ValidationError) {
+        const newErrors: any = {};
+        error.inner.forEach((err: any) => {
+          newErrors[err.path] = err.message;
+        });
+        setErrors(newErrors);
+        console.log("error",error);
+      } else {
+        console.error("Error submitting form:", error);
+      }
     }
   };
+
+  console.log("error state",errors);
+  
 
   const handleSearchSkill = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -135,19 +159,8 @@ const ProfileCreation = () => {
     }
   };
 
-  console.log("option:::::::::", options);
-
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
-      <Button
-        text="Skip"
-        type="button"
-        color="green"
-        textColor="white"
-        size="md"
-        className="mt-4 text-center bg-black absolute right-3 top-0"
-        onClick={() => navigate("/profile/about-salary")}
-      />
 
       <div className="w-full lg:w-[350px] flex flex-col justify-center items-center">
         <div className="flex flex-col justify-center items-center h-full mb-6 lg:mb-0 rounded-lg">
@@ -169,6 +182,7 @@ const ProfileCreation = () => {
               name="job_titles_of_interest"
               value={employeDetails?.job_titles_of_interest}
               onChange={handleChange}
+              errorMessage={errors?.job_titles_of_interest}
             />
             <MultiSelectComponent
               isMulti={false}
@@ -178,6 +192,7 @@ const ProfileCreation = () => {
               onChange={(selected) =>
                 handleMultiSelectChange("total_years_of_experience", selected)
               }
+              error={errors?.job_titles_of_experience}
             />
             <MultiSelectComponent
               isMulti={false}
@@ -187,6 +202,7 @@ const ProfileCreation = () => {
               onChange={(selected) =>
                 handleMultiSelectChange("education_level", selected)
               }
+              error={errors?.education_level}
             />
           </div>
 
@@ -221,6 +237,14 @@ const ProfileCreation = () => {
                 </li>
               ))}
             </div>
+
+            {
+              errors?.key_skills && (
+                <div className="text-red-500 text-[14px] mt-2">
+                  {errors.key_skills}
+                </div>
+              )
+            }
 
             <div className="w-full flex gap-2 m-2">
               {value.map((item, index) => (
@@ -295,3 +319,4 @@ const ProfileCreation = () => {
 };
 
 export default ProfileCreation;
+

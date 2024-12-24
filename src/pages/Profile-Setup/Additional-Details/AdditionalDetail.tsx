@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import { setemployeDetails } from "../../../Redux/reducer/userData";
 import axios from "axios";
 import { useState } from "react";
+import * as Yup from "yup";
+import { validateForm } from "../../../Schema/Schemas";
 
 const AdditionalDetail = () => {
   const navigate = useNavigate();
@@ -22,6 +24,19 @@ const AdditionalDetail = () => {
   const [files, setFiles] = useState({
     resume: null,
     coverLetter: null,
+  });
+  const [errors, setErrors] = useState<any>({});
+
+  const additionalDetailsValidationSchema = Yup.object({
+    notification_preferences: Yup.array()
+      .min(1, "At least one notification preference is required")
+      .required("Notification preferences are required"),
+    job_alerts_frequency: Yup.string().required(
+      "Job alert frequency is required"
+    ),
+    referral_source: Yup.string().required("Referral source is required"),
+    resume_upload: Yup.string().required("Resume is required"),
+    cover_letter_upload: Yup.string().required("Cover letter is required"),
   });
 
   const handleFileChange = (
@@ -51,6 +66,21 @@ const AdditionalDetail = () => {
   };
 
   const handleSubmit = async () => {
+    const formattedErrors = await validateForm(
+      additionalDetailsValidationSchema,
+      {
+        notification_preferences: employeDetails?.notification_preferences,
+        job_alerts_frequency: employeDetails?.job_alerts_frequency?.value,
+        referral_source: employeDetails?.referral_source?.value,
+        resume_upload: files?.resume,
+        cover_letter_upload: files?.coverLetter,
+      }
+    );
+    if (formattedErrors) {
+      setErrors(formattedErrors);
+      return;
+    }
+
     const formData = new FormData();
     formData.append(
       "notification_preferences",
@@ -112,6 +142,11 @@ const AdditionalDetail = () => {
                 className="border p-2 w-full rounded"
                 onChange={(e) => handleFileChange(e, "resume")}
               />
+              {errors.resume_upload && (
+                <span className=" text-red-600 text-sm font-bold">
+                  {errors.resume_upload}
+                </span>
+              )}
             </div>
             <div className="w-full flex flex-col space-y-1">
               <label className="text-left">
@@ -124,6 +159,11 @@ const AdditionalDetail = () => {
                 className="border p-2 w-full rounded"
                 onChange={(e) => handleFileChange(e, "coverLetter")}
               />
+              {errors.cover_letter_upload && (
+                <span className=" text-red-600 text-sm font-bold">
+                  {errors.cover_letter_upload}
+                </span>
+              )}
               {/* <div className="flex items-center space-x-2">
                 <input
                   type="checkbox"
@@ -170,6 +210,7 @@ const AdditionalDetail = () => {
                 onChange={(selected) =>
                   handleMultiSelectChange("notification_preferences", selected)
                 }
+                error={errors?.notification_preferences}
               />
             </div>
           </div>
@@ -183,6 +224,7 @@ const AdditionalDetail = () => {
               onChange={(selected) =>
                 handleMultiSelectChange("job_alerts_frequency", selected)
               }
+              error={errors?.job_alerts_frequency}
             />
 
             <MultiSelectComponent
@@ -193,6 +235,7 @@ const AdditionalDetail = () => {
               onChange={(selected) =>
                 handleMultiSelectChange("referral_source", selected)
               }
+              error={errors?.referral_source}
             />
 
             <Input
@@ -201,6 +244,7 @@ const AdditionalDetail = () => {
               placeholder="Enter Referral Code"
               value={employeDetails?.referral_code}
               onChange={handleChange}
+              errorMessage={errors?.referral_code}
             />
           </div>
         </div>

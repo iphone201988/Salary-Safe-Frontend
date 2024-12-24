@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setemployeerDetails } from "../../../Redux/reducer/userData";
 import axios from "axios";
+import * as Yup from "yup";
+import { validateForm } from "../../../Schema/Schemas";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const Details = () => {
   const token = useSelector((state: any) => state.auth.token);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>();
   const handleAddMember = () => {
-    setTeamMembers([...teamMembers||[], { name: "", email: "", role: "" }]);
+    setTeamMembers([...(teamMembers || []), { name: "", email: "", role: "" }]);
   };
 
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
@@ -31,32 +33,51 @@ const Details = () => {
     field: keyof TeamMember,
     value: string
   ) => {
-    const newMembers = [...teamMembers||[]];
+    const newMembers = [...(teamMembers || [])];
     newMembers[index][field] = value;
     setTeamMembers(newMembers);
   };
-  const handleSubmit = async() => {
+
+  const [errors, setErrors] = useState<any>({});
+
+  const detailsValidationSchema = Yup.object({
+    referral_source: Yup.string().required("Referral source is required"),
+  });
+
+  const handleSubmit = async () => {
+    const formattedErrors = await validateForm(detailsValidationSchema, {
+      referral_source: employeerDetails?.referral_source?.value,
+    });
+    if (formattedErrors) {
+      setErrors(formattedErrors);
+      return;
+    }
     const formData = new FormData();
-    formData.append("referral_source",employeerDetails?.referral_source?.value || "");
-    formData.append("referral_code",employeerDetails?.referral_code || "");
+    formData.append(
+      "referral_source",
+      employeerDetails?.referral_source?.value || ""
+    );
+    formData.append("referral_code", employeerDetails?.referral_code || "");
     formData.append("invite_team_member", JSON.stringify(teamMembers));
 
-    await axios.patch("https://salarysafe.ai/api/v1/clients/me", formData,{
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    }).then(response =>{
-      console.log(response);
-      navigate("/employeer/dashboard");
-    }).catch(err =>{
-      console.log(err);
-    });
+    await axios
+      .patch("https://salarysafe.ai/api/v1/clients/me", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        navigate("/employeer/dashboard");
+        // navigate("/profile/hiring-goal");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
-      
-
       <div className="w-full flex flex-col justify-center items-center">
         <div className="flex flex-col justify-center items-center h-full mb-6 lg:mb-0 rounded-lg">
           <img
@@ -71,37 +92,47 @@ const Details = () => {
 
         <div className="flex gap-4">
           <div className="w-[320px] gap-3 flex flex-col">
-          {teamMembers?.length &&teamMembers.map((member:any, index:any) => (
-            <div key={index} className="w-[300px] h-[120px] p-3 flex gap-3 flex-col justify-center items-center bg-white shadow-lg rounded-lg border border-gray-300">
-              <input
-                className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter team member"
-                onChange={(e) => handleInputChange(index, "name", e.target.value)}
-                value={member.name}
-              />
-              <input
-                className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter email"
-                onChange={(e) => handleInputChange(index, "email", e.target.value)}
-                value={member.email}
-              />
-              <div className="flex gap-2">
-                <div className="w-[100px] font-sm text-gray-700">
-                  Select role :
-                </div>
-                <select
-                  className="text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  defaultValue=""
-                  onChange={(e) => handleInputChange(index, "role", e.target.value)}
-                  value={member.role}
+            {teamMembers?.length &&
+              teamMembers.map((member: any, index: any) => (
+                <div
+                  key={index}
+                  className="w-[300px] h-[120px] p-3 flex gap-3 flex-col justify-center items-center bg-white shadow-lg rounded-lg border border-gray-300"
                 >
-                  <option value="">Select role</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Viewer">Viewer</option>
-                </select>
-              </div>
-            </div>
-            ))}
+                  <input
+                    className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter team member"
+                    onChange={(e) =>
+                      handleInputChange(index, "name", e.target.value)
+                    }
+                    value={member.name}
+                  />
+                  <input
+                    className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter email"
+                    onChange={(e) =>
+                      handleInputChange(index, "email", e.target.value)
+                    }
+                    value={member.email}
+                  />
+                  <div className="flex gap-2">
+                    <div className="w-[100px] font-sm text-gray-700">
+                      Select role :
+                    </div>
+                    <select
+                      className="text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      defaultValue=""
+                      onChange={(e) =>
+                        handleInputChange(index, "role", e.target.value)
+                      }
+                      value={member.role}
+                    >
+                      <option value="">Select role</option>
+                      <option value="Admin">Admin</option>
+                      <option value="Viewer">Viewer</option>
+                    </select>
+                  </div>
+                </div>
+              ))}
             <button
               onClick={handleAddMember}
               className="mt-2 text-sm rounded-xl p-2 w-[150px] bg-blue-400"
@@ -119,6 +150,7 @@ const Details = () => {
                 handleMultiSelectChange("referral_source", selected)
               }
               value={employeerDetails.referral_source}
+              error={errors?.referral_source}
             />
 
             <Input
@@ -128,7 +160,10 @@ const Details = () => {
               value={employeerDetails.referral_code}
               onChange={(e) =>
                 dispatch(
-                  setemployeerDetails({ ...employeerDetails, "referral_code": e.target.value })
+                  setemployeerDetails({
+                    ...employeerDetails,
+                    referral_code: e.target.value,
+                  })
                 )
               }
             />

@@ -34,13 +34,14 @@ interface candidateDetails {
   contact_person_name?: string;
   contact_email?: string;
   message_to_employer?: string;
-  job_alerts_frequency?: "instant" | "daily" | "weekly";
+  job_alerts_frequency?: any|string[];
   referral_source?: string;
   referral_code?: string;
   terms_accepted?: boolean;
   id?: string;
   profileImage?: any | null;
-  notificationPreferences?: any | string[];
+  notification_preferences?: any | string[];
+  avatar: any;
 }
 interface UserState {
   employeerDetails?: EmployeerDetails;

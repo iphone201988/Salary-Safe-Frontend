@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { companyDetails } from "../../API/apis";
+import React, { useRef, useState } from "react";
+// import { companyDetails } from "../../API/apis";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import CandidateProfile from "./DashboardSettings/CandidateProfile";
@@ -27,6 +27,12 @@ import SalaryInsight from "./DashboardSettings/SalaryInsight";
 import AdditionalDetails from "./DashboardSettings/AdditionalDetails";
 import EmployerInvitation from "./DashboardSettings/EmployerInvitation";
 import NotificationPreference from "./DashboardSettings/NotificationPreference";
+import { useDispatch } from "react-redux";
+import { setemployeDetails } from "../../Redux/reducer/userData";
+import { toast } from "react-toastify";
+import { RiFileEditLine } from "react-icons/ri";
+import Avatar from "../../assets/avatar.jpg";
+
 
 interface Data {
   email: string;
@@ -41,11 +47,17 @@ interface Data {
 }
 
 const DashboardSettings: React.FC = () => {
-  const [data, setData] = useState<Data | null>(null);
+  const dispatch = useDispatch();
+  const [data, _setData] = useState<Data | null>(null);
   const [errors, _setErrors] = useState<any>({});
   const [edit, setEdit] = useState<boolean>(true);
+  const [profileImage, setProfileImage] = useState(null);
+  
+  const avatarRef = useRef<any>(null);
+
+  const {token} = useSelector((state:RootState)=>state.auth);
   const { employeDetails } = useSelector((state: RootState) => state.user);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     full_name: employeDetails?.full_name || "",
     email: employeDetails?.email || "",
     phone_number: employeDetails?.phone_number || "",
@@ -117,21 +129,22 @@ const DashboardSettings: React.FC = () => {
     resume_upload: employeDetails?.resume_upload || null,
     cover_letter_upload: employeDetails?.cover_letter_upload || null,
     invite_employer: employeDetails?.invite_employer || [],
-    notificationPreferences: employeDetails?.notificationPreferences
+    notificationPreferences: employeDetails?.notification_preferences
       ? getMultiSelectValues(
           notificationPreferencesOptions,
-          employeDetails.notificationPreferences
+          employeDetails.notification_preferences
         )
       : [],
     job_alerts_frequency: employeDetails?.job_alerts_frequency
       ? getMultiSelectValues(
           jobAlertsFrequencyOptions,
-          employeDetails.job_alerts_frequency
+          JSON.parse(employeDetails.job_alerts_frequency)
         )
       : [],
     profileImage: null as File | null,
     interested_in_salary_benchmarks:
       employeDetails?.interested_in_salary_benchmarks,
+    avatar:employeDetails?.avatar
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,80 +155,141 @@ const DashboardSettings: React.FC = () => {
     });
   };
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     setFormData({
-  //       ...formData,
-  //       profileImage: e.target.files[0], // Store the uploaded file
-  //     });
-  //   }
-  // };
 
-  // const handleFetch = async (): Promise<void> => {
-  //   try {
-  //     const response = await axios.get<Data>(getcandidatesProfile, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-  //       },
-  //     });
-  //     setData(response.data);
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       console.error("Error fetching data:", error.message);
-  //     } else {
-  //       console.error("Unexpected error:", error);
-  //     }
-  //   }
-  // };
+  const isValidBinaryFile = (file:any) :void|any => {
+    const validBinaryMimeTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+    return file && validBinaryMimeTypes.includes(file?.type);
+  };
 
-  useEffect(() => {
-    // handleFetch();
-  }, []);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setFormData({
-  //       fullName: data.full_name,
-  //       email: data.email,
-  //       notifications: data.notification_preference,
-  //       phone: data.phone,
-  //       qualifications: data.qualifications || "",
-  //       experience: data.experience || "",
-  //       location: data.location || "",
-  //       salaryExpectation: data.salaryExpectation || "", // Initialize confidential field
-  //       profileImage: null, // Reset profile image field
-  //     });
-  //   }
-  // }, [data]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const formData: any = new FormData();
-
-    // Append each field to FormData, using fallback for potential null values
-    formData.append("fullName", formData.fullName || ""); // Ensures no null
-    formData.append("email", formData.email || ""); // Ensures no null
-    formData.append("phone", formData.phone || ""); // Ensures no null
-    formData.append("qualifications", formData.qualifications || ""); // Ensures no null
-    formData.append("experience", formData.experience || ""); // Ensures no null
-    formData.append("location", formData.location || ""); // Ensures no null
-    formData.append("salaryExpectation", formData.salaryExpectation || ""); // Ensures no null
-
-    // If you're adding an image
-    if (formData.profileImage) {
-      formData.append("profileImage", formData.profileImage);
+    const multipartFormData: any = new FormData();
+    if (formData.full_name) {
+      multipartFormData.append("full_name", formData.full_name);
+  }
+  if (formData.email) {
+      multipartFormData.append("email", formData.email);
+  }
+  if (formData.phone_number) {
+      multipartFormData.append("phone_number", formData.phone_number);
+  }
+  if (employeDetails?.location) {
+      multipartFormData.append("location", employeDetails.location);
+  }
+  if (formData.current_job_title) {
+      multipartFormData.append("current_job_title", formData.current_job_title);
+  }
+  if (formData.linkedin_profile_url) {
+      multipartFormData.append("current_company", formData.linkedin_profile_url);
+  }
+  if (formData.job_titles_of_interest) {
+      multipartFormData.append("job_titles_of_interest", formData.job_titles_of_interest);
+  }
+  if (formData.total_years_of_experience?.value) {
+      multipartFormData.append("total_years_of_experience", formData.total_years_of_experience.value);
+  }
+  if (formData.education_level?.value) {
+      multipartFormData.append("education_level", formData.education_level.value);
+  }
+  if (employeDetails?.key_skills) {
+      multipartFormData.append("key_skills", JSON.stringify(employeDetails.key_skills));
+  }
+  if (formData.general_salary_range) {
+      multipartFormData.append("general_salary_range", formData.general_salary_range);
+  }
+  if (formData.preferred_salary_type?.value) {
+      multipartFormData.append("preferred_salary_type", formData.preferred_salary_type.value);
+  }
+  if (formData.open_to_performance_based_compensation) {
+      multipartFormData.append("open_to_performance_based_compensation", formData.open_to_performance_based_compensation);
+  }
+  if (formData.willing_to_negociate) {
+      multipartFormData.append("willing_to_negotiate", formData.willing_to_negociate);
+  }
+  if (formData.minimum_acceptable_salary) {
+      multipartFormData.append("minimum_acceptable_salary", formData.minimum_acceptable_salary);
+  }
+  if (formData.preferred_benefits) {
+      multipartFormData.append("preferred_benefits",JSON.stringify(formData.preferred_benefits.map((data:any) => data.value)));
+  }
+  if (formData.view_salary_expectations?.value) {
+      multipartFormData.append("view_salary_expectations", formData.view_salary_expectations.value);
+  }
+  if (formData.hide_profile_from_current_employer) {
+      multipartFormData.append("hide_profile_from_current_employer", formData.hide_profile_from_current_employer);
+  }
+  if (employeDetails?.industries_of_interest) {
+      multipartFormData.append("industries_of_interest", JSON.stringify(employeDetails.industries_of_interest));
+  }
+  if (formData.job_alerts_frequency.length > 0) {
+      multipartFormData.append("job_alerts_frequency", JSON.stringify(formData.job_alerts_frequency.map((data:any) => data.value)));
+  }
+  if (formData.job_type_preferences) {
+      multipartFormData.append("job_type_preferences", JSON.stringify(formData.job_type_preferences.map((data:any) => data.value)));
+  }
+  if (formData.actively_looking_for_new_job) {
+      multipartFormData.append("actively_looking_for_new_job", formData.actively_looking_for_new_job);
+  }
+  if (formData.career_goals) {
+      multipartFormData.append("career_goals", formData.career_goals);
+  }
+  if (formData.professional_development_areas) {
+      multipartFormData.append("professional_development_areas", JSON.stringify(formData.professional_development_areas.map((data:any) => data.value)));
+  }
+  if (formData.role_specific_salary_adjustments) {
+      multipartFormData.append("role_specific_salary_adjustments", formData.role_specific_salary_adjustments);
+  }
+  if (formData.invite_employer.length > 0 ) {
+      multipartFormData.append("invite_employer", JSON.stringify(formData.invite_employer));
+  }
+  if (formData.notificationPreferences.length > 0) {
+      multipartFormData.append("notification_preferences", JSON.stringify(formData.notificationPreferences.map((data:any) => data.value)));
+  }
+  if (formData.interested_in_salary_benchmarks) {
+      multipartFormData.append("interested_in_salary_benchmarks", formData.interested_in_salary_benchmarks);
+  }
+  if (formData.resume_upload) {
+    const resumeFile = formData.resume_upload;
+    if (isValidBinaryFile(resumeFile)) {
+      multipartFormData.append("resume_upload", resumeFile);
     }
+  }
 
+  if (formData.cover_letter_upload) {
+    const coverLetterFile = formData.cover_letter_upload;
+    if (isValidBinaryFile(coverLetterFile)) {
+      multipartFormData.append("cover_letter_upload", coverLetterFile);
+  }  
+}  
+
+if (profileImage) multipartFormData.append("avatar", formData.avatar);
+
+  if (formData.avatar) {
+    const Avatar = formData.avatar;
+    if (isValidBinaryFile(Avatar)) {
+      multipartFormData.append(" avatar", formData.avatar);
+  }  
+}  
     try {
-      const response = await axios.patch(companyDetails, formData, {
+      const response = await axios.patch("https://salarysafe.ai/api/v1/candidates/me", multipartFormData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          Authorization: `Bearer ${token}`,
+          // "Content-Type": "application/json",
+           // Ensure correct header for FormData
           "Content-Type": "multipart/form-data", // Ensure correct header for FormData
         },
       });
-      setData(response.data);
-      console.log("Data updated:", response.data);
+      if(response){
+        dispatch(setemployeDetails(response.data));
+        // window.location.reload();
+        setEdit(!edit);
+        toast.success("Profile updated successfully!");
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error updating data:", error.message);
@@ -225,9 +299,49 @@ const DashboardSettings: React.FC = () => {
     }
   };
 
+  console.log("dddcdc",formData?.job_type_preferences);
+  
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="relative">
+      <div className="relative flex justify-center">
+          {!edit && <RiFileEditLine className="absolute bottom-0 ml-[45px]" />}
+          <img
+            src={
+              profileImage
+                ? profileImage
+                : formData.avatar
+                ? import.meta.env.VITE_BACKEND_URL + "/" + formData.avatar
+                : Avatar
+            }
+            alt="user-profile"
+            className="w-20 h-20 border-2 border-black rounded-full object-cover"
+            onClick={() => {
+              if (!edit && avatarRef.current) avatarRef.current.click();
+            }}
+            onError={(e) => {
+              e.currentTarget.src = Avatar;
+            }}
+          />
+        </div>
+
+        <input
+          type="file"
+          ref={avatarRef}
+          name="avatar"
+          id="avatar"
+          className="hidden"
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              const file = e.target.files[0];
+              const url: any = URL.createObjectURL(file);
+              setProfileImage(url);
+              setFormData({ ...formData, avatar: file });
+            }
+          }}
+          accept="image/png, image/jpeg"
+        />
         <h3 className="text-4xl font-bold my-4 text-center">
           Candidate Profile
         </h3>

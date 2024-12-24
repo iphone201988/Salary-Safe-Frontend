@@ -12,12 +12,14 @@ import { setemployeDetails } from "../../Redux/reducer/userData";
 import { useSelector } from "react-redux";
 import LocationSearch from "../../components/LocationSearch";
 
+
 interface Location {
   id: string;
   city: string;
   country: string;
   location_multiplier: number;
 }
+
 export const Register = () => {
   const navigate = useNavigate();
   const { employeDetails } = useSelector((state: any) => state.user);
@@ -143,9 +145,7 @@ export const Register = () => {
       );
     }
   }, [selectedLocations]);
- 
-  console.log("Error :::::",errors);
-  
+
   return (
     <div className="w-[750px] px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       <div className="w-full lg:w-[300px] flex flex-col justify-center items-center h-full mb-6 lg:mb-0 lg:mr-4 p-4 rounded-lg">
@@ -208,8 +208,11 @@ export const Register = () => {
             onBlur={handleBlur}
             errorMessage={errors.phone_number}
           />
-          <div className="w-[300px] p-1">
-            <div className="text-[12px] mt-1 font-semibold">Location</div>
+          <div className="w-[300px] p-1 relative">
+            <div className="relative w-fit">
+            <div className="text-[12px] mt-1 font-semibold mr-2">Location</div>
+            <div className="absolute text-red-600 text-[13px] right-0 top-0 ml-6">*</div>
+            </div>
             <LocationSearch
               placeholder="Search locations..."
               apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
@@ -257,6 +260,7 @@ export const Register = () => {
             name="linkedin_profile_url"
             onChange={handleChange}
             onBlur={handleBlur}
+            required={false}
             errorMessage={errors.linkedin_profile_url}
           />
 
@@ -298,6 +302,7 @@ export const Register = () => {
             textColor="white"
             size="md"
             className="mt-4 text-center bg-[#050708]"
+            disabled={!employeDetails?.terms_accepted}
           />
         </form>
       </div>

@@ -111,7 +111,7 @@ const SalaryExpection = ({
 
           <div className="w-full">
             <MultiSelectComponent
-              isMulti={false}
+              isMulti={true}
               label="Preferred Benefits"
               value={formData.preferred_benefits}
               options={benefitsOptions}

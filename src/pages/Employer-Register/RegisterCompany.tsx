@@ -57,12 +57,14 @@ export const RegisterCompany = () => {
             },
           });
           if (response.status === 200) {
-            toast.success("Registration successful!");
             dispatch(
               login({ token: response?.data?.access_token, role: "employeer" })
             );
+            console.log("coming here");
             navigate("/profile/hiring-goal");
-            // navigate("/login-company");
+            console.log("gone from here");
+            toast.success("Registration successful!");
+            // navigate("/employeer/dashboard");
           }
         } catch (err) {
           toast.error("Registration failed. Please try again.");
@@ -109,11 +111,10 @@ export const RegisterCompany = () => {
           Employer Register Profile
         </h4>
 
-        <div className="w-full">
+        <div className="w-full flex flex-col items-center">
           <Input
             label="Company Name"
             placeholder="enter company name here"
-            errorMessage="Full Name is required"
             name="company_name"
             value={employeerDetails?.company_name}
             onChange={handleChange}

@@ -18,7 +18,7 @@ const NotificationPreference = ({
   };
   return (
     <fieldset className="border border-black p-4 rounded-md">
-      <legend>Salary Expectations</legend>
+      <legend>Notifications Preference</legend>
       <div className="flex flex-col">
         <div className="flex w-full space-x-2">
           
@@ -30,7 +30,7 @@ const NotificationPreference = ({
               value={formData.notificationPreferences}
               options={notificationPreferencesOptions}
               onChange={(selected) =>
-                handleMultiSelectChange("preferred_salary_type", selected)
+                handleMultiSelectChange("notificationPreferences", selected)
               }
               error={errors.notificationPreferences}
               isDisabled={edit}
