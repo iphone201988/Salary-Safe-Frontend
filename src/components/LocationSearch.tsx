@@ -122,6 +122,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
     }
   };
 
+  console.log("selectedLocations::::", selectedLocations);
   return (
     <div className="location-search bg-white w-full">
       <div className="selected-locations flex w-full flex-wrap gap-2 mb-2">
@@ -134,24 +135,28 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             className="border w-full rounded-[8px] outline-none border-gray-600 text-[14px] px-2 py-1"
           />
         )}
-        {selectedLocations.map((location) => (
-          <div
-            key={location.id}
-            className="flex items-center bg-gray-300 text-black px-2 py-1 rounded"
-          >
-            {`${location?.city ? location?.city : ""}, ${
-              location?.country ? location?.country : ""
-            }`}
-            {edit == false && (
-              <button
-                onClick={() => handleRemoveLocation(location.id)}
-                className="ml-2 text-red-500"
+        {selectedLocations &&
+          selectedLocations?.map((location) => {
+            if (!location.city) return;
+            return (
+              <div
+                key={location.id}
+                className="flex items-center bg-gray-300 text-black px-2 py-1 rounded"
               >
-                &times;
-              </button>
-            )}
-          </div>
-        ))}
+                {`${location?.city ? location?.city : ""}, ${
+                  location?.country ? location?.country : ""
+                }`}
+                {edit == false && (
+                  <button
+                    onClick={() => handleRemoveLocation(location.id)}
+                    className="ml-2 text-red-500"
+                  >
+                    &times;
+                  </button>
+                )}
+              </div>
+            );
+          })}
       </div>
       {loading && <div className="mt-2">Loading...</div>}
       {options.length > 0 && (
