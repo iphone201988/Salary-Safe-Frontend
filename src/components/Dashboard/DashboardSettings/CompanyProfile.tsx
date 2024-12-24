@@ -1,8 +1,21 @@
-import { Autocomplete, useLoadScript } from "@react-google-maps/api";
+import { /* Autocomplete, */ useLoadScript } from "@react-google-maps/api";
 import InputField from "../../InputField/InputField";
 import { CompanyProfileType } from "../../../types";
 import { industrys } from "../../../utils/helper";
-import { useRef } from "react";
+import { useEffect, /* useRef,  */useState } from "react";
+// import { setemployeerDetails } from "../../../Redux/reducer/userData";
+// import { useDispatch } from "react-redux";
+import LocationSearch from "../../LocationSearch";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../Redux/store";
+
+
+interface Location {
+  id: string;
+  city: string;
+  country: string;
+  location_multiplier: number;
+}
 
 const CompanyProfile = ({
   formData,
@@ -12,19 +25,38 @@ const CompanyProfile = ({
   edit,
 }: CompanyProfileType) => {
   const libraries: any = ["places"];
+  // const dispatch = useDispatch();
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBFBwlTTtqbm5uwk0tIWEOEwR9CXSeCJuA", // Replace with your API key
+    googleMapsApiKey: "AIzaSyBFBwlTTtqbm5uwk0tIWEOEwR9CXSeCJuA",
     libraries,
   });
+  const { employeerDetails } = useSelector((state: RootState) => state.user);
+  
 
-  const handlePlaceSelect = () => {
-    const place = autocompleteRef.current?.getPlace();
-    if (place && place.formatted_address) {
-      // setFormData({ ...formData, location: place.formatted_address });
+  const [selectedLocations, setSelectedLocations] = useState<Location[]|any>([]);
+
+
+
+  // const handlePlaceSelect = () => {
+  //   const place = autocompleteRef.current?.getPlace();
+  //   if (place && place.formatted_address) {
+  //     // setFormData({ ...formData, location: place.formatted_address });
+  //   }
+  // };
+
+  // const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+
+  useEffect(() => {
+    if (selectedLocations) {
+      // dispatch(
+      //   setemployeerDetails({
+      //     ...employeerDetails,
+      //     headquarters_location: `${selectedLocations[0]?.city === undefined ? "":selectedLocations[0]?.city} ${selectedLocations[0] ? ",":" "} ${selectedLocations[0]?.country === undefined ? "":selectedLocations[0]?.country}`,
+      //   })
+      // );
+      setFormData({ ...formData, companyLocation: `${selectedLocations[0]?.city === undefined ? "":selectedLocations[0]?.city} ${selectedLocations[0] ? ",":" "} ${selectedLocations[0]?.country === undefined ? "":selectedLocations[0]?.country}` });
     }
-  };
-
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  }, [selectedLocations]);
   return (
     <fieldset className="border border-black p-4 rounded-md">
       <legend>Company Information</legend>
@@ -95,7 +127,7 @@ const CompanyProfile = ({
       </div>
 
       <div className="flex w-full space-x-2">
-        {isLoaded && (
+        {/* {isLoaded && (
           <div className="w-full">
             <label className="block text-gray-700">Headquarters</label>
             <Autocomplete
@@ -121,7 +153,7 @@ const CompanyProfile = ({
               </small>
             )}
           </div>
-        )}
+        )} */}
         <div className="w-full">
           <InputField
             label="Primary Contact"
@@ -143,9 +175,6 @@ const CompanyProfile = ({
             view={edit}
           />
         </div>
-      </div>
-
-      <div className="flex w-full space-x-2">
         <div className="w-full">
           <InputField
             label="Phone"
@@ -156,29 +185,45 @@ const CompanyProfile = ({
             view={edit}
           />
         </div>
+      </div>
+
+      <div className="flex w-full space-x-2">
+        {/* <div className="w-full">
+          <InputField
+            label="Phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            error={errors.phone}
+            view={edit}
+          />
+        </div> */}
 
         {isLoaded && (
           <div className="w-full">
-            <label className="block text-gray-700">Company Location</label>
-            <Autocomplete
-              onLoad={(autocomplete) =>
-                (autocompleteRef.current = autocomplete)
-              }
-              onPlaceChanged={handlePlaceSelect}
-            >
-              <input
-                name="companyLocation"
-                // value={formData.location}
-                onChange={handleChange}
-                placeholder="Search location"
-                className={`border border-black rounded-md w-full p-2 `}
-                disabled={edit}
-              />
-            </Autocomplete>
+            <label className="block text-gray-700">Company Location :</label>
+            {
+              edit ===false && (
+                <LocationSearch
+                  placeholder="Search locations..."
+                  apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
+                  onSelectionChange={(locations:any) => setSelectedLocations(locations)}
+                  selectMode="single"
+                  
+                />
+              )
+            }
+            {
+              edit ===true && (
+                <div className="border border-black w-[32%] rounded-lg p-1 bg-gray-100">
+                  {employeerDetails?.headquarters_location}
+                </div>
+             )
+            } 
           </div>
         )}
         {/* Company Size Select */}
-        <div className="w-full">
+        {/* <div className="w-full">
           <label className="block text-gray-700">Company Size</label>
           <select
             name="size"
@@ -195,7 +240,7 @@ const CompanyProfile = ({
             <option value="50-100">50-100</option>
             <option value="100 or above">100 or above</option>
           </select>
-        </div>
+        </div> */}
       </div>
       {/* Industry Select */}
       {/* <div className="w-full">
