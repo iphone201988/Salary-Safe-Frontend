@@ -45,7 +45,7 @@ const DashboardSidebar: React.FC = () => {
 
   const handleFetch = async (): Promise<void> => {
     try {
-      const response = await axios.get<candidateDetails>(getcandidatesProfile, {
+      const response:any = await axios.get<candidateDetails>(getcandidatesProfile, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

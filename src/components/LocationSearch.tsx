@@ -33,14 +33,17 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
 
   let city;
   let country;
-  if(!isLoginPage){
-     [city, country] = employeDetails?.location !== "" && employeDetails?.location?.split(",").map((item) => item.trim());
+  if (!isLoginPage) {
+    [city, country] =
+      employeDetails?.location && employeDetails.location !== ""
+        ? employeDetails.location.split(",").map((item) => item.trim())
+        : [];
   }
-  
+
   const formattedArray: any = [{ city: city, country: country }];
 
   const [selectedLocations, setSelectedLocations] = useState<any[]>(
-    selectMode === "multiple" ? [] : isLoginPage ? []: formattedArray
+    selectMode === "multiple" ? [] : isLoginPage ? [] : formattedArray
   );
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -136,7 +139,9 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             key={location.id}
             className="flex items-center bg-gray-300 text-black px-2 py-1 rounded"
           >
-            {`${location.city}, ${location.country}`}
+            {`${location?.city ? location?.city : ""}, ${
+              location?.country ? location?.country : ""
+            }`}
             {edit == false && (
               <button
                 onClick={() => handleRemoveLocation(location.id)}
