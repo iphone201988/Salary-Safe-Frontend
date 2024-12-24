@@ -28,7 +28,7 @@ const CandidateDetailModal = ({
     );
 
     if (error) {
-      toast.error("Failed to calculate salary");
+      toast.error("No recommendations");
       return;
     }
 

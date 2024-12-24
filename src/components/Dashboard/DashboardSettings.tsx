@@ -29,6 +29,7 @@ import useApiCall from "../../API/function";
 import { /* candidateUpdate, */ clientUpdate } from "../../API/apis";
 import { setemployeerDetails } from "../../Redux/reducer/userData";
 import { useDispatch } from "react-redux";
+import Loader from "../Loader/Loader";
 
 const DashboardSettings: React.FC = () => {
   const { employeerDetails } = useSelector((state: RootState) => state.user);
@@ -115,6 +116,7 @@ const DashboardSettings: React.FC = () => {
 
   const [errors, _setErrors] = useState<SignUpFormErrors>({});
   const [profileImage, setProfileImage] = useState(null);
+  const [loader, setLoader] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -169,18 +171,27 @@ const DashboardSettings: React.FC = () => {
       );
 
       // Handle other fields
-      formDataInstance.append("dashboard_metrics", formData.keyMetrics.value);
+      formDataInstance.append(
+        "dashboard_metrics",
+        Array.isArray(formData.keyMetrics)
+          ? formData.keyMetrics[0].value
+          : formData.keyMetrics.value
+      );
       formDataInstance.append(
         "role_specific_customization",
         formData.roleCustomization
       );
       formDataInstance.append(
         "salary_benchmarking_preference",
-        formData.salaryBenchmarking.value
+        Array.isArray(formData.salaryBenchmarking)
+          ? formData.salaryBenchmarking[0].value
+          : formData.salaryBenchmarking.value
       );
       formDataInstance.append(
         "candidate_viewing_preferences",
-        formData.candidateViewingPreferences.value
+        Array.isArray(formData.candidateViewingPreferences)
+          ? formData.candidateViewingPreferences[0].value
+          : formData.candidateViewingPreferences.value
       );
       formDataInstance.append("offer_optimization", formData.offerOptimization);
       formDataInstance.append(
@@ -201,7 +212,7 @@ const DashboardSettings: React.FC = () => {
 
       // Handle file uploads
       if (profileImage) formDataInstance.append("avatar", formData.avatar);
-
+      setLoader(true);
       const response = await apiCall(
         "patch",
         `${clientUpdate}`,
@@ -211,104 +222,113 @@ const DashboardSettings: React.FC = () => {
       if (response) {
         dispatch(setemployeerDetails(response));
       }
+      setLoader(false);
+      console.log("response:::::", response);
       window.location.reload();
-    } catch (error) {}
+    } catch (error) {
+      setLoader(false);
+    }
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <div className="relative">
-        <div className="relative flex justify-center">
-          {!edit && <RiFileEditLine className="absolute bottom-0 ml-[45px]" />}
-          <img
-            src={
-              profileImage
-                ? profileImage
-                : formData.avatar
-                ? import.meta.env.VITE_BACKEND_URL + "/" + formData.avatar
-                : Avatar
-            }
-            alt="user-profile"
-            className="w-20 h-20 border-2 border-black rounded-full object-cover"
-            onClick={() => {
-              if (!edit && avatarRef.current) avatarRef.current.click();
-            }}
-            onError={(e) => {
-              e.currentTarget.src = Avatar;
-            }}
-          />
-        </div>
-
-        <input
-          type="file"
-          ref={avatarRef}
-          name="avatar"
-          id="avatar"
-          className="hidden"
-          onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              const file = e.target.files[0];
-              const url: any = URL.createObjectURL(file);
-              setProfileImage(url);
-              setFormData({ ...formData, avatar: file });
-            }
-          }}
-          accept="image/png, image/jpeg"
-        />
-        <h3 className="text-4xl font-bold my-4 text-center">
-          Employeer Profile
-        </h3>
-        <FaUserEdit
-          onClick={() => setEdit(!edit)}
-          className="absolute top-0 right-0 cursor-pointer"
-        />
-      </div>
-
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <CompanyProfile
-          formData={formData}
-          errors={errors}
-          setFormData={setFormData}
-          handleChange={handleChange}
-          edit={edit}
-        />
-
-        <HiringGoals
-          formData={formData}
-          errors={errors}
-          setFormData={setFormData}
-          edit={edit}
-        />
-
-        <OtherFields
-          formData={formData}
-          errors={errors}
-          setFormData={setFormData}
-          edit={edit}
-        />
-
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            name="notifications"
-            // checked={formData.notifications}
-            onChange={handleChange}
-            disabled={edit}
-          />
-          <label className="text-gray-600">Receive Notifications</label>
-        </div>
-        {!edit && (
-          <div className="w-full flex justify-center">
-            <button
-              type="submit"
-              className="bg-[#019529] text-white text-center px-4 py-2 rounded-md hover:bg-[#017a22] w-full"
-            >
-              Save Changes
-            </button>
+    <>
+      {loader && <Loader />}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="relative">
+          <div className="relative flex justify-center">
+            {!edit && (
+              <RiFileEditLine className="absolute bottom-0 ml-[45px]" />
+            )}
+            <img
+              src={
+                profileImage
+                  ? profileImage
+                  : formData.avatar
+                  ? import.meta.env.VITE_STATIC_FILES_URL + formData.avatar
+                  : Avatar
+              }
+              alt="user-profile"
+              className="w-20 h-20 border-2 border-black rounded-full object-cover"
+              onClick={() => {
+                if (!edit && avatarRef.current) avatarRef.current.click();
+              }}
+              onError={(e) => {
+                e.currentTarget.src = Avatar;
+              }}
+            />
           </div>
-        )}
-      </form>
-    </div>
+
+          <input
+            type="file"
+            ref={avatarRef}
+            name="avatar"
+            id="avatar"
+            className="hidden"
+            onChange={(e) => {
+              if (e.target.files && e.target.files[0]) {
+                const file = e.target.files[0];
+                const url: any = URL.createObjectURL(file);
+                setProfileImage(url);
+                setFormData({ ...formData, avatar: file });
+              }
+            }}
+            accept="image/png, image/jpeg"
+          />
+          <h3 className="text-4xl font-bold my-4 text-center">
+            Employeer Profile
+          </h3>
+          <FaUserEdit
+            onClick={() => setEdit(!edit)}
+            className="absolute top-0 right-0 cursor-pointer"
+          />
+        </div>
+
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <CompanyProfile
+            formData={formData}
+            errors={errors}
+            setFormData={setFormData}
+            handleChange={handleChange}
+            edit={edit}
+          />
+
+          <HiringGoals
+            formData={formData}
+            errors={errors}
+            setFormData={setFormData}
+            edit={edit}
+          />
+
+          <OtherFields
+            formData={formData}
+            errors={errors}
+            setFormData={setFormData}
+            edit={edit}
+          />
+
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="notifications"
+              // checked={formData.notifications}
+              onChange={handleChange}
+              disabled={edit}
+            />
+            <label className="text-gray-600">Receive Notifications</label>
+          </div>
+          {!edit && (
+            <div className="w-full flex justify-center">
+              <button
+                type="submit"
+                className="bg-[#019529] text-white text-center px-4 py-2 rounded-md hover:bg-[#017a22] w-full"
+              >
+                Save Changes
+              </button>
+            </div>
+          )}
+        </form>
+      </div>
+    </>
   );
 };
 

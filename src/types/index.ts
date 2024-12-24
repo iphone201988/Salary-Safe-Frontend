@@ -14,7 +14,7 @@ export interface EmployeerDetails {
   company_name: string;
   industry: string;
   company_size: string;
-  headquarters_location: string;
+  headquarters_location: string | any;
   primary_contact_person: string;
   contact_phone_number: string;
   primary_hiring_goals: string[];
