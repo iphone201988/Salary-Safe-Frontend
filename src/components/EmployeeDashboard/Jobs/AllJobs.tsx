@@ -118,7 +118,7 @@ interface Job {
           ))}
         </>
       ) : (
-        <div className="flex flex-wrap gap-8 max-lg:justify-center max-lg:mt-4">
+        <div className="flex flex-wrap gap-8 max-lg:justify-center max-lg:mt-4 mt-5">
           {paginatedJobs.map((job, index) => (
             <GridJobCard key={index} job={job} />
           ))}

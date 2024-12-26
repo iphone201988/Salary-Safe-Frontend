@@ -10,6 +10,8 @@ import { employeerRegister } from "../../API/apis";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { login } from "../../Redux/reducer/authSlice";
+import { useEffect, useState } from "react";
+import { generateToken } from "../../../firebase";
 
 export const RegisterCompany = () => {
   const navigate = useNavigate();
@@ -18,6 +20,16 @@ export const RegisterCompany = () => {
 
   // const token = useSelector((state: any) => state.auth.token);
 
+  const [fcmToken, setFcmToken] = useState<string|undefined>();
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = await generateToken(); // Await the result of the async function
+      if(token) setFcmToken(token); // Set the resolved value to state
+    };
+
+    fetchToken();
+  }, []);
+  console.log("fcmtoken",fcmToken);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;

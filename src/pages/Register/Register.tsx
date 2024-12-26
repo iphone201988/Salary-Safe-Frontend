@@ -11,6 +11,7 @@ import { login } from "../../Redux/reducer/authSlice";
 import { setemployeDetails } from "../../Redux/reducer/userData";
 import { useSelector } from "react-redux";
 import LocationSearch from "../../components/LocationSearch";
+import { generateToken } from "../../../firebase";
 
 
 interface Location {
@@ -28,8 +29,18 @@ export const Register = () => {
   const [touched, setTouched] = useState<any>({});
   // const [locations, setLocations] = useState<string[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
+  const [fcmToken, setFcmToken] = useState<string|undefined>();
 
   const dispatch = useDispatch();
+    useEffect(() => {
+      const fetchToken = async () => {
+        const token = await generateToken(); // Await the result of the async function
+        if(token) setFcmToken(token); // Set the resolved value to state
+      };
+  
+      fetchToken();
+    }, []);
+    console.log("fcmtoken",fcmToken);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
