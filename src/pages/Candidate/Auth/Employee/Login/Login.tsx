@@ -32,7 +32,18 @@ const EmployeeLogin = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [fcmToken, setFcmToken] = useState<string|undefined>();
 
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = await generateToken(); // Await the result of the async function
+      if(token) setFcmToken(token); // Set the resolved value to state
+    };
+
+    fetchToken();
+  }, []);
+  console.log("fcmtoken",fcmToken);
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -141,9 +152,7 @@ const EmployeeLogin = () => {
       
     }
   };
-  useEffect(()=>{
-    generateToken();
-  },[]);
+
 console.log("loading",loading)
   return (
     <div className="flex justify-center items-center min-h-screen">

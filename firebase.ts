@@ -21,15 +21,24 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 export const googleauthProvider = new GoogleAuthProvider();
 export const messaging = getMessaging(app);
-export const generateToken = async()=>{
+export const generateToken = async () => {
   const permission = await Notification.requestPermission();
-  if(permission=="granted"){
-  console.log('Notification permission granted.', permission);
-  const fcmToken = await getToken(messaging,{
-    vapidKey: 'BKx70cNfaS1EDXYRYP2-aQ0_M_MFFdLW_iVsfu8T11Th-7g7gfLstDvrFLzVNRkanqX-nwZwwMuqx_rCsuHI6pI'
-  });
-  console.log('FCM Token:', fcmToken)
-}
- 
-}
+  if (permission === "granted") {
+    console.log("Notification permission granted.");
+    try {
+      const fcmToken = await getToken(messaging, {
+        vapidKey: "BKx70cNfaS1EDXYRYP2-aQ0_M_MFFdLW_iVsfu8T11Th-7g7gfLstDvrFLzVNRkanqX-nwZwwMuqx_rCsuHI6pI",
+        serviceWorkerRegistration: await navigator.serviceWorker.register(
+          "/firebase-messaging-sw.js"
+        ),
+      });
+      // console.log("FCM Token:", fcmToken);
+      return fcmToken;
+    } catch (e) {
+      console.error("Error fetching FCM Token:", e);
+    }
+  } else {
+    console.warn("Notification permission not granted.");
+  }
+};
 export default app;

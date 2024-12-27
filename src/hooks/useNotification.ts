@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { messaging } from "../../firebase";
 import { onMessage } from "firebase/messaging";
+import { toast } from "react-toastify";
 
 const useNotification = () => {
   useEffect(() => {
     onMessage(messaging, (payload) => {
       console.log("Notification received: ", payload);
-      // Handle notifications here
+      toast.success(payload.notification?.title)
     });
   }, []);
 };
