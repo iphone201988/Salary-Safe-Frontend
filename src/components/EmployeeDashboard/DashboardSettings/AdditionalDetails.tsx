@@ -13,7 +13,6 @@ const AdditionalDetails = ({ formData, setFormData, errors, edit }: any) => {
     }
   };
 
-
   return (
     <fieldset className="border border-black p-4 rounded-md">
       <legend>Additional Details</legend>
