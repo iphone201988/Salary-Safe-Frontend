@@ -19,25 +19,33 @@ const CandidateProfile = ({
   // setFormData,
   errors,
   handleChange,
-  edit
+  edit,
 }: any) => {
   const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
   const dispatch = useDispatch();
   const { employeDetails } = useSelector((state: any) => state.user);
 
+  useEffect(() => {
+    if (selectedLocations) {
+      dispatch(
+        setemployeDetails({
+          ...employeDetails,
+          location_multiplier: selectedLocations[0]?.location_multiplier,
+          location: `${
+            selectedLocations[0]?.city === undefined
+              ? ""
+              : selectedLocations[0]?.city
+          } ${selectedLocations[0] ? "," : " "} ${
+            selectedLocations[0]?.country === undefined
+              ? ""
+              : selectedLocations[0]?.country
+          }`,
+        })
+      );
+    }
+  }, [selectedLocations]);
 
-    useEffect(() => {
-      if (selectedLocations) {
-        dispatch(
-          setemployeDetails({
-            ...employeDetails,
-            location_multiplier:selectedLocations[0]?.location_multiplier,
-            location: `${selectedLocations[0]?.city === undefined ? "":selectedLocations[0]?.city} ${selectedLocations[0] ? ",":" "} ${selectedLocations[0]?.country === undefined ? "":selectedLocations[0]?.country}`,
-          })
-        );
-      }
-    }, [selectedLocations]);
-  
+  console.log("employeDetails?.location::::",employeDetails?.location)
 
   return (
     <fieldset className="border border-black p-4 rounded-md">
@@ -52,8 +60,7 @@ const CandidateProfile = ({
               onChange={handleChange}
               error={errors.full_name}
               placeholder="Enter Full Name"
-              view ={edit}
-
+              view={edit}
             />
           </div>
           <div className="w-full">
@@ -64,7 +71,7 @@ const CandidateProfile = ({
               placeholder="+1 123 456 7890"
               onChange={handleChange}
               error={errors.phone_number}
-              view ={edit}
+              view={edit}
             />
           </div>
         </div>
@@ -78,24 +85,53 @@ const CandidateProfile = ({
               onChange={handleChange}
               error={errors.email}
               placeholder="Enter Email"
-              view ={edit}
+              view={edit}
             />
           </div>
-          <div className="w-full">
+          {/* <div className="w-full">
             <div className="w-full p-1">
-            <div className="mt-1 font-[400] text-[16px]">Location :</div>
-            <LocationSearch
+              <div className="mt-1 font-[400] text-[16px]">Location :</div>
+              <LocationSearch
+                placeholder="Search locations..."
+                apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
+                onSelectionChange={(locations) =>
+                  setSelectedLocations(locations)
+                }
+                selectMode="single"
+                edit={edit}
+                city={employeDetails?.location.split(",")[0]}
+                country={employeDetails?.location.split(",")[1]}
+              />
+            </div>
+          </div> */}
+
+          <div className="w-full">
+            <label className="block text-gray-700">Company Location :</label>
+            {edit === false && (
+              <LocationSearch
               placeholder="Search locations..."
               apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
-              onSelectionChange={(locations) => setSelectedLocations(locations)}
+              onSelectionChange={(locations) =>
+                setSelectedLocations(locations)
+              }
               selectMode="single"
               edit={edit}
+              city={employeDetails?.location.split(",")[0]}
+              country={employeDetails?.location.split(",")[1]}
             />
+            )}
+            {edit === true && (
+              <div className="border border-black w-full rounded-lg p-1 bg-gray-100">
+                {employeDetails?.location}
+              </div>
+            )}
           </div>
-          </div>
+
+
+
+
         </div>
         <div className="flex w-full space-x-2">
-         
           <div className="w-full">
             <InputField
               label="Current Job Title"
@@ -104,10 +140,10 @@ const CandidateProfile = ({
               value={formData.current_job_title}
               onChange={handleChange}
               error={errors.current_job_title}
-              view ={edit}
+              view={edit}
             />
           </div>
-         
+
           <div className="w-full">
             <InputField
               label="LinkedIn Profile URL"
@@ -116,7 +152,7 @@ const CandidateProfile = ({
               value={formData.linkedin_profile_url}
               onChange={handleChange}
               error={errors.linkedin_profile_url}
-              view ={edit}
+              view={edit}
             />
           </div>
         </div>

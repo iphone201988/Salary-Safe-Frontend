@@ -48,7 +48,7 @@ const AdditionalDetails = ({ formData, setFormData, errors, edit }: any) => {
 
           {edit === true && (
             <div className="flex justify-center text-[10px] items-center">
-              {formData.resume_upload.split("/").pop()}
+              {formData.resume_upload?.split("/").pop()}
             </div>
           )}
 
@@ -88,7 +88,7 @@ const AdditionalDetails = ({ formData, setFormData, errors, edit }: any) => {
 
           {edit === true && (
             <div className="flex justify-center text-[10px] items-center">
-              {formData?.cover_letter_upload.split("/").pop()}
+              {formData?.cover_letter_upload?.split("/").pop()}
             </div>
           )}
 

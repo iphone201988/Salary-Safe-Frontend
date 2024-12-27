@@ -2,13 +2,14 @@ import { /* Autocomplete, */ useLoadScript } from "@react-google-maps/api";
 import InputField from "../../InputField/InputField";
 import { CompanyProfileType } from "../../../types";
 import { industrys } from "../../../utils/helper";
-import { useEffect, /* useRef,  */useState } from "react";
+import { useEffect, /* useRef,  */ useState } from "react";
 // import { setemployeerDetails } from "../../../Redux/reducer/userData";
 // import { useDispatch } from "react-redux";
 import LocationSearch from "../../LocationSearch";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
-
+import { setemployeerDetails } from "../../../Redux/reducer/userData";
+import { useDispatch } from "react-redux";
 
 interface Location {
   id: string;
@@ -25,17 +26,16 @@ const CompanyProfile = ({
   edit,
 }: CompanyProfileType) => {
   const libraries: any = ["places"];
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBFBwlTTtqbm5uwk0tIWEOEwR9CXSeCJuA",
     libraries,
   });
   const { employeerDetails } = useSelector((state: RootState) => state.user);
-  
 
-  const [selectedLocations, setSelectedLocations] = useState<Location[]|any>([]);
-
-
+  const [selectedLocations, setSelectedLocations] = useState<Location[] | any>(
+    []
+  );
 
   // const handlePlaceSelect = () => {
   //   const place = autocompleteRef.current?.getPlace();
@@ -54,9 +54,26 @@ const CompanyProfile = ({
       //     headquarters_location: `${selectedLocations[0]?.city === undefined ? "":selectedLocations[0]?.city} ${selectedLocations[0] ? ",":" "} ${selectedLocations[0]?.country === undefined ? "":selectedLocations[0]?.country}`,
       //   })
       // );
-      setFormData({ ...formData, companyLocation: `${selectedLocations[0]?.city === undefined ? "":selectedLocations[0]?.city} ${selectedLocations[0] ? ",":" "} ${selectedLocations[0]?.country === undefined ? "":selectedLocations[0]?.country}` });
+
+      setFormData({
+        ...formData,
+        companyLocation: `${
+          selectedLocations[0]?.city === undefined
+            ? ""
+            : selectedLocations[0]?.city
+        } ${selectedLocations[0] ? "," : " "} ${
+          selectedLocations[0]?.country === undefined
+            ? ""
+            : selectedLocations[0]?.country
+        }`,
+      });
     }
   }, [selectedLocations]);
+
+  console.log(
+    "employeerDetails?.headquarters_location:::",
+    employeerDetails?.headquarters_location
+  );
   return (
     <fieldset className="border border-black p-4 rounded-md">
       <legend>Company Information</legend>
@@ -202,24 +219,23 @@ const CompanyProfile = ({
         {isLoaded && (
           <div className="w-full">
             <label className="block text-gray-700">Company Location :</label>
-            {
-              edit ===false && (
-                <LocationSearch
-                  placeholder="Search locations..."
-                  apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
-                  onSelectionChange={(locations:any) => setSelectedLocations(locations)}
-                  selectMode="single"
-                  
-                />
-              )
-            }
-            {
-              edit ===true && (
-                <div className="border border-black w-[32%] rounded-lg p-1 bg-gray-100">
-                  {employeerDetails?.headquarters_location}
-                </div>
-             )
-            } 
+            {edit === false && (
+              <LocationSearch
+                placeholder="Search locations..."
+                apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
+                onSelectionChange={(locations: any) => {
+                  setSelectedLocations(locations);
+                }}
+                selectMode="single"
+                city={employeerDetails?.headquarters_location.split(",")[0]}
+                country={employeerDetails?.headquarters_location.split(",")[1]}
+              />
+            )}
+            {edit === true && (
+              <div className="border border-black w-full rounded-lg p-1 bg-gray-100">
+                {employeerDetails?.headquarters_location}
+              </div>
+            )}
           </div>
         )}
         {/* Company Size Select */}

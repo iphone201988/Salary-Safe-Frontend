@@ -17,6 +17,8 @@ interface LocationSearchProps {
   onSelectionChange?: (selectedLocations: Location[]) => void;
   selectMode: "single" | "multiple"; // New prop for select mode
   edit?: boolean;
+  city?: string;
+  country?: string;
 }
 
 const LocationSearch: React.FC<LocationSearchProps> = ({
@@ -25,20 +27,22 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
   onSelectionChange,
   selectMode,
   edit = false,
+  city,
+  country,
 }) => {
-  const { employeDetails } = useSelector((state: RootState) => state.user);
+  // const { employeDetails } = useSelector((state: RootState) => state.user);
   const [options, setOptions] = useState<Location[]>([]);
   const location = useLocation();
   const isLoginPage = location.pathname.includes("signup-employee");
 
-  let city;
-  let country;
-  if (!isLoginPage) {
-    [city, country] =
-      employeDetails?.location && employeDetails.location !== ""
-        ? employeDetails.location.split(",").map((item) => item.trim())
-        : [];
-  }
+  // let city;
+  // let country;
+  // if (!isLoginPage) {
+  //   [city, country] =
+  //     employeDetails?.location && employeDetails.location !== ""
+  //       ? employeDetails.location.split(",").map((item) => item.trim())
+  //       : [];
+  // }
 
   const formattedArray: any = [{ city: city, country: country }];
 
@@ -141,7 +145,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             return (
               <div
                 key={location.id}
-                className="flex items-center bg-gray-300 text-black px-2 py-1 rounded"
+                className="flex items-center bg-gray-300 text-black px-2 py-1 rounded w-full"
               >
                 {`${location?.city ? location?.city : ""}, ${
                   location?.country ? location?.country : ""

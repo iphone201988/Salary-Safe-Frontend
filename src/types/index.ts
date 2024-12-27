@@ -200,6 +200,7 @@ export interface candidateDetails {
   email: string;
   phone_number: string;
   location: string;
+  headquarters_location?: string;
   current_job_title: string;
   linkedin_profile_url: string;
   job_titles_of_interest?: string;
