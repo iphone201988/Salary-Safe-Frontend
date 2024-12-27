@@ -8,8 +8,7 @@ import { useEffect, /* useRef,  */ useState } from "react";
 import LocationSearch from "../../LocationSearch";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
-import { setemployeerDetails } from "../../../Redux/reducer/userData";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 
 interface Location {
   id: string;
@@ -26,7 +25,7 @@ const CompanyProfile = ({
   edit,
 }: CompanyProfileType) => {
   const libraries: any = ["places"];
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBFBwlTTtqbm5uwk0tIWEOEwR9CXSeCJuA",
     libraries,

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { RootState } from "../Redux/store";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 interface Location {
