@@ -9,6 +9,7 @@ import MultiSelectComponent from "../../MultiSelect/MultiSelect";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { jobTypeOptions } from "../../Select/options";
 
 const JobSearch = ({
   formData,
@@ -165,7 +166,7 @@ const JobSearch = ({
               isMulti={true}
               label="Job type preferences"
               value={formData.job_type_preferences}
-              options={jobTypePreferencesOptions}
+              options={jobTypeOptions}
               onChange={(selected) =>
                 handleMultiSelectChange("job_type_preferences", selected)
               }
