@@ -22,8 +22,9 @@ const JobSearch = ({
   const { employeDetails } = useSelector((state: any) => state.user);
   const [industry, setIndustry] = useState<any>([]);
   const [options, setOptions] = useState<any[]>([]);
-  const [selectedIndustry, setSelectedIndustry] = useState<any>(employeDetails?.industries_of_interest);
-
+  const [selectedIndustry, setSelectedIndustry] = useState<any>(
+    employeDetails?.industries_of_interest
+  );
 
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
     setFormData({ ...formData, [field]: selectedOptions });
@@ -33,15 +34,10 @@ const JobSearch = ({
     setFormData({ ...formData, [field]: !formData[field] });
   };
 
-  console.log(
-    "interested_in_salary_benchmarks",
-    formData?.interested_in_salary_benchmarks
-  );
-
   const handleRemoveLocation = (industry: any) => {
-      setSelectedIndustry(
-        selectedIndustry.filter((item: any) => item !== industry)
-      );
+    setSelectedIndustry(
+      selectedIndustry.filter((item: any) => item !== industry)
+    );
   };
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,26 +61,22 @@ const JobSearch = ({
   };
 
   useEffect(() => {
-      if (industry === "") {
-        setOptions([]);
-      }
-    }, [industry]);
-  
-    useEffect(() => {
-      console.log('selectedIndustry before dispatch:', selectedIndustry);
-      if (selectedIndustry.length) {
-        dispatch(
-          setemployeDetails({
-            ...employeDetails,
-            industries_of_interest: selectedIndustry,
-          })
-        );
-      }
-    }, [selectedIndustry]);
+    if (industry === "") {
+      setOptions([]);
+    }
+  }, [industry]);
 
-
-    console.log("++++++++++++++++",edit);
-    
+  useEffect(() => {
+    console.log("selectedIndustry before dispatch:", selectedIndustry);
+    if (selectedIndustry.length) {
+      dispatch(
+        setemployeDetails({
+          ...employeDetails,
+          industries_of_interest: selectedIndustry,
+        })
+      );
+    }
+  }, [selectedIndustry]);
 
   return (
     <fieldset className="border border-black p-4 rounded-md">
@@ -108,17 +100,15 @@ const JobSearch = ({
                 Industry of interest :
               </div>
               <div className="selected-locations flex flex-wrap gap-2 mb-2">
-                {
-                  edit === false && (
-                    <input
-                      type="text"
-                      placeholder="search industry"
-                      value={industry}
-                      onChange={handleSearch}
-                      className="border w-full rounded-[8px] outline-none border-gray-600 text-[14px] px-2 py-1"
-                    />
-                  )
-                }
+                {edit === false && (
+                  <input
+                    type="text"
+                    placeholder="search industry"
+                    value={industry}
+                    onChange={handleSearch}
+                    className="border w-full rounded-[8px] outline-none border-gray-600 text-[14px] px-2 py-1"
+                  />
+                )}
 
                 {selectedIndustry.map((location: any) => (
                   <div
@@ -126,16 +116,14 @@ const JobSearch = ({
                     className="flex items-center text-[10px] bg-gray-300 text-black px-2 py-1 rounded"
                   >
                     {location}
-                    {
-                      edit === false && (
-                    <button 
-                      onClick={() => handleRemoveLocation(location)}
-                      className="ml-2 text-red-500"
-                    >
-                      &times;
-                    </button>
-                      )
-                    }
+                    {edit === false && (
+                      <button
+                        onClick={() => handleRemoveLocation(location)}
+                        className="ml-2 text-red-500"
+                      >
+                        &times;
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -146,12 +134,10 @@ const JobSearch = ({
               >
                 {options.map((data: any) => (
                   <li
-                    onClick={() =>{
-
+                    onClick={() => {
                       setSelectedIndustry([...selectedIndustry, data.industry]);
                       setIndustry("");
-                    }
-                    }
+                    }}
                     key={data.id}
                     className="p-2 cursor-pointer list-none hover:bg-gray-200"
                   >

@@ -366,6 +366,7 @@ const DashboardSettings: React.FC = () => {
         // window.location.reload();
         setEdit(!edit);
         toast.success("Profile updated successfully!");
+        window.location.reload();
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -375,8 +376,6 @@ const DashboardSettings: React.FC = () => {
       }
     }
   };
-
-  console.log("dddcdc", formData?.job_type_preferences);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
