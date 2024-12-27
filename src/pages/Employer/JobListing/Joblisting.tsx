@@ -10,7 +10,7 @@ import DeleteConformModel from "../../../components/Modal/DeleteConformModel";
 import ViewModel from "../../../components/Modal/ViewModel";
 import {
   getOptionText,
-  jobTypeOptions,
+  jobTypeOptionsExtra,
   workplaceTypeOptions,
 } from "../../../components/Select/options";
 import { Link } from "react-router-dom";
@@ -169,7 +169,7 @@ const JobListings = () => {
     desc: truncateDescription(job?.description, 8),
     require: truncateDescription(job?.requirements, 8),
     created_at: job?.created_at?.slice(0, 10),
-    job_type_: getOptionText(jobTypeOptions, job.job_type),
+    job_type_: getOptionText(jobTypeOptionsExtra, job.job_type),
     workplace_type_: getOptionText(workplaceTypeOptions, job.workplace_type),
   }));
   // console.log("mappedJobs",mappedJobs)

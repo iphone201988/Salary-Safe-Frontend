@@ -235,5 +235,6 @@ export interface candidateDetails {
   terms_accepted?: boolean;
   id?: string;
   profileImage?: any | null;
+  avatar?: any | null;
   notificationPreferences?: any | string[];
 }

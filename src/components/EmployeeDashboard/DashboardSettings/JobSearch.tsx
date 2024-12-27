@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  jobTypePreferencesOptions,
+  /* jobTypePreferencesOptions, */
   professionalDevelopmentAreasOptions,
 } from "../../../pages/Candidate/Auth/Employee/SignUp/options";
 import { setemployeDetails } from "../../../Redux/reducer/userData";

@@ -8,7 +8,7 @@ import CardShowDashboard from "./CardShowDashboard";
 // import HistoryOfRoles from "./HistoryRoles";
 import HorizontalBarChart from "../../Charts/HorizontalBarChart";
 import Loader from "../../Loader/Loader";
-interface CandidateDashboardData {
+interface ClientDashboardData {
   candidate_views: CandidateView[];
   role_performance: RolePerformance[];
   salary_competitiveness: SalaryCompetitiveness[];
@@ -63,7 +63,7 @@ interface JobTrend {
 
 const HrDashboard: React.FC = () => {
   const [clientDashboard, setClientDashboard] =
-    useState<CandidateDashboardData>();
+    useState<ClientDashboardData>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const token = useSelector((state: any) => state.auth.token);
@@ -90,7 +90,16 @@ const HrDashboard: React.FC = () => {
     fetchDashboardData();
   }, []);
 
-
+  function generateColorCombinations(count: number): string[] {
+    const colors: string[] = [];
+    
+    for (let i = 0; i < count; i++) {
+      const randomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")}`;
+      colors.push(randomColor());
+    }
+  
+    return colors;
+  }
   if (error)
     return <div className="text-center text-red-500 text-lg p-6">{error}</div>;
 
@@ -160,7 +169,7 @@ const HrDashboard: React.FC = () => {
                 (role) => role.applications
               ) || []
             }
-            backgroundColors={["#FF6384", "#36A2EB", "#FFCE56"]}
+            backgroundColors={generateColorCombinations(clientDashboard?.role_performance.length??0)}
             title="Role Performance (Applications)"
           />
         </div>

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { /* useDispatch, */ useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { useNavigate } from "react-router-dom";
 import ImageLoader from "./ImageLoader";
+import { generateToken } from "../../../firebase";
 
 const SelectAuth: React.FC = () => {
   // const dispatch = useDispatch();
@@ -15,7 +16,13 @@ const SelectAuth: React.FC = () => {
     const path = authType === "login" ? `/login-${role}` : `/signup-${role}`;
     navigate(path);
   };
+  useEffect(() => {
+    const fetchToken = async () => {
+          await generateToken();
+    };
 
+    fetchToken();
+  }, []);
   return (
     <div className="flex flex-col md:flex-row justify-center items-center h-[100vh] md:h-screen max-720:p-5 max-720:m-auto w-full">
       <div

@@ -5,7 +5,7 @@ import { columnsSubmittedApplication } from "./Options";
 import { useSelector } from "react-redux";
 import Loader from "../../../components/Loader/Loader";
 import { submittedApplication } from "../../../API/apis";
-import { getOptionText, jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
+import { getOptionText, jobTypeOptionsExtra, workplaceTypeOptions } from "../../../components/Select/options";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -53,7 +53,7 @@ const SubmittedApplicationsPage: React.FC = () => {
           title: item.job_details.title,
           location: item.job_details.location,
           status: item.status,
-          job_type: getOptionText(jobTypeOptions,item.job_details.job_type),
+          job_type: getOptionText(jobTypeOptionsExtra,item.job_details.job_type),
           workplace_type: getOptionText(workplaceTypeOptions,item.job_details.workplace_type),
           company_name: item.job_details.client_details.company_name,
           created_at: item.created_at,

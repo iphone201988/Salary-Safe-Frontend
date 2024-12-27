@@ -33,7 +33,7 @@ interface Job {
   const AllJobs: React.FC<{ jobs: Job[] }> = ({ jobs }) => {
     const [viewMode, setViewMode] = useState("list");
     const [page, setPage] = useState(1);
-    const jobsPerPage = 3; // Jobs per page
+    const jobsPerPage = 10; // Jobs per page
   
     const toggleViewMode = (mode: string) => setViewMode(mode);
   

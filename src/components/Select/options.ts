@@ -7,6 +7,16 @@ export const jobTypeOptions = [
   { value: "volunteer", label: "Volunteer" },
   { value: "other", label: "Other" },
 ];
+export const jobTypeOptionsExtra = [
+    { value: "", text: "Job Type" },
+    { value: "fulltime", text: "Full-time" },
+    { value: "parttime", text: "Part-time" },
+    { value: "internship", text: "Internship" },
+    { value: "contract", text: "Contract" },
+    { value: "temporary", text: "Temporary" },
+    { value: "volunteer", text: "Volunteer" },
+    { value: "other", text: "Other" },
+];
 export const workplaceTypeOptions = [
   { value: "", text: "Workplace Type" },
   { value: "remote", text: "Remote" },

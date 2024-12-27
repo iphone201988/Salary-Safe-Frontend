@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaChartPie,
@@ -15,20 +15,20 @@ import {
   // FaInfoCircle,
 } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import axios from "axios";
-import { companyDetails } from "../../API/apis";
+// import axios from "axios";
+// import { companyDetails } from "../../API/apis";
 import { useDispatch } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { useSelector } from "react-redux";
 import {
   clearUserData,
-  setemployeerDetails,
+  /* setemployeerDetails, */
 } from "../../Redux/reducer/userData";
 import { logout } from "../../Redux/reducer/authSlice";
-import { EmployeerDetails } from "../../types";
+// import { EmployeerDetails } from "../../types";
 
 const DashboardSidebar: React.FC = () => {
-  const token = useSelector((state: any) => state.auth.token);
+  // const token = useSelector((state: any) => state.auth.token);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,28 +47,28 @@ const DashboardSidebar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleFetch = async (): Promise<void> => {
-    try {
-      const response = await axios.get<EmployeerDetails>(companyDetails, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.data) {
-        dispatch(setemployeerDetails(response.data));
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Error fetching data:", error.message);
-      } else {
-        console.error("Unexpected error:", error);
-      }
-    }
-  };
+  // const handleFetch = async (): Promise<void> => {
+  //   try {
+  //     const response = await axios.get<EmployeerDetails>(companyDetails, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.data) {
+  //       dispatch(setemployeerDetails(response.data));
+  //     }
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       console.error("Error fetching data:", error.message);
+  //     } else {
+  //       console.error("Unexpected error:", error);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    handleFetch();
-  }, []);
+  // useEffect(() => {
+  //   handleFetch();
+  // }, []);
   return (
     <>
       <button

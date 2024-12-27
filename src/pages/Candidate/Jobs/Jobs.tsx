@@ -7,7 +7,7 @@ import Loader from "../../../components/Loader/Loader";
 import { getJobsToCandiDate, getSearchJobsToCandiDate } from "../../../API/apis";
 import AllJobs from "../../../components/EmployeeDashboard/Jobs/AllJobs";
 import Select from "../../../components/Select/Select";
-import { jobTypeOptions, workplaceTypeOptions } from "../../../components/Select/options";
+import { jobTypeOptionsExtra, workplaceTypeOptions } from "../../../components/Select/options";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -50,8 +50,8 @@ const JobMatchingPage: React.FC = () => {
     job_type: '',
     company_name: '',
     workplace_type: '',
-    min_salary: 0,
-    max_salary: 0,
+    min_salary: 5000,
+    max_salary: 10000,
   });
   const [jobs, setJobs] = useState<Job[]>([]);
   const token = useSelector((state: any) => state.auth.token);
@@ -237,7 +237,7 @@ const JobMatchingPage: React.FC = () => {
             className="border rounded p-2 col-span-1"
           />
           {/* Job Type Selector */}
-          <Select value={searchJob?.job_type} name={"job_type"} onChange={handleSearchChange} className="border rounded p-2 col-span-1" options={jobTypeOptions}/>
+          <Select value={searchJob?.job_type} name={"job_type"} onChange={handleSearchChange} className="border rounded p-2 col-span-1" options={jobTypeOptionsExtra}/>
           {/* Company Name Input */}
           <input
             type="text"

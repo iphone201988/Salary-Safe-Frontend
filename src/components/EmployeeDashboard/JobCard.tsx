@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface JobCardProps {
   title: string; // Job title
@@ -18,11 +19,12 @@ const truncateDescription = (description: string, wordLimit: number) => {
   return description;
 };
 
-const JobCard: React.FC<JobCardProps> = ({ title, companyName, location, salary, jobType, description , }) => {
+const JobCard: React.FC<JobCardProps> = ({ title, companyName, location, salary, jobType, description ,id }) => {
   const shortDescription = truncateDescription(description, 100); // Limit description to 50 words
+  const navigate = useNavigate()
 
   return (
-    <div className="p-4 bg-white shadow rounded-lg m-3">
+    <div className="p-4 bg-white shadow rounded-lg m-3 cursor-pointer" onClick={()=>navigate(`candidate/dashboard/job-list/${id}`)}>
       <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
       <p className="text-sm text-gray-600">{companyName}</p>
       <div className="text-sm text-gray-500 mt-2">

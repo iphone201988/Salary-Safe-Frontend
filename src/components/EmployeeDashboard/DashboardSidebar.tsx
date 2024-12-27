@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { /* useEffect,  */useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaChartPie,
@@ -8,16 +8,16 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import axios from "axios";
-import { getcandidatesProfile } from "../../API/apis";
+// import axios from "axios";
+// import { getcandidatesProfile } from "../../API/apis";
 import { MdOutlineWork } from "react-icons/md";
 import { VscFileSubmodule } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
-import { clearUserData, setemployeDetails } from "../../Redux/reducer/userData";
+import { clearUserData, /* setemployeDetails */ } from "../../Redux/reducer/userData";
 import { logout } from "../../Redux/reducer/authSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
-import { candidateDetails } from "../../types";
+// import { candidateDetails } from "../../types";
 
 // interface Data {
 //   full_name: string;
@@ -26,7 +26,7 @@ import { candidateDetails } from "../../types";
 const DashboardSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   // const [data, setData] = useState<Data | null>(null);
-  const token = useSelector((state: any) => state.auth.token);
+  // const token = useSelector((state: any) => state.auth.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const role = useSelector((state: RootState) => state.auth.role);
@@ -43,28 +43,28 @@ const DashboardSidebar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleFetch = async (): Promise<void> => {
-    try {
-      const response:any = await axios.get<candidateDetails>(getcandidatesProfile, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.data) {
-        dispatch(setemployeDetails(response.data));
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Error fetching data:", error.message);
-      } else {
-        console.error("Unexpected error:", error);
-      }
-    }
-  };
+  // const handleFetch = async (): Promise<void> => {
+  //   try {
+  //     const response:any = await axios.get<candidateDetails>(getcandidatesProfile, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.data) {
+  //       dispatch(setemployeDetails(response.data));
+  //     }
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       console.error("Error fetching data:", error.message);
+  //     } else {
+  //       console.error("Unexpected error:", error);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    handleFetch();
-  }, []);
+  // useEffect(() => {
+  //   handleFetch();
+  // }, []);
 
   return (
     <>

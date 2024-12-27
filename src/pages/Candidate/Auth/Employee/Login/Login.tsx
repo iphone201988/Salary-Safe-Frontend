@@ -7,7 +7,8 @@ import {
 import Button from "../../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { candidateLogin /* userSocialLogin */ } from "../../../../../API/apis";
+import { candidateLogin, /* userSocialLogin */ 
+getcandidatesProfile} from "../../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
 // import { auth, googleauthProvider } from "../../../../../../firebase";
 // import { signInWithPopup } from "firebase/auth";
@@ -15,8 +16,9 @@ import Loader from "../../../../../components/Loader/Loader";
 import { login } from "../../../../../Redux/reducer/authSlice";
 import { useDispatch } from "react-redux";
 import { GrFormView, GrFormViewHide } from "react-icons/gr";
-import { setIndustryOption, setlocationOption, setskillOption } from "../../../../../Redux/reducer/optionApiSlice";
+// import { setIndustryOption, setlocationOption, setskillOption } from "../../../../../Redux/reducer/optionApiSlice";
 import { generateToken } from "../../../../../../firebase";
+import { setemployeDetails } from "../../../../../Redux/reducer/userData";
 
 const EmployeeLogin = () => {
   const [formData, setFormData] = useState({
@@ -109,6 +111,7 @@ const EmployeeLogin = () => {
       const data: any = {
         email: formData.email,
         password: formData.password,
+        fcm_device_toke: fcmToken||""
       };
       const response = await axios.post(candidateLogin, data);
       dispatch(
@@ -125,15 +128,9 @@ const EmployeeLogin = () => {
 
     // Fetch options in parallel
     await Promise.all([
-      fetchOptions("https://salarysafe.ai/api/v1/jobs/skills/search", token, (data:any) =>
-        dispatch(setskillOption(data))
-      ),
-      fetchOptions("https://salarysafe.ai/api/v1/jobs/locations/search", token, (data:any) =>
-        dispatch(setlocationOption(data))
-      ),
-      fetchOptions("https://salarysafe.ai/api/v1/jobs/industries/search", token, (data:any) =>
-        dispatch(setIndustryOption(data))
-      ),
+      fetchOptions(getcandidatesProfile, token, (data:any) =>
+        dispatch(setemployeDetails(data))
+      )
     ]);
       navigate("/candidate/dashboard");
     } catch (error: any) {

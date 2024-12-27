@@ -6,6 +6,7 @@ import Button from "../../../../components/Button/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
 import {
+  companyDetails,
   employeerLogin ,
 } from "../../../../API/apis";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,6 +15,7 @@ import { useDispatch } from "react-redux";
 // import { setUserData } from "../../../../Redux/reducer/userData";
 import { login } from "../../../../Redux/reducer/authSlice";
 import { generateToken } from "../../../../../firebase"
+import { setemployeerDetails } from "../../../../Redux/reducer/userData";
 
 const CompanyLogin = () => {
   const [formData, setFormData] = useState({
@@ -87,7 +89,20 @@ const CompanyLogin = () => {
   //       console.log(error);
   //     }
   //   }
-
+  const fetchOptions = async (url: string, token: string, setter: Function) => {
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        setter(response.data);
+      }
+    } catch (err) {
+      console.error(`Error fetching data from ${url}:`, err);
+    }
+  };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const errors = await validateForm(companyLoginSchema, formData);
@@ -103,6 +118,8 @@ const CompanyLogin = () => {
       const data: any = {
         email: formData.email,
         password: formData.password,
+        fcm_device_toke: fcmToken||""
+
       };
 
       const response = await axios.post(employeerLogin, data);
@@ -113,12 +130,18 @@ const CompanyLogin = () => {
         );
 
         toast.success("Logged in successfully!");
+        setLoading(false);
+        const token = response?.data?.access_token;
+        await Promise.all([
+          fetchOptions(companyDetails, token, (data:any) =>
+            dispatch(setemployeerDetails(data))
+            )
+        ]);
+        navigate("/employeer/dashboard");
         setFormData({
           email: "",
           password: "",
         });
-        setLoading(false);
-        navigate("/employeer/dashboard");
       } else {
         toast.error("Login failed. Please check your credentials.");
       }
