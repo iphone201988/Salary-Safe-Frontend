@@ -114,7 +114,7 @@ export const Register = () => {
       current_job_title: employeDetails.current_job_title,
       linkedin_profile_url: employeDetails.linkedin_profile_url,
       terms_accepted: employeDetails.terms_accepted,
-      fcm_device_toke: fcmToken||""
+      fcm_device_token: fcmToken||""
 
     };
 

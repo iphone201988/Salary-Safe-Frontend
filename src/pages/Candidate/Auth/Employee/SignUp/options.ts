@@ -105,12 +105,13 @@ export const options = [
     { value: 'agriculture', label: 'Agriculture' },
   ];
   export const jobTypePreferencesOptions = [
-    { value: "full_time", label: "Full-time" },
-    { value: "part_time", label: "Part-time" },
-    { value: "contract", label: "Contract" },
+    { value: "fulltime", label: "Full-time" },
+    { value: "parttime", label: "Part-time" },
     { value: "internship", label: "Internship" },
-    { value: "freelance", label: "Freelance" },
+    { value: "contract", label: "Contract" },
     { value: "temporary", label: "Temporary" },
+    { value: "volunteer", label: "Volunteer" },
+    { value: "other", label: "Other" },
   ];
   export const professionalDevelopmentAreasOptions = [
     { value: "leadership", label: "Leadership" },

@@ -127,7 +127,21 @@ const DashboardSidebar: React.FC = () => {
             to="#"
             className="flex items-center space-x-3 text-lg hover:text-[#019529] transition duration-300"
           >
+            {employeDetails?.avatar ?(
+            <img
+            src={
+              employeDetails?.avatar
+                ? import.meta.env.VITE_STATIC_FILES_URL + employeDetails?.avatar
+                : ""
+            }
+            alt="user-profile"
+            className="w-16 h-16 border-2 border-black rounded-full object-cover"
+            onError={(e:any) => {
+              e.currentTarget.src = "../../assets/avatar.jpg";
+            }}
+          />):(
             <FaUserCircle className="text-4xl" />
+          )}
             <span>{employeDetails?.full_name}</span>
           </Link>
         </div>
