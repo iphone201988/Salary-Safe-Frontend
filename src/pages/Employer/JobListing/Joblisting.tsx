@@ -14,7 +14,12 @@ import {
   workplaceTypeOptions,
 } from "../../../components/Select/options";
 import { Link } from "react-router-dom";
-
+interface Location {
+  id: string;
+  city: string;
+  country: string;
+  location_multiplier: number;
+}
 const JobListings = () => {
   const { apiCall, loading } = useApiCall();
 
@@ -28,12 +33,13 @@ const JobListings = () => {
     salaryRange: [50000, 150000],
     isNegotiable: false,
   });
-
+  const [selectedLocations, setSelectedLocations] = useState<Location>();
   const [jobList, setJobList] = useState<Job[]>([]); // Explicitly type the jobList state
   const [rowData, setRowData] = useState<columnJobType>(); // Explicitly type the jobList state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalView, setIsModalView] = useState(false);
+  
   //   const [loading, setLoading] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const token = useSelector((state: any) => state.auth.token);
@@ -54,6 +60,7 @@ const JobListings = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
   const handleEditChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     setRowData((prev: any) => ({
@@ -89,14 +96,15 @@ const JobListings = () => {
       const data = {
         title: jobDetails.title,
         description: jobDetails.description,
-        location: jobDetails.location,
+        location: `${selectedLocations?.city}, ${selectedLocations?.country}`,
+        // location: jobDetails.location,
         salary_min: jobDetails.salaryRange[0],
         salary_max: jobDetails.salaryRange[1],
         requirements: jobDetails.requirements,
         job_type: jobDetails.job_type,
         workplace_type: jobDetails.workplace_type,
         schedule: jobDetails.schedule,
-        status: jobDetails.status,
+        // status: jobDetails.status,
         vacancy: jobDetails.vacancy,
         // views: jobDetails.views,
       };
@@ -223,6 +231,7 @@ const JobListings = () => {
           handleSalaryChange={handleSalaryChange}
           setModelopen={setIsModalOpen}
           title="Create Job"
+          setSelectedLocations={setSelectedLocations}
         />
       )}
       {isModalEditOpen && (
