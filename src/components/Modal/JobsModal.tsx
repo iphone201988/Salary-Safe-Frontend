@@ -33,7 +33,7 @@ interface JobsModalProps {
   handleSalaryChange: (values: number[]) => void; // Tuple for salary range
   setModelopen: (isOpen: boolean) => void;
   title: string;
-  setSelectedLocations?:any;
+  setSelectedLocations?: any;
 }
 const JobsModal: React.FC<JobsModalProps> = ({
   handleSubmitJob,
@@ -42,7 +42,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
   handleSalaryChange,
   setModelopen,
   title,
-  setSelectedLocations
+  setSelectedLocations,
 }) => {
   // console.log("data?.salaryRange:::", data);
   const jobTypes = [
@@ -60,6 +60,11 @@ const JobsModal: React.FC<JobsModalProps> = ({
     { value: "remote", label: "Remote" },
     { value: "hybrid", label: "Hybrid" },
   ];
+
+  let city, country;
+  if (data.location) {
+    [city, country] = data.location.split(",");
+  }
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10 ">
       <div className="bg-white rounded-lg shadow p-4 w-full max-w-lg max-h-[90vh] overflow-auto scrollbar-none">
@@ -196,11 +201,19 @@ const JobsModal: React.FC<JobsModalProps> = ({
               placeholder="e.g. Mohali,India"
               className="w-full border border-gray-300 rounded-lg p-2"
             /> */}
-              <LocationSearch
+            <LocationSearch
               placeholder="Search locations..."
               apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
-              onSelectionChange={(locations) => setSelectedLocations(locations)}
+              onSelectionChange={(locations) => {
+                if (setSelectedLocations) setSelectedLocations(locations);
+              }}
               selectMode="single"
+              city={city && city !== "undefined" && city !== "" ? city : ""}
+              country={
+                country && country !== "undefined" && country !== ""
+                  ? country
+                  : ""
+              }
             />
           </div>
           <div className="mb-4">

@@ -143,7 +143,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({
             return (
               <div
                 key={location.id}
-                className="flex items-center bg-gray-300 text-black px-2 py-1 rounded w-full"
+                className="flex items-center bg-gray-300 text-black px-2 py-1 rounded"
               >
                 {`${location?.city ? location?.city : ""}, ${
                   location?.country ? location?.country : ""
