@@ -56,6 +56,8 @@ const DashboardSettings: React.FC = () => {
 
   const { token } = useSelector((state: RootState) => state.auth);
   const { employeDetails } = useSelector((state: RootState) => state.user);
+
+  console.log("data:::::::", employeDetails?.job_alerts_frequency);
   const [formData, setFormData] = useState<any>({
     full_name: employeDetails?.full_name || "",
     email: employeDetails?.email || "",
@@ -137,7 +139,7 @@ const DashboardSettings: React.FC = () => {
     job_alerts_frequency: employeDetails?.job_alerts_frequency
       ? getMultiSelectValues(
           jobAlertsFrequencyOptions,
-          JSON.parse(employeDetails.job_alerts_frequency)
+          employeDetails?.job_alerts_frequency
         )
       : [],
     profileImage: null as File | null,

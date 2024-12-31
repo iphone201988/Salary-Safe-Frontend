@@ -105,40 +105,34 @@ export const employeerRegistrationSchema = yup
       .min(1, "Please select at least one job type")
       .of(yup.string().required("Each job type must be selected")),
 
-    keyMetrics: yup
-      .string()
-      .required("Please select at least one key metric")
-      /* .of(yup.string().required("Each metric must be selected")) */,
-
-    roleCustomization: yup
-      .string()
-      .required("Please select at least one role customization option")
-      /* .of(yup.string().required("Each customization option must be selected")) */,
-
-    salaryBenchmarking: yup
-      .string()
-      .required("Please select at least one salary benchmarking option")
-      /* .of(yup.string().required("Each benchmarking option must be selected")) */,
-
-    candidateViewingPreferences: yup
-      .string()
-      .required("Please select at least one candidate viewing preference")
-      /* .of(yup.string().required("Each preference must be selected")) */,
-
-    offerOptimization: yup
-      .string()
-      .required("Please select at least one offer optimization option"),
-      // .of(yup.string().required("Each optimization option must be selected")),
+    keyMetrics: yup.string().required("Please select at least one key metric"),
+    /* .of(yup.string().required("Each metric must be selected")) */ roleCustomization:
+      yup
+        .string()
+        .required("Please select at least one role customization option"),
+    /* .of(yup.string().required("Each customization option must be selected")) */ salaryBenchmarking:
+      yup
+        .string()
+        .required("Please select at least one salary benchmarking option"),
+    /* .of(yup.string().required("Each benchmarking option must be selected")) */ candidateViewingPreferences:
+      yup
+        .string()
+        .required("Please select at least one candidate viewing preference"),
+    /* .of(yup.string().required("Each preference must be selected")) */ offerOptimization:
+      yup
+        .string()
+        .required("Please select at least one offer optimization option"),
+    // .of(yup.string().required("Each optimization option must be selected")),
 
     marketRoleAlerts: yup
       .string()
       .required("Please select at least one market role alert"),
-      // .of(yup.string().required("Each market role alert must be selected")),
+    // .of(yup.string().required("Each market role alert must be selected")),
 
     customReports: yup
       .string()
       .required("Please select at least one custom report option"),
-      // .of(yup.string().required("Each report option must be selected")),
+    // .of(yup.string().required("Each report option must be selected")),
 
     automatedUpdates: yup
       .string()
@@ -184,7 +178,7 @@ export const validateForm = async (
   data: any
 ) => {
   try {
-    console.log("data::::::::",data)
+    console.log("data::::::::", data);
     await schema.validate(data, {
       abortEarly: false,
     });
@@ -212,7 +206,7 @@ export const candidateSignUpSchema = yup.object({
     .email("Must be a valid email")
     .required("Email is required"),
 
-    phone_number: yup
+  phone_number: yup
     .string()
     .required("Phone number is required")
     .matches(
@@ -227,7 +221,10 @@ export const candidateSignUpSchema = yup.object({
 
   location: yup.string().required("Location is required"),
 
-  current_job_title: yup.string().nullable().required("Current job title is required"),
+  current_job_title: yup
+    .string()
+    .nullable()
+    .required("Current job title is required"),
 
   linkedin_profile_url: yup.string().url("Must be a valid URL").nullable(),
 
@@ -236,7 +233,8 @@ export const candidateSignUpSchema = yup.object({
     .required("Job titles of interest are required"),
 
   total_years_of_experience: yup
-  .string().required("Education level is required"),
+    .string()
+    .required("Education level is required"),
 
   education_level: yup.string().required("Education level is required"),
 
@@ -285,7 +283,10 @@ export const candidateSignUpSchema = yup.object({
     .of(yup.string().required("Each area is required"))
     .min(1, "Please specify at least one development area"),
 
-  role_specific_salary_adjustments: yup.string().nullable().required("Role-Specific Salary Adjustments is required"),
+  role_specific_salary_adjustments: yup
+    .string()
+    .nullable()
+    .required("Role-Specific Salary Adjustments is required"),
 
   salaryInsightsInterest: yup.boolean().required(),
 
@@ -308,7 +309,10 @@ export const candidateSignUpSchema = yup.object({
 
   contact_email: yup.string().when("invite_employer", {
     is: true,
-    then: (schema) => schema.email("Must be a valid email").required("Contact email is required"),
+    then: (schema) =>
+      schema
+        .email("Must be a valid email")
+        .required("Contact email is required"),
     otherwise: (schema) => schema.nullable(),
   }),
 
@@ -319,7 +323,10 @@ export const candidateSignUpSchema = yup.object({
     .of(yup.string().required("Each preference is required"))
     .min(1, "Please select at least one notification preference"),
 
-  job_alerts_frequency: yup.string().nullable().required("Job alerts frequency is required"),
+  job_alerts_frequency: yup
+    .string()
+    .nullable()
+    .required("Job alerts frequency is required"),
 
   referral_source: yup.string().nullable(),
 
@@ -329,4 +336,3 @@ export const candidateSignUpSchema = yup.object({
     .boolean()
     .oneOf([true], "You must accept the terms and conditions"),
 });
-

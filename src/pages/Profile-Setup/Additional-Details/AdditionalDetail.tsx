@@ -35,8 +35,8 @@ const AdditionalDetail = () => {
       "Job alert frequency is required"
     ),
     referral_source: Yup.string().required("Referral source is required"),
-    resume_upload: Yup.string().required("Resume is required"),
-    cover_letter_upload: Yup.string().required("Cover letter is required"),
+    //resume_upload: Yup.string().required("Resume is required"),
+    //cover_letter_upload: Yup.string().required("Cover letter is required"),
   });
 
   const handleFileChange = (
@@ -72,8 +72,8 @@ const AdditionalDetail = () => {
         notification_preferences: employeDetails?.notification_preferences,
         job_alerts_frequency: employeDetails?.job_alerts_frequency?.value,
         referral_source: employeDetails?.referral_source?.value,
-        resume_upload: files?.resume,
-        cover_letter_upload: files?.coverLetter,
+        //resume_upload: files?.resume,
+        //cover_letter_upload: files?.coverLetter,
       }
     );
     if (formattedErrors) {

@@ -25,9 +25,9 @@ const JobSearch = () => {
   const [errors, setErrors] = useState<any>({});
 
   const jobSearchValidationSchema = Yup.object({
-    industries_of_interest: Yup.string().required(
-      "Job Titles of Interest is required"
-    ),
+    industries_of_interest: Yup.array()
+      .min(1, "At least one Industry interest is required")
+      .required("Industry interest are required"),
     role_specific_salary_adjustments: Yup.string().required(
       "Role Specific Salary Adjustments is required"
     ),
@@ -82,11 +82,7 @@ const JobSearch = () => {
 
     formData.append(
       `industries_of_interest`,
-      JSON.stringify(
-        employeDetails?.industries_of_interest?.map((data: any) => {
-          return data?.value;
-        })
-      )
+      JSON.stringify(employeDetails?.industries_of_interest)
     );
 
     // employeDetails?.job_type_preferences?.forEach(
@@ -210,7 +206,6 @@ const JobSearch = () => {
 
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
-      
       {/* <Button
         text="Skip"
         type="button"
@@ -264,7 +259,7 @@ const JobSearch = () => {
                 {selectedIndustry.map((location: any) => (
                   <div
                     key={location.id}
-                    className="flex items-center text-black px-2 py-1 rounded"
+                    className="flex items-center text-black px-2 py-1 rounded bg-gray-300"
                   >
                     {location}
                     <button
@@ -278,14 +273,20 @@ const JobSearch = () => {
               </div>
               <div
                 className={`w-full ${
-                  options.length === 0 ? "hidden" : "h-[60px]"
-                } overflow-y-auto`}
+                  options.length === 0 ? "hidden" : "h-[160px]"
+                } overflow-y-auto border border-black rounded-sm`}
               >
                 {options.map((data: any) => (
                   <li
-                    onClick={() =>
-                      setSelectedIndustry([...selectedIndustry, data.industry])
-                    }
+                    onClick={() => {
+                      const filteredIndustries = selectedIndustry.filter(
+                        (industry: any) => industry != data.industry
+                      );
+                      setSelectedIndustry([
+                        ...filteredIndustries,
+                        data.industry,
+                      ]);
+                    }}
                     key={data.id}
                     className="p-2 cursor-pointer list-none hover:bg-gray-200"
                   >

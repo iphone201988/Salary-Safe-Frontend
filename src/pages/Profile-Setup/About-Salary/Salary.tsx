@@ -10,7 +10,7 @@ import MultiSelectComponent from "../MultiSelect/Multi";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setemployeDetails } from "../../../Redux/reducer/userData";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import { useState } from "react";
 
 const ABoutSalary = () => {
@@ -33,21 +33,21 @@ const ABoutSalary = () => {
 
   const salaryValidationSchema = Yup.object({
     general_salary_range: Yup.string().required("Salary Range is required"),
-    minimum_acceptable_salary: Yup.number().required("Minimum acceptable salary is required"),
-    preferred_benefits: Yup.array().min(1, "At least one preferred benefit is required").required("Preferred benefits are required"),
-    view_salary_expectations: Yup.string().required("Salary expectation is required"),
-  //   open_to_performance_based_compensation: Yup.boolean()
-  //   .required("Please indicate whether you're open to performance-based compensation."),
-  
-  // willing_to_negociate: Yup.boolean()
-  //   .required("Please specify if you're willing to negotiate terms."),
-  
-  // hide_profile_from_current_employer: Yup.boolean()
-  //   .required("Indicate if you'd like to hide your profile from your current employer."),
-  
-  preferred_salary_type: Yup.string()
-    .required("Please select your preferred salary type.")
-    .oneOf(["Hourly", "Monthly"], "Invalid salary type. Choose from 'Hourly', 'Monthly'.")
+    minimum_acceptable_salary: Yup.number().required(
+      "Minimum acceptable salary is required"
+    ),
+    preferred_benefits: Yup.array()
+      .min(1, "At least one preferred benefit is required")
+      .required("Preferred benefits are required"),
+    view_salary_expectations: Yup.string().required(
+      "Salary expectation is required"
+    ),
+    preferred_salary_type: Yup.string()
+      .required("Please select your preferred salary type.")
+      .oneOf(
+        ["Hourly", "Monthly"],
+        "Invalid salary type. Choose from 'Hourly', 'Monthly'."
+      ),
   });
 
   const handleMultiSelectChange = (field: string, selectedOptions: any) => {
@@ -58,29 +58,59 @@ const ABoutSalary = () => {
 
   const handleSubmit = async () => {
     try {
-      await salaryValidationSchema.validate({
-        general_salary_range: employeDetails?.general_salary_range,
-        minimum_acceptable_salary: employeDetails?.minimum_acceptable_salary,
-        preferred_benefits: employeDetails?.preferred_benefits?.map((data: any) => data?.value) || [],
-        // view_salary_expectations: employeDetails?.view_salary_expectations?.value || "",
-        // open_to_performance_based_compensation: employeDetails?.open_to_performance_based_compensation || false,
-        // willing_to_negociate: employeDetails?.willing_to_negociate || false,
-        // hide_profile_from_current_employer: employeDetails?.hide_profile_from_current_employer || false,
-        preferred_salary_type: employeDetails?.preferred_salary_type?.value || "",
-      }, { abortEarly: false });
+      await salaryValidationSchema.validate(
+        {
+          general_salary_range: employeDetails?.general_salary_range,
+          minimum_acceptable_salary: employeDetails?.minimum_acceptable_salary,
+          preferred_benefits:
+            employeDetails?.preferred_benefits?.map(
+              (data: any) => data?.value
+            ) || [],
+          view_salary_expectations:
+            employeDetails?.view_salary_expectations?.value || "",
+          preferred_salary_type:
+            employeDetails?.preferred_salary_type?.value || "",
+        },
+        { abortEarly: false }
+      );
 
       // Create formData to send to the backend
       const formData = new FormData();
-      formData.append("general_salary_range", employeDetails?.general_salary_range || "");
-      formData.append("minimum_acceptable_salary", employeDetails?.minimum_acceptable_salary || "");
-      formData.append("preferred_benefits", JSON.stringify(
-        employeDetails?.preferred_benefits?.map((data: any) => data?.value) || []
-      ));
-      formData.append("view_salary_expectations", employeDetails?.view_salary_expectations?.value || "");
-      formData.append("open_to_performance_based_compensation", employeDetails?.open_to_performance_based_compensation || false);
-      formData.append("willing_to_negociate", employeDetails?.willing_to_negociate || false);
-      formData.append("hide_profile_from_current_employer", employeDetails?.hide_profile_from_current_employer || false);
-      formData.append("preferred_salary_type", employeDetails?.preferred_salary_type?.value || "");
+      formData.append(
+        "general_salary_range",
+        employeDetails?.general_salary_range || ""
+      );
+      formData.append(
+        "minimum_acceptable_salary",
+        employeDetails?.minimum_acceptable_salary || ""
+      );
+      formData.append(
+        "preferred_benefits",
+        JSON.stringify(
+          employeDetails?.preferred_benefits?.map((data: any) => data?.value) ||
+            []
+        )
+      );
+      formData.append(
+        "view_salary_expectations",
+        employeDetails?.view_salary_expectations?.value || ""
+      );
+      formData.append(
+        "open_to_performance_based_compensation",
+        employeDetails?.open_to_performance_based_compensation || false
+      );
+      formData.append(
+        "willing_to_negociate",
+        employeDetails?.willing_to_negociate || false
+      );
+      formData.append(
+        "hide_profile_from_current_employer",
+        employeDetails?.hide_profile_from_current_employer || false
+      );
+      formData.append(
+        "preferred_salary_type",
+        employeDetails?.preferred_salary_type?.value || ""
+      );
 
       // Submit the form data using axios
       await axios.patch(
@@ -93,24 +123,21 @@ const ABoutSalary = () => {
           },
         }
       );
-
-      // Navigate to the next page upon success
       navigate("/profile/job-search");
-    } catch (error:any) {
+    } catch (error: any) {
       if (error instanceof Yup.ValidationError) {
-              const newErrors: any = {};
-              error.inner.forEach((err: any) => {
-                newErrors[err.path] = err.message;
-              });
-              setErrors(newErrors);
-              console.log("error",error);
-            } else {
-              console.error("Error submitting form:", error);
-        }
+        const newErrors: any = {};
+        error.inner.forEach((err: any) => {
+          newErrors[err.path] = err.message;
+        });
+        setErrors(newErrors);
+        console.log("error", error);
+      } else {
+        console.error("Error submitting form:", error);
+      }
     }
   };
 
-  console.log("errors",errors);
   return (
     <div className="w-[750px] relative border border-gray-400 px-4 py-8 rounded-[20px] flex flex-col lg:flex-row justify-center items-center bg-[#ffffff]">
       {/* <Button
@@ -140,10 +167,11 @@ const ABoutSalary = () => {
             <div className="w-full">
               <Input
                 label="General Salary Range:"
-                placeholder="enter salary range here"
+                placeholder="Enter salary range here"
                 name="general_salary_range"
                 value={employeDetails?.general_salary_range}
                 onChange={handleChange}
+                errorMessage={errors?.general_salary_range}
               />
               <MultiSelectComponent
                 isMulti={false}
@@ -153,6 +181,7 @@ const ABoutSalary = () => {
                 onChange={(selected) =>
                   handleMultiSelectChange("preferred_salary_type", selected)
                 }
+                error={errors?.preferred_salary_type}
               />
             </div>
 
@@ -185,11 +214,12 @@ const ABoutSalary = () => {
           <div className="w-[320px]">
             <Input
               label="Minimum Acceptable Salary:"
-              placeholder="enter minium salary here"
+              placeholder="Enter minium salary here"
               type="number"
               name="minimum_acceptable_salary"
               value={employeDetails?.minimum_acceptable_salary}
               onChange={handleChange}
+              errorMessage={errors?.minimum_acceptable_salary}
             />
 
             <MultiSelectComponent
@@ -200,6 +230,7 @@ const ABoutSalary = () => {
               onChange={(selected) =>
                 handleMultiSelectChange("preferred_benefits", selected)
               }
+              error={errors?.preferred_benefits}
             />
             <MultiSelectComponent
               isMulti={false}
@@ -209,6 +240,7 @@ const ABoutSalary = () => {
               onChange={(selected) =>
                 handleMultiSelectChange("view_salary_expectations", selected)
               }
+              error={errors?.view_salary_expectations}
             />
             <div className="flex items-center space-x-2 mt-2">
               <input

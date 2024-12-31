@@ -55,21 +55,21 @@ const ViewModel: React.FC<ViewModelProps> = ({ data, setModelopen }) => {
       <div className="bg-white rounded-lg shadow p-4 w-full max-w-lg max-h-[90vh] overflow-auto">
         <h3 className="text-xl font-semibold mb-4 text-center">View Job</h3>
         <div className="mb-4">
-          <div className="font-bold text-2xl my-1">Job Title:</div>
+          <div className="font-bold text-xl my-1">Job Title:</div>
           <p className="mx-2">{data.title || "N/A"}</p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Job Description:</p>
+          <p className="font-bold text-xl my-1">Job Description:</p>
           <p className="mx-2">{data.description || "N/A"}</p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Job Type:</p>
+          <p className="font-bold text-xl my-1">Job Type:</p>
           <p className="mx-2">
             {jobTypes[data.job_type as keyof typeof jobTypes] || "N/A"}
           </p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Workplace Type:</p>
+          <p className="font-bold text-xl my-1">Workplace Type:</p>
           <p className="mx-2">
             {workplaceTypes[
               data.workplace_type as keyof typeof workplaceTypes
@@ -77,36 +77,36 @@ const ViewModel: React.FC<ViewModelProps> = ({ data, setModelopen }) => {
           </p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Schedule:</p>
+          <p className="font-bold text-xl my-1">Schedule:</p>
           <p className="mx-2">
             {scheduleOptions[data.schedule as keyof typeof scheduleOptions] ||
               "N/A"}
           </p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Vacancy:</p>
+          <p className="font-bold text-xl my-1">Vacancy:</p>
           <p className="mx-2">{data.vacancy || "N/A"}</p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Status:</p>
+          <p className="font-bold text-xl my-1">Status:</p>
           <p className="capitalize mx-2">{data.status || "N/A"}</p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Requirements:</p>
+          <p className="font-bold text-xl my-1">Requirements:</p>
           <p className="mx-2">{data.requirements || "N/A"}</p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Location:</p>
+          <p className="font-bold text-xl my-1">Location:</p>
           <p className="mx-2">{data.location || "N/A"}</p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Salary Range:</p>
+          <p className="font-bold text-xl my-1">Salary Range:</p>
           <p className="mx-2">
             ${data.salaryRange[0]} - ${data.salaryRange[1]}
           </p>
         </div>
         <div className="mb-4">
-          <p className="font-bold text-2xl my-1">Is Salary Negotiable?</p>
+          <p className="font-bold text-xl my-1">Is Salary Negotiable?</p>
           <p className="mx-2">{data.isNegotiable ? "Yes" : "No"}</p>
         </div>
         <div className="flex justify-end">

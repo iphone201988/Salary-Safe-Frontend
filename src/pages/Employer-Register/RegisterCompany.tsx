@@ -20,16 +20,16 @@ export const RegisterCompany = () => {
 
   // const token = useSelector((state: any) => state.auth.token);
 
-  const [fcmToken, setFcmToken] = useState<string|undefined>();
+  const [fcmToken, setFcmToken] = useState<string | undefined>();
   useEffect(() => {
     const fetchToken = async () => {
       const token = await generateToken(); // Await the result of the async function
-      if(token) setFcmToken(token); // Set the resolved value to state
+      if (token) setFcmToken(token); // Set the resolved value to state
     };
 
     fetchToken();
   }, []);
-  console.log("fcmtoken",fcmToken);
+  console.log("fcmtoken", fcmToken);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -47,7 +47,6 @@ export const RegisterCompany = () => {
     );
   };
   const handleSubmit = async () => {
-
     const data = {
       company_name: employeerDetails?.company_name || "",
       industry: employeerDetails?.industry?.value || "",
@@ -58,38 +57,38 @@ export const RegisterCompany = () => {
       contact_phone_number: employeerDetails?.contact_phone_number || "",
       password: employeerDetails?.password || "",
       terms_accepted: employeerDetails?.terms_accepted || false,
-      fcm_device_token: fcmToken||""
+      fcm_device_token: fcmToken || "",
     };
 
     // if (validateForm()) {
-      if (employeerDetails.terms_accepted) {
-        try {
-          const response = await axios.post(employeerRegister, data, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (response.status === 200) {
-            dispatch(
-              login({ token: response?.data?.access_token, role: "employeer" })
-            );
-            console.log("coming here");
-            navigate("/profile/hiring-goal");
-            console.log("gone from here");
-            toast.success("Registration successful!");
-            // navigate("/employeer/dashboard");
-          }
-        } catch (err) {
-          toast.error("Registration failed. Please try again.");
-        } finally {
+    if (employeerDetails.terms_accepted) {
+      try {
+        const response = await axios.post(employeerRegister, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
           dispatch(
-            setemployeerDetails({
-              ...employeerDetails,
-              password: "",
-            })
+            login({ token: response?.data?.access_token, role: "employeer" })
           );
+          console.log("coming here");
+          navigate("/profile/hiring-goal");
+          console.log("gone from here");
+          toast.success("Registration successful!");
+          // navigate("/employeer/dashboard");
         }
+      } catch (err) {
+        toast.error("Registration failed. Please try again.");
+      } finally {
+        dispatch(
+          setemployeerDetails({
+            ...employeerDetails,
+            password: "",
+          })
+        );
       }
+    }
     // }
   };
   return (
@@ -127,7 +126,7 @@ export const RegisterCompany = () => {
         <div className="w-full flex flex-col items-center">
           <Input
             label="Company Name"
-            placeholder="enter company name here"
+            placeholder="Enter company name here"
             name="company_name"
             value={employeerDetails?.company_name}
             onChange={handleChange}
@@ -154,29 +153,41 @@ export const RegisterCompany = () => {
             }
           />
 
-          <Input label="Headquarters" placeholder="search place" 
-          name="headquarters_location"
-          value={employeerDetails?.headquarters_location}
-          onChange={handleChange} 
+          <Input
+            label="Headquarters"
+            placeholder="Search place"
+            name="headquarters_location"
+            value={employeerDetails?.headquarters_location}
+            onChange={handleChange}
           />
-          <Input label="Primary Contact Person" placeholder="enter primary contact"
-          name="primary_contact_person"
-          value={employeerDetails?.primary_contact_person}
-          onChange={handleChange}
-           />
-          <Input label="Email" placeholder="enter email here"
-          name="email"
-          value={employeerDetails?.email}
-          onChange={handleChange}
-           />
-          <Input label="Phone" placeholder="+91 12356789"name="contact_phone_number"
-          value={employeerDetails?.contact_phone_number}
-          onChange={handleChange}
-           />
-          <Input label="Password" placeholder="******" type="password" 
-          name="password"
-          value={employeerDetails?.password}
-          onChange={handleChange}
+          <Input
+            label="Primary Contact Person"
+            placeholder="Enter primary contact"
+            name="primary_contact_person"
+            value={employeerDetails?.primary_contact_person}
+            onChange={handleChange}
+          />
+          <Input
+            label="Email"
+            placeholder="Enter email here"
+            name="email"
+            value={employeerDetails?.email}
+            onChange={handleChange}
+          />
+          <Input
+            label="Phone"
+            placeholder="+91 12356789"
+            name="contact_phone_number"
+            value={employeerDetails?.contact_phone_number}
+            onChange={handleChange}
+          />
+          <Input
+            label="Password"
+            placeholder="******"
+            type="password"
+            name="password"
+            value={employeerDetails?.password}
+            onChange={handleChange}
           />
         </div>
 

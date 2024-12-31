@@ -194,7 +194,7 @@ export const Register = () => {
         >
           <Input
             label="Full Name"
-            placeholder="enter full name here"
+            placeholder="Enter full name here"
             value={employeDetails?.full_name}
             name="full_name"
             onChange={handleChange}
@@ -204,7 +204,7 @@ export const Register = () => {
 
           <Input
             label="Email"
-            placeholder="enter email here"
+            placeholder="Enter email here"
             value={employeDetails?.email}
             name="email"
             onChange={handleChange}
