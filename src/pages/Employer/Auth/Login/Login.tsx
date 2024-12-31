@@ -118,7 +118,7 @@ const CompanyLogin = () => {
       const data: any = {
         email: formData.email,
         password: formData.password,
-        fcm_device_token: fcmToken||""
+        fcm_device_toke: fcmToken||""
 
       };
 

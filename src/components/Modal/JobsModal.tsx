@@ -3,6 +3,7 @@ import {
   // jobtypesOptions,
   scheduleOptions,
 } from "../../pages/Employer/Auth/SignUp/options";
+import LocationSearch from "../LocationSearch";
 type Job = {
   title?: string;
   description?: string;
@@ -32,6 +33,7 @@ interface JobsModalProps {
   handleSalaryChange: (values: number[]) => void; // Tuple for salary range
   setModelopen: (isOpen: boolean) => void;
   title: string;
+  setSelectedLocations?:any;
 }
 const JobsModal: React.FC<JobsModalProps> = ({
   handleSubmitJob,
@@ -40,6 +42,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
   handleSalaryChange,
   setModelopen,
   title,
+  setSelectedLocations
 }) => {
   // console.log("data?.salaryRange:::", data);
   const jobTypes = [
@@ -145,7 +148,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
             />
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block mb-1">Status</label>
             <select
               name="status"
@@ -156,7 +159,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
               <option value="active">Active</option>
               <option value="closed">Closed</option>
             </select>
-          </div>
+          </div> */}
 
           {/* <div className="mb-4">
             <label className="block mb-1">Views</label>
@@ -184,7 +187,7 @@ const JobsModal: React.FC<JobsModalProps> = ({
           </div>
           <div className="mb-4">
             <label className="block mb-1">Location</label>
-            <input
+            {/* <input
               type="text"
               name="location"
               value={data?.location}
@@ -192,6 +195,12 @@ const JobsModal: React.FC<JobsModalProps> = ({
               required
               placeholder="e.g. Mohali,India"
               className="w-full border border-gray-300 rounded-lg p-2"
+            /> */}
+              <LocationSearch
+              placeholder="Search locations..."
+              apiEndpoint="https://salarysafe.ai/api/v1/utils/locations/search"
+              onSelectionChange={(locations) => setSelectedLocations(locations)}
+              selectMode="single"
             />
           </div>
           <div className="mb-4">

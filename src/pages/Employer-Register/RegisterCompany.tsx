@@ -57,7 +57,7 @@ export const RegisterCompany = () => {
       contact_phone_number: employeerDetails?.contact_phone_number || "",
       password: employeerDetails?.password || "",
       terms_accepted: employeerDetails?.terms_accepted || false,
-      fcm_device_token: fcmToken || "",
+      fcm_device_toke: fcmToken||""
     };
 
     // if (validateForm()) {
